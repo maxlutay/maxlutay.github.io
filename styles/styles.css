@@ -20,6 +20,8 @@
     --contactsbackgroundcolor:#2ecc71;
     --examplebackgroundcolor:#e74c3c;
 
+    --abouttextfontsize:3vh;
+
 
     --burgercolor: #2c3e50;
     --backhovercolor: #bdc3c7;
@@ -183,6 +185,10 @@ body {
     padding: 0;
     margin: 0;
 
+
+    border-top:calc( var(--burgerheight) + 2* var(--burgertop) ) solid ;
+    box-sizing: border-box;
+
     -webkit-transition: 1s;
     -moz-transition: 1s;
     transition: 1s;
@@ -193,6 +199,9 @@ body {
 
 .mainview {
     background: var(--maincolor);
+    border-color: var(--maincolor);
+
+    border: none;
 }
 
 .mainview>.me {
@@ -208,7 +217,11 @@ body {
     top: var(--metop);
     font-size: var(--mefont-size);
     z-index: 1;
+
+
+
 }
+
 
 
 .mainview>p{
@@ -228,12 +241,19 @@ body {
     left: 100vw;
     
     background: var(--menucolor);
+
+
+    border-color: var(--menucolor);
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
     z-index: 4;
+
+
+
+    border: none;
 }
 
 .menuview>*{
@@ -273,7 +293,10 @@ body {
 
     top: 0vh;
     left: 100vw;
-    background: var(--contactsbackgroundcolor); 
+    background: var(--contactsbackgroundcolor);
+    border-color: var(--contactsbackgroundcolor);
+
+
     opacity: 0;  
 
     display: flex;
@@ -281,6 +304,9 @@ body {
     flex-direction: row;  
     flex-wrap: wrap;
     justify-content: space-around;
+
+
+    border: none;
 }
 
 .contactsview>*{
@@ -296,26 +322,54 @@ body {
 .aboutview{
     top: -100vh;
     left: 100vw;
-    background: var(--aboutbackgroundcolor);    
+    background: var(--aboutbackgroundcolor); 
+    border-color: var(--aboutbackgroundcolor);
+
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+
+
+
+
+    
 }
 
 
 .aboutview>*{
-    font-family: glacia;
-    font-size: 4vh;
-    width: 80vw;
-    color: var(--fontcolor);
+    margin: 0;
+    padding: 0;
+    border: 0;
+
 }
 
+.aboutview>p{
+    font-family: glacia;
+    font-size: var(--abouttextfontsize);
+    width: 80vw;
+    color: var(--fontcolor);
+    flex-shrink: 7;
+}
+
+.aboutview>.portrait{
+    position: relative;
+    height: 50%;
+    border-radius: 50%;
+    
+
+}
 
 .blogview{
     top: 100vh;
     left: 100vw;
     background: var(--blogbackgroundcolor);
+    border-color: var(--blogbackgroundcolor);
+
+
+
+    
 }
 
 .portfolioview{
@@ -323,8 +377,7 @@ body {
     left:200vw;
     background: var(--portfoliobackgroundcolor);
 
-    border-top:calc( var(--burgerheight) + 2* var(--burgertop) ) solid var(--portfoliobackgroundcolor);
-    box-sizing: border-box;
+    border-color: var(--portfoliobackgroundcolor);
     
 
 
@@ -335,6 +388,10 @@ body {
     align-content: stretch;
 
     overflow-y: scroll;
+
+
+
+    
 
 }
 
