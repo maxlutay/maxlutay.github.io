@@ -3,7 +3,6 @@
 (function(){
 
 "use strict"
-window.location.hash = "#main";
 
 var viewNames = [ "mainview","menuview","contactsview","aboutview","blogview","portfolioview" ];
 
@@ -21,35 +20,38 @@ var defaultstyle = [
         burger:"burger burgerrightburger",
         back:"back nodisplay",
         viewsclassto:" movedefault",
-        hash:"#main"
+        hash:"main"
     },
     {           
         burger:"burger burgerleftcross",
         back:"back nodisplay",
         viewsclassto:"movemenu",
-        hash:"#menu"
+        hash:"menu"
     },
     
     {
-            burger:"burger burgercentercross",
-            back:"back display",   
-            viewsclassto:"moveabout"
+        burger:"burger burgercentercross",
+        back:"back display",   
+        viewsclassto:"moveabout",
+        hash:"aboutme"
     },
     {
-            burger:"burger burgercentercross",
-            back:"back display",            
-            viewsclassto:"movecontacts",
-            hash:"#contact"
-    },
-        {
-            burger:"burger burgercentercross",
-            back:"back display",
-            viewsclassto: "moveportfolio"
+        burger:"burger burgercentercross",
+        back:"back display",            
+        viewsclassto:"movecontacts",
+        hash:"contactme"
     },
     {
-            burger:"burger burgercentercross",
-            back:"back display",            
-            viewsclassto:"moveblog"
+        burger:"burger burgercentercross",
+        back:"back display",
+        viewsclassto: "moveportfolio",
+        hash:"portfolio"
+    },
+    {
+        burger:"burger burgercentercross",
+        back:"back display",            
+        viewsclassto:"moveblog",
+        hash:"blog"
     }
 
 
@@ -62,7 +64,9 @@ var defaultstyle = [
  });
 })();
 
-console.log(defaultstyle);
+
+
+
 
 
 
@@ -116,6 +120,8 @@ var cutReplaceAppend = function (src,word,replace,append) {
 function setview(prevn,n) {
     view = n;
 
+    window.location.hash = defaultstyle[n].hash;
+
     burger.className = defaultstyle[n].burger;
                 
     back.className = defaultstyle[n].back;
@@ -126,7 +132,7 @@ function setview(prevn,n) {
         
     });
 
-    console.log(view);
+    
 };
 
 
@@ -141,11 +147,11 @@ burger.addEventListener("click",function(el){
    if(  !view ){
 
              setview(0,1);
-             
+             window.location.hash = defaultstyle[1].hash;
    }else {
 
              setview(view,0);
-             window.location.hash = "#main";
+             window.location.hash = defaultstyle[0].hash;
 
    };   
   });
@@ -161,7 +167,7 @@ burger.addEventListener("click",function(el){
 
       var menuitems = document.querySelectorAll(".menuview>*>a");
 
-      console.log(menuitems);
+      
 
       for(var i = 0, l = menuitems.length; i<l;i++  ){
       
@@ -187,7 +193,24 @@ burger.addEventListener("click",function(el){
 
 
 
+(function router() { 
+    
+    var found = false;
+    if( window.location.hash ){
+       for( var i = 0, l = defaultstyle.length; i < l && !found; i++ ){
 
+           (function(k){
+               if(window.location.hash ==  "#" + defaultstyle[k].hash){
+                   setview(0,k);
+                   found = true;
+               };
+           })(i);
+           
+       };
+    }else{        
+        setview(view,0);
+    };
+ })();
 
 
 

@@ -16,9 +16,9 @@
     --menucolor:#7f8c8d;
     --aboutbackgroundcolor:#3498db;
     --blogbackgroundcolor:  #9b59b6;
-    --portfoliobackgroundcolor:#e74c3c;
+    --portfoliobackgroundcolor:#c0392b;
     --contactsbackgroundcolor:#2ecc71;
-
+    --examplebackgroundcolor:#e74c3c;
 
 
     --burgercolor: #2c3e50;
@@ -322,7 +322,39 @@ body {
     top: 0vh;
     left:200vw;
     background: var(--portfoliobackgroundcolor);
+
+    border-top:calc( var(--burgerheight) + 2* var(--burgertop) ) solid var(--portfoliobackgroundcolor);
+    box-sizing: border-box;
+    
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: nowrap;
+    align-content: stretch;
+
+    overflow-y: scroll;
+
 }
+
+
+
+.portfolioview>.example{
+    width: 90vw;
+    min-height: 60vw;
+    background: var(--examplebackgroundcolor);
+    margin-bottom: 3vh;
+}
+
+
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+
+
 
 
 .movedefault{
