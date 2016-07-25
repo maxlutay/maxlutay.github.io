@@ -208,6 +208,7 @@ burger.addEventListener("click",function(el){
            
        };
     }else{        
+        view = 0;
         setview(view,0);
     };
  })();
