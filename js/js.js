@@ -20,7 +20,7 @@ var defaultstyle = [
         burger:"burger burgerrightburger",
         back:"back nodisplay",
         viewsclassto:" movedefault",
-        hash:""
+        hash:"main"
     },
     {           
         burger:"burger burgerleftcross",
