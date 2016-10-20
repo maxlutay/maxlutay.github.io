@@ -18,7 +18,7 @@
     div.style.textAlign = "center";
     div.style.color = "red";
     div.style.background = "rgba(255,255,255,0.5)";
-    div.innerHTML = "this is just a temporary design template website and a lot of code redesign and fixes needed"
+    div.innerHTML = 'this is just a temporary design template website and a lot of code redesign and fixes needed. development repo on github: <a href = "https://github.com/maxlutay/maxlutay.github.io" >maxlutay.github.io </a>';
     document.body.appendChild(div);
     
 })();    
