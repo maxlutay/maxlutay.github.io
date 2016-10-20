@@ -3,6 +3,21 @@
 (function(){
 
 "use strict"
+    
+    
+(function(){
+    var div = document.createElement("div");
+    div.style.position ="fixed";
+    div.width = "100%";
+    div.height = "10px";
+    div.zIndex = "9999";
+    div.display = "block";
+    div.innerHTML = "this is just a template website and a lot of code redesign and fixes needed"
+    document.appendChild(div);
+    
+})();    
+    
+
 
 var viewNames = [ "mainview","menuview","contactsview","aboutview","blogview","portfolioview" ];
 
