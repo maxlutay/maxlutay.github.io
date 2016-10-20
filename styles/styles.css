@@ -19,6 +19,7 @@
     --portfoliobackgroundcolor:#c0392b;
     --contactsbackgroundcolor:#2ecc71;
     --examplebackgroundcolor:#e74c3c;
+    --bodycolor:#bfbfbf;
 
     --abouttextfontsize:3vh;
 
@@ -49,6 +50,7 @@ body {
     height: 100vh;
     padding: 0;
     margin: 0;
+    background:var(--bodycolor);
 }
 
 .visibilityarea {
