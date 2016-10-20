@@ -10,7 +10,7 @@
     //please, don't forget ".style"
     div.style.position ="fixed";
     div.style.width = "100%";
-    div.style.height = "10px";
+    div.style.height = "5%";
     div.style.zIndex = "9999";
     div.style.display = "block";
     div.style.top = "0px";
@@ -18,7 +18,7 @@
     div.style.textAlign = "center";
     div.style.color = "red";
     div.style.background = "rgba(255,255,255,0.5)";
-    div.innerHTML = "this is just a template website and a lot of code redesign and fixes needed"
+    div.innerHTML = "this is just a temporary design template website and a lot of code redesign and fixes needed"
     document.body.appendChild(div);
     
 })();    
