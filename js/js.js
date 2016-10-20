@@ -8,12 +8,15 @@
 (function(){
     var div = document.createElement("div");
     div.style.position ="fixed";
-    div.width = "100%";
-    div.height = "10px";
-    div.zIndex = "9999";
-    div.display = "block";
-    div.top = "0px";
-    div.left = "0px";
+    div.style.width = "100%";
+    div.style.height = "10px";
+    div.style.zIndex = "9999";
+    div.style.display = "block";
+    div.style.top = "0px";
+    div.style.left = "0px";
+    div.style.textAlign = "center";
+    div.color = "red";
+    div.background = "rgba(255,255,255,0.5)";
     div.innerHTML = "this is just a template website and a lot of code redesign and fixes needed"
     document.body.appendChild(div);
     
