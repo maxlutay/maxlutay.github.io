@@ -12,8 +12,10 @@
     div.height = "10px";
     div.zIndex = "9999";
     div.display = "block";
+    div.top = "0px";
+    div.left = "0px";
     div.innerHTML = "this is just a template website and a lot of code redesign and fixes needed"
-    document.appendChild(div);
+    document.body.appendChild(div);
     
 })();    
     
