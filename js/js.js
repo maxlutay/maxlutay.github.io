@@ -192,7 +192,7 @@ burger.addEventListener("click",function(el){
 
 
 
-
+/*
 (function router() { 
     
     var found = false;
@@ -214,7 +214,7 @@ burger.addEventListener("click",function(el){
  })();
 
 
-
+*/
 
 
 
