@@ -1,0 +1,27 @@
+{
+  "name": "maxlutay.github.io",
+  "version": "2.0.0",
+  "description": "personal site fully refactored, moving to elm",
+  "main": "index.html",
+  "scripts": {
+    "test": "elm-test",
+    "server":"elm-reactor --port=10000",
+    "build": "elm-make --output=build.html --warn"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxlutay/maxlutay.github.io.git"
+  },
+  "author": "Maxim Lutay",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/maxlutay/maxlutay.github.io/issues"
+  },
+  "homepage": "https://github.com/maxlutay/maxlutay.github.io#readme",
+  "devDependencies": {
+    "elm-test":"@latest"
+  },
+  "dependencies": {
+    "elm": "^0.18.0"
+  }
+}
