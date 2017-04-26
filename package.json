@@ -5,8 +5,9 @@
   "main": "index.html",
   "scripts": {
     "test": "elm-test",
-    "server":"elm-reactor --port=10000",
-    "build": "elm-make --output=build.html --warn"
+    "server": "node ./scripts/pyserver.js 5000 dist",
+    "build": "webpack",
+    "watch": "webpack --watch || exit"
   },
   "repository": {
     "type": "git",
@@ -19,9 +20,16 @@
   },
   "homepage": "https://github.com/maxlutay/maxlutay.github.io#readme",
   "devDependencies": {
-    "elm-test":"@latest"
+    "css-loader": "^0.28.0",
+    "elm-test": "^0.18.0",
+    "elm-webpack-loader": "^4.3.0",
+    "file-loader": "^0.11.1",
+    "style-loader": "^0.16.1",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.4.1"
   },
   "dependencies": {
+    "ace-css": "^1.1.0",
     "elm": "^0.18.0"
   }
 }
