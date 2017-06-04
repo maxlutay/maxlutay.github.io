@@ -1,0 +1,113 @@
+
+:root{
+    --main_border_width: 100px;
+}
+
+.main{
+    max-width: 100%;
+    max-height: 100%;
+    height:100vh;
+    width: 100vw;
+    background: gray(200); 
+    color: white;
+    
+    border: var(--main_border_width) solid black;
+}
+
+.view{
+    width: calc(100% - 2*var(--main_border_width));
+    height: calc(100% - 2*var(--main_border_width));
+    transition: 0.5s;
+    color: black;
+    position: absolute;
+
+    float: left
+}
+
+.view_focus{
+    transform: none;
+    opacity: 1;
+    z-index: 100;
+}
+
+
+.view_index{
+    background: yellow;
+}
+
+.view_menu{
+    background: green;
+}
+
+.view_404{
+    background: orange;
+}
+
+
+
+/*love BEM, but nothing personal, this is front-end*/
+.view_blur.view_index{/*when combination of classes matches*/
+    transform: translateX(-80vw);
+}
+
+
+/*love BEM, but nothing personal, this is front-end*/
+.view_blur.view_menu{/*when combination of classes matches*/
+    transform: translateX(-80vw);
+}
+
+/*love BEM, but nothing personal, this is front-end*/
+.view_blur.view_contacts{/*when combination of classes matches*/
+    opacity:0; 
+}
+
+/*love BEM, but nothing personal, this is front-end*/
+.view_blur.view_about{/*when combination of classes matches*/
+    transform: translateY(80vh);
+}
+
+/*love BEM, but nothing personal, this is front-end*/
+.view_blur.view_blog{/*when combination of classes matches*/
+    transform: translateY(-80vh);
+}
+
+/*love BEM, but nothing personal, this is front-end*/
+.view_blur.view_portfolio{/*when combination of classes matches*/
+    transform: translateX(80vw);
+}
+
+/*love BEM, but nothing personal, this is front-end*/
+.view_blur.view_404{/*when combination of classes matches*/
+    opacity: 0;
+}
+
+.btn{
+    display: block;
+    
+}
+
+
+.btn_back {
+    position: absolute;
+    background: red;
+    left: 20%;
+    top: 20px;
+    z-index:300; 
+}
+
+
+.btn_home{
+    position: absolute;
+    background: red;
+    right: 20%;
+    top: 20px;
+    z-index:300; 
+}
+
+.btn_menu{
+    position: absolute;
+    background: red;
+    left: 45%;
+    top: 20px;
+    z-index:300; 
+}

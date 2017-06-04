@@ -4,11 +4,11 @@
 
 
 !/scripts
-!/scripts/*
+!/scripts/**
 !/src
-!/src/*
+!/src/**
 !/tests
-!/tests/*
+!/tests/**
 !/.gitignore
 !/*.json
 !/*config*
