@@ -12,3 +12,6 @@
 !/.gitignore
 !/*.json
 !/*config*
+!/dist
+!/dist/**
+
