@@ -7,6 +7,6 @@
 !scripts
 !src
 !tests
-!/.gitignore
+!.gitignore
 !/*.json
 !/*config*
