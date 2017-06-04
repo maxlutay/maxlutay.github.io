@@ -2,7 +2,7 @@ module Main exposing (..)
 
 
 import Date exposing (Date)
-import Html exposing (Html, Attribute, div,  text, h1,a)
+import Html exposing (Html, Attribute, div,  text, h1,h5,a)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 
@@ -37,6 +37,7 @@ type Route =  Index
             | Portfolio
             | Blog
             | Unknown
+--          | Blog Post
 -- todo: add admin panel
 
 
@@ -84,67 +85,75 @@ view : Model -> Html Msg
 view model =
     let 
         location = "{" ++ getlocation model.route
+
+        buttons = if model.route == Index 
+                  then [   alink (Go Menu)  "btn_menu" "MENU[icon]"
+                       ]
+                  else [   alink (Go Index) "btn_home" "CLOSE/HOME[icon]"
+                         , alink  Back      "btn_back" "[icon]BACK"
+                       ]
         
     in
         div [class "main"]
+            <| List.append buttons 
             [ 
-                h1 [] [text location]
-                ,h1 [] [text <| toString model.history]
+                 --h1 [] [text location]
+                --,h1 [] [text <| toString model.history]
                 
-                ,ahome
-                ,back model
 
-                ,index <| if model.route == Index then "focus" else  "blur"
-                ,menu <| if model.route == Menu then "focus" else  "blur"
-                ,xz
-                ,err "404" ""
+                index <| if model.route == Index 
+                          then "view_focus" 
+                          else  "view_blur"
+                ,menu <| if model.route == Menu 
+                         then "view_focus" 
+                         else  "view_blur"
+                --,xz
+                ,err "404" <| if model.route /= Index && model.route /=Menu
+                              then "view_focus"
+                              else  "view_blur"
             ]
 
 
 
-
+alink: Msg -> String -> String -> Html Msg
+alink m c t =
+    a [onClick m, class <| "btn " ++ c] [text t]
 
 
 menu : String -> Html Msg
 menu cl = --class
-     div [class <|"view_menu " ++ cl ]
-            [    a [onClick (Go Contacts)   ] [text "contacts"  ]    
-                ,a [onClick (Go About)      ] [text "about"     ]
-                ,a [onClick (Go Portfolio)  ] [text "portfolio" ]
-                ,a [onClick (Go Blog)       ] [text "blog"      ]
+     div [class <|"view view_menu " ++ cl ]
+            [    alink (Go Contacts)  "" "contacts"    
+                ,alink (Go About)     "" "about"
+                ,alink (Go Portfolio) "" "portfolio"
+                ,alink (Go Blog)      "" "blog"
             ]
 
 
 
 index:String -> Html Msg
-index cl= div [class <| "view_index "++ cl ]
+index cl= div [class <| "view view_index "++ cl ]
               [  
-                  a [onClick (Go Menu) ] [text "menu"]
+                    h1 [] [text "Max Lutay"]
+                  , h5 [] [text "front-end hero"]
               ]
 
 
 
 err: String -> String -> Html Msg 
-err what cl = div [class <|"view_404" ++ cl][h1 [] [text what] , ahome]
+err what cl = div [class <|"view view_404 " ++ cl][h1 [] [text what] ]
 
 
-ahome: Html Msg
-ahome =  
-    a [onClick (Go Index)] [text "btn_home"]
 
-
---just for test
+---{just for test
 
 xz: Html Msg
 xz = 
-    a [class "btn_xz",onClick (Go Unknown)] [text "go 404"]
---
+    alink (Go Unknown) "btn_xz" "go 404"
+--}-
 
 
 
-back: Model -> Html Msg
-back model = 
-    a [class "btn_back" ,onClick Back ] [text "BACK"]
 
 
 
@@ -170,7 +179,7 @@ update msg model =
                    then Maybe.withDefault [Index] <|List.tail model.history
                    else  [Index]
                    -- in case of single element in array
-                   -- 'List.tail' fn give empty list
+                   -- 'List.tail' fn gives empty list []
     in
   case msg of
     NoOp ->( model, Cmd.none )
