@@ -3,10 +3,12 @@
 /**
 
 
-
-!scripts
-!src
-!tests
-!.gitignore
+!/scripts
+!/scripts/*
+!/src
+!/src/*
+!/tests
+!/tests/*
+!/.gitignore
 !/*.json
 !/*config*
