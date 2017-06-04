@@ -1,9 +1,8 @@
-//require("./styles.css");
 require("./index.html");
-window.app = require("./Main.elm").Main.fullscreen();//.Main.embed(document.body);
 
-app.ports.title.subscribe((title)=>{
-    document.title = title;
-});
+require("./styles/null.css");
+require("./styles/styles.css");
 
-//require("./Head.elm")//.Head.embed(document.head);
+window.app = require("./Main.elm").Main.fullscreen();
+            //the same as         .Main.embed(document.body);
+
