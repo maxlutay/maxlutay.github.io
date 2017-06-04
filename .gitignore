@@ -1,5 +1,12 @@
-node_modules
-**/elm-stuff
-dist
-.vscode
-.vscode/*
+
+*
+/*
+
+!scripts
+!src
+!tests
+!/.gitignore
+!/index*
+!/Main*
+!/*.json
+!/*config*
