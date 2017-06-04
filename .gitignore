@@ -1,13 +1,9 @@
-
 *
-/*
-.*
+
 
 !scripts
 !src
 !tests
 !/.gitignore
-!/index*
-!/Main*
 !/*.json
 !/*config*
