@@ -14,14 +14,13 @@ const spawn = require("child_process").spawn;
 
 util.log(">>>",process.argv,"<<<<<<<<");
 
-let secondisport = process.argv[2].search(/^\d{4}$/g) ? true : false;
+let secondisport = !!process.argv[2] && /^\d{4}$/g.test(process.argv[2]);
 
 let pyserver = spawn( "python"
     ,["-m","http.server", +
-    secondisport ? process.argv[2] : false
-    || 8000 ]
+    secondisport ? process.argv[2] : 8000 ]
     ,{
-      cwd: secondisport ? process.argv[3] : process.argv[2] || "",
+      cwd: (secondisport ? process.argv[3]  : process.argv[2]) || "",
       env: process.env,
       stdio: ["ignore",process.stdout, process.stdout]
     }
