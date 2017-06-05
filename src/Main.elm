@@ -3,7 +3,7 @@ module Main exposing (..)
 
 import Date exposing (Date)
 import Html exposing (Html, Attribute, div,  text, h1,h5,a)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
 
 main : Program  Never Model Msg
@@ -107,8 +107,11 @@ view model =
                 ,menu <| if model.route == Menu 
                          then "view_focus" 
                          else  "view_blur"
+                ,contacts <| if model.route == Contacts 
+                         then "view_focus" 
+                         else  "view_blur"
                 --,xz
-                ,err "404" <| if model.route /= Index && model.route /=Menu
+                ,err404  <| if not <| List.member model.route [Index, Menu, Contacts] -- todo: remove this 
                               then "view_focus"
                               else  "view_blur"
             ]
@@ -138,6 +141,19 @@ index cl= div [class <| "view view_index "++ cl ]
                   , h5 [] [text "front-end hero"]
               ]
 
+
+
+contacts: String -> Html Msg
+contacts cl= div [class <| "view view_contacts "++ cl ]
+              [  
+                 div [class "view__tile view__tile_email"  ] [ alink NoOp "" "email" ]
+                ,div [class "view__tile view__tile_github" ] [ alink NoOp "" "github" ]
+                ,div [class "view__tile view__tile_twitter"] [ alink NoOp "" "twitter"]
+              ]
+
+
+err404:String -> Html Msg
+err404 cl =  err "404\n Page not found" cl
 
 
 err: String -> String -> Html Msg 
@@ -189,8 +205,14 @@ update msg model =
                }
                , Cmd.none)
     Go dest ->  if dest == model.route
-                then (model, Cmd.none) 
-                else ( { model | 
+                then (model, Cmd.none)
+               {- else if dest == Index
+                then ( { model | 
+                             route=Index
+                            ,history=[Index]
+                        }
+                        , Cmd.none) 
+               -} else ( { model | 
                              route=dest
                             ,history = dest :: model.history
                         }

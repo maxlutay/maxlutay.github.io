@@ -1,6 +1,6 @@
 
 :root{
-    --main_border_width: 100px;
+    --main_border_width: 5vh;
 }
 
 .main{
@@ -11,7 +11,7 @@
     background: gray(200); 
     color: white;
     
-    border: var(--main_border_width) solid black;
+    border: var(--main_border_width) solid transparent;
 }
 
 .view{
@@ -20,8 +20,6 @@
     transition: 0.5s;
     color: black;
     position: absolute;
-
-    float: left
 }
 
 .view_focus{
@@ -30,14 +28,39 @@
     z-index: 100;
 }
 
+.view_blur {
+}
 
 .view_index{
     background: yellow;
+    z-index: 280;
 }
 
 .view_menu{
     background: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
 }
+
+.view_contacts{
+    background: cyan;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: row;
+}
+
+
+.view__tile{
+    width: 100px;
+    height: 100px;
+}
+
+
 
 .view_404{
     background: orange;
@@ -47,38 +70,39 @@
 
 /*love BEM, but nothing personal, this is front-end*/
 .view_blur.view_index{/*when combination of classes matches*/
-    transform: translateX(-80vw);
+    transform: translateX(-98.9vw);
 }
 
 
 /*love BEM, but nothing personal, this is front-end*/
 .view_blur.view_menu{/*when combination of classes matches*/
-    transform: translateX(-80vw);
+    opacity: 0;
 }
 
 /*love BEM, but nothing personal, this is front-end*/
 .view_blur.view_contacts{/*when combination of classes matches*/
     opacity:0; 
+
 }
 
 /*love BEM, but nothing personal, this is front-end*/
 .view_blur.view_about{/*when combination of classes matches*/
-    transform: translateY(80vh);
+    transform: translateY(98.9vh);
 }
 
 /*love BEM, but nothing personal, this is front-end*/
 .view_blur.view_blog{/*when combination of classes matches*/
-    transform: translateY(-80vh);
+    transform: translateY(-98.9vh);
 }
 
 /*love BEM, but nothing personal, this is front-end*/
 .view_blur.view_portfolio{/*when combination of classes matches*/
-    transform: translateX(80vw);
+    transform: translateX(98.9vw);
 }
 
 /*love BEM, but nothing personal, this is front-end*/
 .view_blur.view_404{/*when combination of classes matches*/
-    opacity: 0;
+   transform: translateY(calc(98.9vh * 2));
 }
 
 .btn{
