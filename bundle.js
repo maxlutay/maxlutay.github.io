@@ -9230,6 +9230,9 @@ var _user$project$Main$err = F2(
 				_1: {ctor: '[]'}
 			});
 	});
+var _user$project$Main$err404 = function (cl) {
+	return A2(_user$project$Main$err, '404\n Page not found', cl);
+};
 var _user$project$Main$index = function (cl) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -9421,6 +9424,63 @@ var _user$project$Main$xz = A3(
 	'btn_xz',
 	'go 404');
 var _user$project$Main$Back = {ctor: 'Back'};
+var _user$project$Main$NoOp = {ctor: 'NoOp'};
+var _user$project$Main$contacts = function (cl) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class(
+				A2(_elm_lang$core$Basics_ops['++'], 'view view_contacts ', cl)),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('view__tile view__tile_email'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A3(_user$project$Main$alink, _user$project$Main$NoOp, '', 'email'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('view__tile view__tile_github'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A3(_user$project$Main$alink, _user$project$Main$NoOp, '', 'github'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('view__tile view__tile_twitter'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A3(_user$project$Main$alink, _user$project$Main$NoOp, '', 'twitter'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
 var _user$project$Main$view = function (model) {
 	var buttons = _elm_lang$core$Native_Utils.eq(model.route, _user$project$Main$Index) ? {
 		ctor: '::',
@@ -9467,11 +9527,29 @@ var _user$project$Main$view = function (model) {
 						_elm_lang$core$Native_Utils.eq(model.route, _user$project$Main$Menu) ? 'view_focus' : 'view_blur'),
 					_1: {
 						ctor: '::',
-						_0: A2(
-							_user$project$Main$err,
-							'404',
-							((!_elm_lang$core$Native_Utils.eq(model.route, _user$project$Main$Index)) && (!_elm_lang$core$Native_Utils.eq(model.route, _user$project$Main$Menu))) ? 'view_focus' : 'view_blur'),
-						_1: {ctor: '[]'}
+						_0: _user$project$Main$contacts(
+							_elm_lang$core$Native_Utils.eq(model.route, _user$project$Main$Contacts) ? 'view_focus' : 'view_blur'),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Main$err404(
+								(!A2(
+									_elm_lang$core$List$member,
+									model.route,
+									{
+										ctor: '::',
+										_0: _user$project$Main$Index,
+										_1: {
+											ctor: '::',
+											_0: _user$project$Main$Menu,
+											_1: {
+												ctor: '::',
+												_0: _user$project$Main$Contacts,
+												_1: {ctor: '[]'}
+											}
+										}
+									})) ? 'view_focus' : 'view_blur'),
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			}));
@@ -9485,7 +9563,6 @@ var _user$project$Main$main = _elm_lang$html$Html$program(
 			return _elm_lang$core$Platform_Sub$none;
 		}
 	})();
-var _user$project$Main$NoOp = {ctor: 'NoOp'};
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
@@ -9607,7 +9684,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "\r\n.main{\r\n    max-width: 100%;\r\n    max-height: 100%;\r\n    height:100vh;\r\n    width: 100vw;\r\n    background: rgb(200, 200, 200); \r\n    color: white;\r\n    \r\n    border: 100px solid black;\r\n}\r\n\r\n.view{\r\n    width: calc(100% - 2*100px);\r\n    height: calc(100% - 2*100px);\r\n    transition: 0.5s;\r\n    color: black;\r\n    position: absolute;\r\n\r\n    float: left\r\n}\r\n\r\n.view_focus{\r\n    -webkit-transform: none;\r\n            transform: none;\r\n    opacity: 1;\r\n    z-index: 100;\r\n}\r\n\r\n\r\n.view_index{\r\n    background: yellow;\r\n}\r\n\r\n.view_menu{\r\n    background: green;\r\n}\r\n\r\n.view_404{\r\n    background: orange;\r\n}\r\n\r\n\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_index{/*when combination of classes matches*/\r\n    -webkit-transform: translateX(-80vw);\r\n            transform: translateX(-80vw);\r\n}\r\n\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_menu{/*when combination of classes matches*/\r\n    -webkit-transform: translateX(-80vw);\r\n            transform: translateX(-80vw);\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_contacts{/*when combination of classes matches*/\r\n    opacity:0; \r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_about{/*when combination of classes matches*/\r\n    -webkit-transform: translateY(80vh);\r\n            transform: translateY(80vh);\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_blog{/*when combination of classes matches*/\r\n    -webkit-transform: translateY(-80vh);\r\n            transform: translateY(-80vh);\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_portfolio{/*when combination of classes matches*/\r\n    -webkit-transform: translateX(80vw);\r\n            transform: translateX(80vw);\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_404{/*when combination of classes matches*/\r\n    opacity: 0;\r\n}\r\n\r\n.btn{\r\n    display: block;\r\n    \r\n}\r\n\r\n\r\n.btn_back {\r\n    position: absolute;\r\n    background: red;\r\n    left: 20%;\r\n    top: 20px;\r\n    z-index:300; \r\n}\r\n\r\n\r\n.btn_home{\r\n    position: absolute;\r\n    background: red;\r\n    right: 20%;\r\n    top: 20px;\r\n    z-index:300; \r\n}\r\n\r\n.btn_menu{\r\n    position: absolute;\r\n    background: red;\r\n    left: 45%;\r\n    top: 20px;\r\n    z-index:300; \r\n}", ""]);
+exports.push([module.i, "\r\n.main{\r\n    max-width: 100%;\r\n    max-height: 100%;\r\n    height:100vh;\r\n    width: 100vw;\r\n    background: rgb(200, 200, 200); \r\n    color: white;\r\n    \r\n    border: 5vh solid transparent;\r\n}\r\n\r\n.view{\r\n    width: calc(100% - 2*5vh);\r\n    height: calc(100% - 2*5vh);\r\n    transition: 0.5s;\r\n    color: black;\r\n    position: absolute;\r\n}\r\n\r\n.view_focus{\r\n    -webkit-transform: none;\r\n            transform: none;\r\n    opacity: 1;\r\n    z-index: 100;\r\n}\r\n\r\n.view_blur {\r\n}\r\n\r\n.view_index{\r\n    background: yellow;\r\n    z-index: 280;\r\n}\r\n\r\n.view_menu{\r\n    background: green;\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n}\r\n\r\n.view_contacts{\r\n    background: cyan;\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n}\r\n\r\n\r\n.view__tile{\r\n    width: 100px;\r\n    height: 100px;\r\n}\r\n\r\n\r\n\r\n.view_404{\r\n    background: orange;\r\n}\r\n\r\n\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_index{/*when combination of classes matches*/\r\n    -webkit-transform: translateX(-98.9vw);\r\n            transform: translateX(-98.9vw);\r\n}\r\n\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_menu{/*when combination of classes matches*/\r\n    opacity: 0;\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_contacts{/*when combination of classes matches*/\r\n    opacity:0; \r\n\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_about{/*when combination of classes matches*/\r\n    -webkit-transform: translateY(98.9vh);\r\n            transform: translateY(98.9vh);\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_blog{/*when combination of classes matches*/\r\n    -webkit-transform: translateY(-98.9vh);\r\n            transform: translateY(-98.9vh);\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_portfolio{/*when combination of classes matches*/\r\n    -webkit-transform: translateX(98.9vw);\r\n            transform: translateX(98.9vw);\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_404{/*when combination of classes matches*/\r\n   -webkit-transform: translateY(197.8vh);\r\n           transform: translateY(197.8vh);\r\n}\r\n\r\n.btn{\r\n    display: block;\r\n    \r\n}\r\n\r\n\r\n.btn_back {\r\n    position: absolute;\r\n    background: red;\r\n    left: 20%;\r\n    top: 20px;\r\n    z-index:300; \r\n}\r\n\r\n\r\n.btn_home{\r\n    position: absolute;\r\n    background: red;\r\n    right: 20%;\r\n    top: 20px;\r\n    z-index:300; \r\n}\r\n\r\n.btn_menu{\r\n    position: absolute;\r\n    background: red;\r\n    left: 45%;\r\n    top: 20px;\r\n    z-index:300; \r\n}", ""]);
 
 // exports
 
