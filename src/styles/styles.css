@@ -1,6 +1,12 @@
 
 :root{
-    --main_border_width: 5vh;
+    --main__border_t: 10vh;
+    --main__border_l: 2vw;
+    --main__border_r: 2vw;
+    --main__border_b: 2vh;
+
+
+    --control-button-height: 4vh;
 }
 
 .main{
@@ -8,130 +14,193 @@
     max-height: 100%;
     height:100vh;
     width: 100vw;
-    background: gray(200); 
+    background: lightslategrey; 
     color: white;
     
-    border: var(--main_border_width) solid transparent;
+    transition: 0.25s;
+}
+
+
+
+.main_404{
+    background: lightcoral;
+    will-change: background;
+}
+
+.main_index{
+    background: lightgreen;
+    will-change: background;
+}
+
+
+.main_menu{
+    background: lightblue;
+    will-change: background;
+}
+
+.main_index .button_home{
+    visibility: hidden;
+}
+
+
+.views{
+    height: 300vh;
+    width: 300vw;
+    position: absolute;
+    transition: 0.25s;
+}
+
+
+.main_404 > .views {
+    transform: translate(-100vw, -200vh);
+    will-change: transform;
+}
+
+.main_index > .views{
+    transform: translateY(-100vh);
+    will-change: transform;
+}
+
+.main_menu > .views{
+    transform: translate(-100vw, -100vh);
+    will-change: transform;
 }
 
 .view{
-    width: calc(100% - 2*var(--main_border_width));
-    height: calc(100% - 2*var(--main_border_width));
+    width: calc(100vw - var(--main__border_l) - var(--main__border_r));
+    height: calc(100vh - var(--main__border_t) - var(--main__border_b));
     transition: 0.5s;
     color: black;
+
+    border: 2px dashed black;
+    background: transparent;
+
     position: absolute;
-}
 
-.view_focus{
-    transform: none;
-    opacity: 1;
-    z-index: 100;
-}
+    margin: var(--main__border_t) var(--main__border_r) var(--main__border_b) var(--main__border_l);
 
-.view_blur {
-}
 
-.view_index{
-    background: yellow;
-    z-index: 280;
-}
-
-.view_menu{
-    background: green;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    flex-direction: column;
-}
 
-.view_contacts{
-    background: cyan;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    flex-direction: row;
 }
 
 
-.view__tile{
-    width: 100px;
-    height: 100px;
-}
 
 
 
 .view_404{
-    background: orange;
+    top: 200vh;
+    left: 100vw;
 }
 
 
-
-/*love BEM, but nothing personal, this is front-end*/
-.view_blur.view_index{/*when combination of classes matches*/
-    transform: translateX(-98.9vw);
-}
+.view_index{
+    top: 100vh;
+    left: 0;
 
 
-/*love BEM, but nothing personal, this is front-end*/
-.view_blur.view_menu{/*when combination of classes matches*/
-    opacity: 0;
-}
 
-/*love BEM, but nothing personal, this is front-end*/
-.view_blur.view_contacts{/*when combination of classes matches*/
-    opacity:0; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+
 
 }
 
-/*love BEM, but nothing personal, this is front-end*/
-.view_blur.view_about{/*when combination of classes matches*/
-    transform: translateY(98.9vh);
+
+.view__h1{
+    font-size: calc( (100vh - var(--main__border_b)) / 4 );
 }
 
-/*love BEM, but nothing personal, this is front-end*/
-.view_blur.view_blog{/*when combination of classes matches*/
-    transform: translateY(-98.9vh);
-}
 
-/*love BEM, but nothing personal, this is front-end*/
-.view_blur.view_portfolio{/*when combination of classes matches*/
-    transform: translateX(98.9vw);
-}
-
-/*love BEM, but nothing personal, this is front-end*/
-.view_blur.view_404{/*when combination of classes matches*/
-   transform: translateY(calc(98.9vh * 2));
-}
-
-.btn{
+.view__rtcornerlink{
+    font-size: calc( (100vh - var(--main__border_b)) / 16 );
+    position: absolute;
     display: block;
+    top: var(--main__border_b);
+    right: var(--main__border_r);
+}
+
+
+.view_menu,
+.view_contacts{
+    top: 100vh;
+    left: 100vw
+}
+
+
+.view_menu{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-size: calc( (100vh - var(--main__border_t) - var(--main__border_b)) / 16 );
+
+}
+
+
+.view_about{
+    top:0;
+    left: 100vw;
+}
+
+.view_portfolio{
+    top: 100vh;
+    left: 200vw;
+}
+
+.view_blog{
+    top: 200vh;
+    left: 100vw;
+}
+
+
+.link{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+
+.control-buttons{
+    position: fixed;
+    height: var(--main__border_t);
+    width: 100vw;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+
+    z-index: 500;
+
+    transition: 0.5s;
     
 }
 
 
-.btn_back {
-    position: absolute;
-    background: red;
-    left: 20%;
-    top: 20px;
-    z-index:300; 
+.button{
+    display: flex;
+    align-items: center;
+    font-size:  calc( var(--main__border_t) - (var(--main__border_t)/3));
+
+    cursor: pointer;
 }
 
 
-.btn_home{
-    position: absolute;
-    background: red;
-    right: 20%;
-    top: 20px;
-    z-index:300; 
+.button_control{
+    color: black;
+    font-style: bold;
+
+    font-size: 100
+
 }
 
-.btn_menu{
-    position: absolute;
-    background: red;
-    left: 45%;
-    top: 20px;
-    z-index:300; 
+.button_on{
+}
+
+.button_off{
+    visibility: hidden;
 }
