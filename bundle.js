@@ -9188,11 +9188,50 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
-var _user$project$Main$getlocation = function (r) {
+var _user$project$Types$Model = F5(
+	function (a, b, c, d, e) {
+		return {at: a, auth: b, posts: c, examples: d, history: e};
+	});
+var _user$project$Types$LoginInfo = F3(
+	function (a, b, c) {
+		return {token: a, login: b, password: c};
+	});
+var _user$project$Types$Post = F3(
+	function (a, b, c) {
+		return {heading: a, date: b, content: c};
+	});
+var _user$project$Types$Example = F3(
+	function (a, b, c) {
+		return {hash: a, url: b, date: c};
+	});
+var _user$project$Types$Blog = function (a) {
+	return {ctor: 'Blog', _0: a};
+};
+var _user$project$Types$Unknown = {ctor: 'Unknown'};
+var _user$project$Types$Portfolio = {ctor: 'Portfolio'};
+var _user$project$Types$About = {ctor: 'About'};
+var _user$project$Types$Contacts = {ctor: 'Contacts'};
+var _user$project$Types$Menu = {ctor: 'Menu'};
+var _user$project$Types$Index = {ctor: 'Index'};
+var _user$project$Types$Go = function (a) {
+	return {ctor: 'Go', _0: a};
+};
+var _user$project$Types$Back = {ctor: 'Back'};
+var _user$project$Types$Forward = {ctor: 'Forward'};
+var _user$project$Types$NoOp = {ctor: 'NoOp'};
+
+var _user$project$HistoryUtils$forwardat = function (model) {
+	var len = _elm_lang$core$Array$length(model.history);
+	return (_elm_lang$core$Native_Utils.cmp(len - 1, model.at) > 0) ? _elm_lang$core$Maybe$Just(model.at + 1) : _elm_lang$core$Maybe$Nothing;
+};
+var _user$project$HistoryUtils$backat = function (model) {
+	return (_elm_lang$core$Native_Utils.cmp(model.at, 0) > 0) ? _elm_lang$core$Maybe$Just(model.at - 1) : _elm_lang$core$Maybe$Nothing;
+};
+var _user$project$HistoryUtils$geturl = function (r) {
 	var _p0 = r;
 	switch (_p0.ctor) {
 		case 'Index':
-			return '/home';
+			return '/';
 		case 'Menu':
 			return '/menu';
 		case 'Contacts':
@@ -9202,44 +9241,53 @@ var _user$project$Main$getlocation = function (r) {
 		case 'Portfolio':
 			return '/portfolio';
 		case 'Blog':
-			return '/blog/list';
+			if (_p0._0.ctor === 'Nothing') {
+				return '/blog';
+			} else {
+				var _p1 = _p0._0._0;
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/blog/',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p1.heading,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'/',
+							_elm_lang$core$Basics$toString(_p1.date))));
+			}
 		default:
-			return '/error404';
+			return '/404';
 	}
 };
-var _user$project$Main$err = F2(
-	function (what, cl) {
-		return A2(
-			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class(
-					A2(_elm_lang$core$Basics_ops['++'], 'view view_404 ', cl)),
-				_1: {ctor: '[]'}
-			},
-			{
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$h1,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(what),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			});
-	});
-var _user$project$Main$err404 = function (cl) {
-	return A2(_user$project$Main$err, '404\n Page not found', cl);
+var _user$project$HistoryUtils$getlocation = function (r) {
+	return {
+		ctor: '_Tuple2',
+		_0: r,
+		_1: _user$project$HistoryUtils$geturl(r)
+	};
 };
-var _user$project$Main$index = function (cl) {
+var _user$project$HistoryUtils$getlocationathistory = F2(
+	function (i, h) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			_user$project$HistoryUtils$getlocation(_user$project$Types$Unknown),
+			A2(_elm_lang$core$Array$get, i, h));
+	});
+
+var _user$project$Ports$changereallocation = _elm_lang$core$Native_Platform.outgoingPort(
+	'changereallocation',
+	function (v) {
+		return v;
+	});
+
+var _user$project$View$unknown = function (cl) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
 			_0: _elm_lang$html$Html_Attributes$class(
-				A2(_elm_lang$core$Basics_ops['++'], 'view view_index ', cl)),
+				A2(_elm_lang$core$Basics_ops['++'], 'view view_404 ', cl)),
 			_1: {ctor: '[]'}
 		},
 		{
@@ -9249,24 +9297,13 @@ var _user$project$Main$index = function (cl) {
 				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Max Lutay'),
+					_0: _elm_lang$html$Html$text('404'),
 					_1: {ctor: '[]'}
 				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$h5,
-					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('front-end hero'),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			}
+			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Main$alink = F3(
+var _user$project$View$vref = F3(
 	function (m, c, t) {
 		return A2(
 			_elm_lang$html$Html$a,
@@ -9286,96 +9323,62 @@ var _user$project$Main$alink = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Main$Model = F5(
-	function (a, b, c, d, e) {
-		return {route: a, auth: b, posts: c, examples: d, history: e};
-	});
-var _user$project$Main$Loginfo = F3(
-	function (a, b, c) {
-		return {token: a, login: b, password: c};
-	});
-var _user$project$Main$Post = F3(
-	function (a, b, c) {
-		return {hash: a, date: b, content: c};
-	});
-var _user$project$Main$Example = F3(
-	function (a, b, c) {
-		return {hash: a, url: b, date: c};
-	});
-var _user$project$Main$Unknown = {ctor: 'Unknown'};
-var _user$project$Main$Blog = {ctor: 'Blog'};
-var _user$project$Main$Portfolio = {ctor: 'Portfolio'};
-var _user$project$Main$About = {ctor: 'About'};
-var _user$project$Main$Contacts = {ctor: 'Contacts'};
-var _user$project$Main$Menu = {ctor: 'Menu'};
-var _user$project$Main$Index = {ctor: 'Index'};
-var _user$project$Main$init = {
-	ctor: '_Tuple2',
-	_0: A5(
-		_user$project$Main$Model,
-		_user$project$Main$Index,
-		_elm_lang$core$Maybe$Nothing,
-		{ctor: '[]'},
-		{ctor: '[]'},
+var _user$project$View$homebutton = A3(
+	_user$project$View$vref,
+	_user$project$Types$Go(
+		_user$project$HistoryUtils$getlocation(_user$project$Types$Index)),
+	'button button_home button_control ',
+	'HOME');
+var _user$project$View$backbutton = function (cl) {
+	return A3(
+		_user$project$View$vref,
+		_user$project$Types$Back,
+		A2(_elm_lang$core$Basics_ops['++'], 'button button_back button_control ', cl),
+		'BACK');
+};
+var _user$project$View$forwardbutton = function (cl) {
+	return A3(
+		_user$project$View$vref,
+		_user$project$Types$Forward,
+		A2(_elm_lang$core$Basics_ops['++'], 'button button_control ', cl),
+		'FORWARD');
+};
+var _user$project$View$index = function (cl) {
+	return A2(
+		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _user$project$Main$Index,
+			_0: _elm_lang$html$Html_Attributes$class(
+				A2(_elm_lang$core$Basics_ops['++'], 'view view_index ', cl)),
 			_1: {ctor: '[]'}
-		}),
-	_1: _elm_lang$core$Platform_Cmd$none
-};
-var _user$project$Main$update = F2(
-	function (msg, model) {
-		var backhist = (_elm_lang$core$Native_Utils.cmp(
-			_elm_lang$core$List$length(model.history),
-			2) > 0) ? A2(
-			_elm_lang$core$Maybe$withDefault,
-			{
-				ctor: '::',
-				_0: _user$project$Main$Index,
-				_1: {ctor: '[]'}
-			},
-			_elm_lang$core$List$tail(model.history)) : {
+		},
+		{
 			ctor: '::',
-			_0: _user$project$Main$Index,
-			_1: {ctor: '[]'}
-		};
-		var _p1 = msg;
-		switch (_p1.ctor) {
-			case 'NoOp':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'Back':
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							history: backhist,
-							route: A2(
-								_elm_lang$core$Maybe$withDefault,
-								_user$project$Main$Index,
-								_elm_lang$core$List$head(backhist))
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-			default:
-				var _p2 = _p1._0;
-				return _elm_lang$core$Native_Utils.eq(_p2, model.route) ? {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none} : {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							route: _p2,
-							history: {ctor: '::', _0: _p2, _1: model.history}
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
-		}
-	});
-var _user$project$Main$Go = function (a) {
-	return {ctor: 'Go', _0: a};
+			_0: A2(
+				_elm_lang$html$Html$h1,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('view__h1'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Max Lutay'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A3(
+					_user$project$View$vref,
+					_user$project$Types$Go(
+						_user$project$HistoryUtils$getlocation(_user$project$Types$Menu)),
+					'link view__rtcornerlink',
+					'/menu'),
+				_1: {ctor: '[]'}
+			}
+		});
 };
-var _user$project$Main$menu = function (cl) {
+var _user$project$View$menu = function (cl) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -9384,182 +9387,196 @@ var _user$project$Main$menu = function (cl) {
 				A2(_elm_lang$core$Basics_ops['++'], 'view view_menu ', cl)),
 			_1: {ctor: '[]'}
 		},
-		{
-			ctor: '::',
-			_0: A3(
-				_user$project$Main$alink,
-				_user$project$Main$Go(_user$project$Main$Contacts),
-				'',
-				'contacts'),
-			_1: {
-				ctor: '::',
-				_0: A3(
-					_user$project$Main$alink,
-					_user$project$Main$Go(_user$project$Main$About),
-					'',
-					'about'),
-				_1: {
-					ctor: '::',
-					_0: A3(
-						_user$project$Main$alink,
-						_user$project$Main$Go(_user$project$Main$Portfolio),
-						'',
-						'portfolio'),
-					_1: {
-						ctor: '::',
-						_0: A3(
-							_user$project$Main$alink,
-							_user$project$Main$Go(_user$project$Main$Blog),
-							'',
-							'blog'),
-						_1: {ctor: '[]'}
-					}
-				}
-			}
-		});
-};
-var _user$project$Main$xz = A3(
-	_user$project$Main$alink,
-	_user$project$Main$Go(_user$project$Main$Unknown),
-	'btn_xz',
-	'go 404');
-var _user$project$Main$Back = {ctor: 'Back'};
-var _user$project$Main$NoOp = {ctor: 'NoOp'};
-var _user$project$Main$contacts = function (cl) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class(
-				A2(_elm_lang$core$Basics_ops['++'], 'view view_contacts ', cl)),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('view__tile view__tile_email'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A3(_user$project$Main$alink, _user$project$Main$NoOp, '', 'email'),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('view__tile view__tile_github'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A3(_user$project$Main$alink, _user$project$Main$NoOp, '', 'github'),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('view__tile view__tile_twitter'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: A3(_user$project$Main$alink, _user$project$Main$NoOp, '', 'twitter'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			}
-		});
-};
-var _user$project$Main$view = function (model) {
-	var buttons = _elm_lang$core$Native_Utils.eq(model.route, _user$project$Main$Index) ? {
-		ctor: '::',
-		_0: A3(
-			_user$project$Main$alink,
-			_user$project$Main$Go(_user$project$Main$Menu),
-			'btn_menu',
-			'MENU[icon]'),
-		_1: {ctor: '[]'}
-	} : {
-		ctor: '::',
-		_0: A3(
-			_user$project$Main$alink,
-			_user$project$Main$Go(_user$project$Main$Index),
-			'btn_home',
-			'CLOSE/HOME[icon]'),
-		_1: {
-			ctor: '::',
-			_0: A3(_user$project$Main$alink, _user$project$Main$Back, 'btn_back', '[icon]BACK'),
-			_1: {ctor: '[]'}
-		}
-	};
-	var location = A2(
-		_elm_lang$core$Basics_ops['++'],
-		'{',
-		_user$project$Main$getlocation(model.route));
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('main'),
-			_1: {ctor: '[]'}
-		},
 		A2(
-			_elm_lang$core$List$append,
-			buttons,
+			_elm_lang$core$List$map,
+			function (loc) {
+				return A3(
+					_user$project$View$vref,
+					_user$project$Types$Go(loc),
+					'link',
+					_elm_lang$core$Tuple$second(loc));
+			},
 			{
 				ctor: '::',
-				_0: _user$project$Main$index(
-					_elm_lang$core$Native_Utils.eq(model.route, _user$project$Main$Index) ? 'view_focus' : 'view_blur'),
+				_0: _user$project$HistoryUtils$getlocation(_user$project$Types$Contacts),
 				_1: {
 					ctor: '::',
-					_0: _user$project$Main$menu(
-						_elm_lang$core$Native_Utils.eq(model.route, _user$project$Main$Menu) ? 'view_focus' : 'view_blur'),
+					_0: _user$project$HistoryUtils$getlocation(_user$project$Types$About),
 					_1: {
 						ctor: '::',
-						_0: _user$project$Main$contacts(
-							_elm_lang$core$Native_Utils.eq(model.route, _user$project$Main$Contacts) ? 'view_focus' : 'view_blur'),
+						_0: _user$project$HistoryUtils$getlocation(_user$project$Types$Portfolio),
 						_1: {
 							ctor: '::',
-							_0: _user$project$Main$err404(
-								(!A2(
-									_elm_lang$core$List$member,
-									model.route,
-									{
-										ctor: '::',
-										_0: _user$project$Main$Index,
-										_1: {
-											ctor: '::',
-											_0: _user$project$Main$Menu,
-											_1: {
-												ctor: '::',
-												_0: _user$project$Main$Contacts,
-												_1: {ctor: '[]'}
-											}
-										}
-									})) ? 'view_focus' : 'view_blur'),
+							_0: _user$project$HistoryUtils$getlocation(
+								_user$project$Types$Blog(_elm_lang$core$Maybe$Nothing)),
 							_1: {ctor: '[]'}
 						}
 					}
 				}
 			}));
 };
+var _user$project$View$getpage = F2(
+	function (md, r) {
+		var controlbuttons = A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('control-buttons'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _user$project$View$backbutton(
+					(!_elm_lang$core$Native_Utils.eq(
+						_user$project$HistoryUtils$backat(md),
+						_elm_lang$core$Maybe$Nothing)) ? 'button_on' : 'button_off'),
+				_1: {
+					ctor: '::',
+					_0: _user$project$View$homebutton,
+					_1: {
+						ctor: '::',
+						_0: _user$project$View$forwardbutton(
+							(!_elm_lang$core$Native_Utils.eq(
+								_user$project$HistoryUtils$forwardat(md),
+								_elm_lang$core$Maybe$Nothing)) ? 'button_on' : 'button_off'),
+						_1: {ctor: '[]'}
+					}
+				}
+			});
+		var views = A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('views'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _user$project$View$index(''),
+				_1: {
+					ctor: '::',
+					_0: _user$project$View$unknown(''),
+					_1: {
+						ctor: '::',
+						_0: _user$project$View$menu(''),
+						_1: {ctor: '[]'}
+					}
+				}
+			});
+		var mainclass = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'main main_',
+			function () {
+				var _p0 = r;
+				switch (_p0.ctor) {
+					case 'Index':
+						return 'index';
+					case 'Menu':
+						return 'menu';
+					default:
+						return '404';
+				}
+			}());
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class(mainclass),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: controlbuttons,
+				_1: {
+					ctor: '::',
+					_0: views,
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$View$view = function (model) {
+	return A2(
+		_user$project$View$getpage,
+		model,
+		_elm_lang$core$Tuple$first(
+			A2(_user$project$HistoryUtils$getlocationathistory, model.at, model.history)));
+};
+
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var prevhistory = A2(_elm_lang$core$Debug$log, 'hist: ~', model.history);
+		var index = model.at;
+		var from = A2(_user$project$HistoryUtils$getlocationathistory, model.at, model.history);
+		var _p0 = msg;
+		switch (_p0.ctor) {
+			case 'Go':
+				var _p1 = _p0._0;
+				return (!_elm_lang$core$Native_Utils.eq(from, _p1)) ? {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							history: A2(
+								_elm_lang$core$Array$push,
+								_p1,
+								A3(_elm_lang$core$Array$slice, 0, index + 1, model.history)),
+							at: model.at + 1
+						}),
+					_1: _user$project$Ports$changereallocation(
+						_elm_lang$core$Tuple$second(_p1))
+				} : {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'Back':
+				var newat = A2(
+					_elm_lang$core$Maybe$withDefault,
+					0,
+					_user$project$HistoryUtils$backat(model));
+				var tourl = _elm_lang$core$Tuple$second(
+					A2(_user$project$HistoryUtils$getlocationathistory, newat, model.history));
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{at: newat}),
+					_1: _user$project$Ports$changereallocation(tourl)
+				};
+			case 'Forward':
+				var newat = A2(
+					_elm_lang$core$Maybe$withDefault,
+					_elm_lang$core$Array$length(model.history) - 1,
+					_user$project$HistoryUtils$forwardat(model));
+				var tourl = _elm_lang$core$Tuple$second(
+					A2(_user$project$HistoryUtils$getlocationathistory, newat, model.history));
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{at: newat}),
+					_1: _user$project$Ports$changereallocation(tourl)
+				};
+			default:
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+		}
+	});
+var _user$project$Main$init = {
+	ctor: '_Tuple2',
+	_0: A5(
+		_user$project$Types$Model,
+		0,
+		_elm_lang$core$Maybe$Nothing,
+		{ctor: '[]'},
+		{ctor: '[]'},
+		A2(
+			_elm_lang$core$Array$push,
+			_user$project$HistoryUtils$getlocation(_user$project$Types$Index),
+			_elm_lang$core$Array$empty)),
+	_1: _elm_lang$core$Platform_Cmd$none
+};
 var _user$project$Main$main = _elm_lang$html$Html$program(
 	{
 		init: _user$project$Main$init,
-		view: _user$project$Main$view,
+		view: _user$project$View$view,
 		update: _user$project$Main$update,
-		subscriptions: function (_p3) {
+		subscriptions: function (_p2) {
 			return _elm_lang$core$Platform_Sub$none;
 		}
 	})();
@@ -9684,7 +9701,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "\r\n.main{\r\n    max-width: 100%;\r\n    max-height: 100%;\r\n    height:100vh;\r\n    width: 100vw;\r\n    background: rgb(200, 200, 200); \r\n    color: white;\r\n    \r\n    border: 5vh solid transparent;\r\n}\r\n\r\n.view{\r\n    width: calc(100% - 2*5vh);\r\n    height: calc(100% - 2*5vh);\r\n    transition: 0.5s;\r\n    color: black;\r\n    position: absolute;\r\n}\r\n\r\n.view_focus{\r\n    -webkit-transform: none;\r\n            transform: none;\r\n    opacity: 1;\r\n    z-index: 100;\r\n}\r\n\r\n.view_blur {\r\n}\r\n\r\n.view_index{\r\n    background: yellow;\r\n    z-index: 280;\r\n}\r\n\r\n.view_menu{\r\n    background: green;\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n}\r\n\r\n.view_contacts{\r\n    background: cyan;\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n}\r\n\r\n\r\n.view__tile{\r\n    width: 100px;\r\n    height: 100px;\r\n}\r\n\r\n\r\n\r\n.view_404{\r\n    background: orange;\r\n}\r\n\r\n\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_index{/*when combination of classes matches*/\r\n    -webkit-transform: translateX(-98.9vw);\r\n            transform: translateX(-98.9vw);\r\n}\r\n\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_menu{/*when combination of classes matches*/\r\n    opacity: 0;\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_contacts{/*when combination of classes matches*/\r\n    opacity:0; \r\n\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_about{/*when combination of classes matches*/\r\n    -webkit-transform: translateY(98.9vh);\r\n            transform: translateY(98.9vh);\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_blog{/*when combination of classes matches*/\r\n    -webkit-transform: translateY(-98.9vh);\r\n            transform: translateY(-98.9vh);\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_portfolio{/*when combination of classes matches*/\r\n    -webkit-transform: translateX(98.9vw);\r\n            transform: translateX(98.9vw);\r\n}\r\n\r\n/*love BEM, but nothing personal, this is front-end*/\r\n.view_blur.view_404{/*when combination of classes matches*/\r\n   -webkit-transform: translateY(197.8vh);\r\n           transform: translateY(197.8vh);\r\n}\r\n\r\n.btn{\r\n    display: block;\r\n    \r\n}\r\n\r\n\r\n.btn_back {\r\n    position: absolute;\r\n    background: red;\r\n    left: 20%;\r\n    top: 20px;\r\n    z-index:300; \r\n}\r\n\r\n\r\n.btn_home{\r\n    position: absolute;\r\n    background: red;\r\n    right: 20%;\r\n    top: 20px;\r\n    z-index:300; \r\n}\r\n\r\n.btn_menu{\r\n    position: absolute;\r\n    background: red;\r\n    left: 45%;\r\n    top: 20px;\r\n    z-index:300; \r\n}", ""]);
+exports.push([module.i, "\r\n.main{\r\n    max-width: 100%;\r\n    max-height: 100%;\r\n    height:100vh;\r\n    width: 100vw;\r\n    background: lightslategrey; \r\n    color: white;\r\n    \r\n    transition: 0.25s;\r\n}\r\n\r\n\r\n\r\n.main_404{\r\n    background: lightcoral;\r\n    will-change: background;\r\n}\r\n\r\n.main_index{\r\n    background: lightgreen;\r\n    will-change: background;\r\n}\r\n\r\n\r\n.main_menu{\r\n    background: lightblue;\r\n    will-change: background;\r\n}\r\n\r\n.main_index .button_home{\r\n    visibility: hidden;\r\n}\r\n\r\n\r\n.views{\r\n    height: 300vh;\r\n    width: 300vw;\r\n    position: absolute;\r\n    transition: 0.25s;\r\n}\r\n\r\n\r\n.main_404 > .views {\r\n    -webkit-transform: translate(-100vw, -200vh);\r\n            transform: translate(-100vw, -200vh);\r\n    will-change: transform;\r\n}\r\n\r\n.main_index > .views{\r\n    -webkit-transform: translateY(-100vh);\r\n            transform: translateY(-100vh);\r\n    will-change: transform;\r\n}\r\n\r\n.main_menu > .views{\r\n    -webkit-transform: translate(-100vw, -100vh);\r\n            transform: translate(-100vw, -100vh);\r\n    will-change: transform;\r\n}\r\n\r\n.view{\r\n    width: 96vw;\r\n    height: 88vh;\r\n    transition: 0.5s;\r\n    color: black;\r\n\r\n    border: 2px dashed black;\r\n    background: transparent;\r\n\r\n    position: absolute;\r\n\r\n    margin: 10vh 2vw 2vh 2vw;\r\n\r\n\r\n    display: -webkit-box;\r\n\r\n\r\n    display: -ms-flexbox;\r\n\r\n\r\n    display: flex;\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n.view_404{\r\n    top: 200vh;\r\n    left: 100vw;\r\n}\r\n\r\n\r\n.view_index{\r\n    top: 100vh;\r\n    left: 0;\r\n\r\n\r\n\r\n    -webkit-box-orient: vertical;\r\n\r\n\r\n\r\n    -webkit-box-direction: normal;\r\n\r\n\r\n\r\n        -ms-flex-direction: column;\r\n\r\n\r\n\r\n            flex-direction: column;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n\r\n\r\n}\r\n\r\n\r\n.view__h1{\r\n    font-size: 24.5vh;\r\n}\r\n\r\n\r\n.view__rtcornerlink{\r\n    font-size: 6.125vh;\r\n    position: absolute;\r\n    display: block;\r\n    top: 2vh;\r\n    right: 2vw;\r\n}\r\n\r\n\r\n.view_menu,\r\n.view_contacts{\r\n    top: 100vh;\r\n    left: 100vw\r\n}\r\n\r\n\r\n.view_menu{\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n    font-size: 5.5vh;\r\n\r\n}\r\n\r\n\r\n.view_about{\r\n    top:0;\r\n    left: 100vw;\r\n}\r\n\r\n.view_portfolio{\r\n    top: 100vh;\r\n    left: 200vw;\r\n}\r\n\r\n.view_blog{\r\n    top: 200vh;\r\n    left: 100vw;\r\n}\r\n\r\n\r\n.link{\r\n    text-decoration: underline;\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n\r\n.control-buttons{\r\n    position: fixed;\r\n    height: 10vh;\r\n    width: 100vw;\r\n    \r\n    display: -webkit-box;\r\n    \r\n    display: -ms-flexbox;\r\n    \r\n    display: flex;\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n\r\n    z-index: 500;\r\n\r\n    transition: 0.5s;\r\n    \r\n}\r\n\r\n\r\n.button{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    font-size: 6.66667vh;\r\n\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n.button_control{\r\n    color: black;\r\n    font-style: bold;\r\n\r\n    font-size: 100\r\n\r\n}\r\n\r\n.button_on{\r\n}\r\n\r\n.button_off{\r\n    visibility: hidden;\r\n}", ""]);
 
 // exports
 
@@ -9793,9 +9810,18 @@ __webpack_require__(3);
 __webpack_require__(4);
 __webpack_require__(5);
 
-window.app = __webpack_require__(2).Main.fullscreen();
+window.app = __webpack_require__(2).Main.fullscreen();//{path: document.location});
             //the same as         .Main.embed(document.body);
+//gonna use flages to get current location
 
+
+
+
+
+window.app.ports.changereallocation.subscribe(function(path) {
+   history.replaceState('', '', path);
+   //history.pushState("", "", path);;
+});
 
 
 /***/ })
