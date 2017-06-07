@@ -1,6 +1,6 @@
-[maxlutay.github.io](https://maxlutay.github.io)
+##[maxlutay.github.io](https://maxlutay.github.io)
 
 
-npm i && elm package install -y && npm run b
+`npm i && elm package install -y && npm run b`
 
-then localhost:5000
+Then go to `localhost:5000` :sunglasses:

@@ -14,7 +14,7 @@
     max-height: 100%;
     height:100vh;
     width: 100vw;
-    background: lightslategrey; 
+    background: red; 
     color: white;
     
     transition: 0.25s;
@@ -38,6 +38,11 @@
     will-change: background;
 }
 
+
+.main_contacts{
+    background: lightslategray;
+}
+
 .main_index .button_home{
     visibility: hidden;
 }
@@ -48,23 +53,54 @@
     width: 300vw;
     position: absolute;
     transition: 0.25s;
-}
-
-
-.main_404 > .views {
-    transform: translate(-100vw, -200vh);
     will-change: transform;
 }
+
+
 
 .main_index > .views{
     transform: translateY(-100vh);
-    will-change: transform;
 }
 
-.main_menu > .views{
-    transform: translate(-100vw, -100vh);
-    will-change: transform;
+.main_404 > .views {
+    transform: translateY(-200vh);
 }
+
+.main_menu > .views,
+.main_contacts > .views {
+    transform: translate(-100vw, -100vh);
+}
+
+.main_menu .view_menu,
+.main_contacts .view_contacts{
+    opacity: 1;
+    z-index: 100;
+}
+
+.main_menu .view_contacts,
+.main_contacts .view_menu{
+    opacity: 0;
+    z-index: 99;
+}
+
+
+.main_about > .views{
+    transform: translateX(-100vw);
+}
+
+
+.main_portfolio > .views{
+    transform: translate(-200vw, -100vh);
+}
+
+.main_blog > .views{
+    transform: translate(-100vw, -200vh);
+}
+
+.main_post > .views{
+    transform: translate(-200vw, -200vh);
+}
+
 
 .view{
     width: calc(100vw - var(--main__border_l) - var(--main__border_r));
@@ -90,7 +126,7 @@
 
 .view_404{
     top: 200vh;
-    left: 100vw;
+    left: 0vw;
 }
 
 
@@ -139,6 +175,14 @@
 
 }
 
+.view_contacts{
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    font-size: calc( (100vw - var(--main__border_l)*2 - var(--main__border_r)*2) / 18 );
+
+    color: white;
+}
 
 .view_about{
     top:0;

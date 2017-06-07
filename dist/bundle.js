@@ -9213,6 +9213,9 @@ var _user$project$Types$About = {ctor: 'About'};
 var _user$project$Types$Contacts = {ctor: 'Contacts'};
 var _user$project$Types$Menu = {ctor: 'Menu'};
 var _user$project$Types$Index = {ctor: 'Index'};
+var _user$project$Types$Out = function (a) {
+	return {ctor: 'Out', _0: a};
+};
 var _user$project$Types$Go = function (a) {
 	return {ctor: 'Go', _0: a};
 };
@@ -9280,7 +9283,66 @@ var _user$project$Ports$changereallocation = _elm_lang$core$Native_Platform.outg
 	function (v) {
 		return v;
 	});
+var _user$project$Ports$back = _elm_lang$core$Native_Platform.outgoingPort(
+	'back',
+	function (v) {
+		return null;
+	});
+var _user$project$Ports$forward = _elm_lang$core$Native_Platform.outgoingPort(
+	'forward',
+	function (v) {
+		return null;
+	});
+var _user$project$Ports$out = _elm_lang$core$Native_Platform.outgoingPort(
+	'out',
+	function (v) {
+		return v;
+	});
 
+var _user$project$View$contacts = function (cl) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class(
+				A2(_elm_lang$core$Basics_ops['++'], 'view view_contacts ', cl)),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('email'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('github'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('twitter'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
 var _user$project$View$unknown = function (cl) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -9459,7 +9521,11 @@ var _user$project$View$getpage = F2(
 					_1: {
 						ctor: '::',
 						_0: _user$project$View$menu(''),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: _user$project$View$contacts(''),
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			});
@@ -9473,6 +9539,8 @@ var _user$project$View$getpage = F2(
 						return 'index';
 					case 'Menu':
 						return 'menu';
+					case 'Contacts':
+						return 'contacts';
 					default:
 						return '404';
 				}
@@ -9537,7 +9605,8 @@ var _user$project$Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{at: newat}),
-					_1: _user$project$Ports$changereallocation(tourl)
+					_1: _user$project$Ports$back(
+						{ctor: '_Tuple0'})
 				};
 			case 'Forward':
 				var newat = A2(
@@ -9551,7 +9620,8 @@ var _user$project$Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{at: newat}),
-					_1: _user$project$Ports$changereallocation(tourl)
+					_1: _user$project$Ports$forward(
+						{ctor: '_Tuple0'})
 				};
 			default:
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
@@ -9701,7 +9771,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "\r\n.main{\r\n    max-width: 100%;\r\n    max-height: 100%;\r\n    height:100vh;\r\n    width: 100vw;\r\n    background: lightslategrey; \r\n    color: white;\r\n    \r\n    transition: 0.25s;\r\n}\r\n\r\n\r\n\r\n.main_404{\r\n    background: lightcoral;\r\n    will-change: background;\r\n}\r\n\r\n.main_index{\r\n    background: lightgreen;\r\n    will-change: background;\r\n}\r\n\r\n\r\n.main_menu{\r\n    background: lightblue;\r\n    will-change: background;\r\n}\r\n\r\n.main_index .button_home{\r\n    visibility: hidden;\r\n}\r\n\r\n\r\n.views{\r\n    height: 300vh;\r\n    width: 300vw;\r\n    position: absolute;\r\n    transition: 0.25s;\r\n}\r\n\r\n\r\n.main_404 > .views {\r\n    -webkit-transform: translate(-100vw, -200vh);\r\n            transform: translate(-100vw, -200vh);\r\n    will-change: transform;\r\n}\r\n\r\n.main_index > .views{\r\n    -webkit-transform: translateY(-100vh);\r\n            transform: translateY(-100vh);\r\n    will-change: transform;\r\n}\r\n\r\n.main_menu > .views{\r\n    -webkit-transform: translate(-100vw, -100vh);\r\n            transform: translate(-100vw, -100vh);\r\n    will-change: transform;\r\n}\r\n\r\n.view{\r\n    width: 96vw;\r\n    height: 88vh;\r\n    transition: 0.5s;\r\n    color: black;\r\n\r\n    border: 2px dashed black;\r\n    background: transparent;\r\n\r\n    position: absolute;\r\n\r\n    margin: 10vh 2vw 2vh 2vw;\r\n\r\n\r\n    display: -webkit-box;\r\n\r\n\r\n    display: -ms-flexbox;\r\n\r\n\r\n    display: flex;\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n.view_404{\r\n    top: 200vh;\r\n    left: 100vw;\r\n}\r\n\r\n\r\n.view_index{\r\n    top: 100vh;\r\n    left: 0;\r\n\r\n\r\n\r\n    -webkit-box-orient: vertical;\r\n\r\n\r\n\r\n    -webkit-box-direction: normal;\r\n\r\n\r\n\r\n        -ms-flex-direction: column;\r\n\r\n\r\n\r\n            flex-direction: column;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n\r\n\r\n}\r\n\r\n\r\n.view__h1{\r\n    font-size: 24.5vh;\r\n}\r\n\r\n\r\n.view__rtcornerlink{\r\n    font-size: 6.125vh;\r\n    position: absolute;\r\n    display: block;\r\n    top: 2vh;\r\n    right: 2vw;\r\n}\r\n\r\n\r\n.view_menu,\r\n.view_contacts{\r\n    top: 100vh;\r\n    left: 100vw\r\n}\r\n\r\n\r\n.view_menu{\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n    font-size: 5.5vh;\r\n\r\n}\r\n\r\n\r\n.view_about{\r\n    top:0;\r\n    left: 100vw;\r\n}\r\n\r\n.view_portfolio{\r\n    top: 100vh;\r\n    left: 200vw;\r\n}\r\n\r\n.view_blog{\r\n    top: 200vh;\r\n    left: 100vw;\r\n}\r\n\r\n\r\n.link{\r\n    text-decoration: underline;\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n\r\n.control-buttons{\r\n    position: fixed;\r\n    height: 10vh;\r\n    width: 100vw;\r\n    \r\n    display: -webkit-box;\r\n    \r\n    display: -ms-flexbox;\r\n    \r\n    display: flex;\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n\r\n    z-index: 500;\r\n\r\n    transition: 0.5s;\r\n    \r\n}\r\n\r\n\r\n.button{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    font-size: 6.66667vh;\r\n\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n.button_control{\r\n    color: black;\r\n    font-style: bold;\r\n\r\n    font-size: 100\r\n\r\n}\r\n\r\n.button_on{\r\n}\r\n\r\n.button_off{\r\n    visibility: hidden;\r\n}", ""]);
+exports.push([module.i, "\r\n.main{\r\n    max-width: 100%;\r\n    max-height: 100%;\r\n    height:100vh;\r\n    width: 100vw;\r\n    background: red; \r\n    color: white;\r\n    \r\n    transition: 0.25s;\r\n}\r\n\r\n\r\n\r\n.main_404{\r\n    background: lightcoral;\r\n    will-change: background;\r\n}\r\n\r\n.main_index{\r\n    background: lightgreen;\r\n    will-change: background;\r\n}\r\n\r\n\r\n.main_menu{\r\n    background: lightblue;\r\n    will-change: background;\r\n}\r\n\r\n\r\n.main_contacts{\r\n    background: lightslategray;\r\n}\r\n\r\n.main_index .button_home{\r\n    visibility: hidden;\r\n}\r\n\r\n\r\n.views{\r\n    height: 300vh;\r\n    width: 300vw;\r\n    position: absolute;\r\n    transition: 0.25s;\r\n    will-change: transform;\r\n}\r\n\r\n\r\n\r\n.main_index > .views{\r\n    -webkit-transform: translateY(-100vh);\r\n            transform: translateY(-100vh);\r\n}\r\n\r\n.main_404 > .views {\r\n    -webkit-transform: translateY(-200vh);\r\n            transform: translateY(-200vh);\r\n}\r\n\r\n.main_menu > .views,\r\n.main_contacts > .views {\r\n    -webkit-transform: translate(-100vw, -100vh);\r\n            transform: translate(-100vw, -100vh);\r\n}\r\n\r\n.main_menu .view_menu,\r\n.main_contacts .view_contacts{\r\n    opacity: 1;\r\n    z-index: 100;\r\n}\r\n\r\n.main_menu .view_contacts,\r\n.main_contacts .view_menu{\r\n    opacity: 0;\r\n    z-index: 99;\r\n}\r\n\r\n\r\n.main_about > .views{\r\n    -webkit-transform: translateX(-100vw);\r\n            transform: translateX(-100vw);\r\n}\r\n\r\n\r\n.main_portfolio > .views{\r\n    -webkit-transform: translate(-200vw, -100vh);\r\n            transform: translate(-200vw, -100vh);\r\n}\r\n\r\n.main_blog > .views{\r\n    -webkit-transform: translate(-100vw, -200vh);\r\n            transform: translate(-100vw, -200vh);\r\n}\r\n\r\n.main_post > .views{\r\n    -webkit-transform: translate(-200vw, -200vh);\r\n            transform: translate(-200vw, -200vh);\r\n}\r\n\r\n\r\n.view{\r\n    width: 96vw;\r\n    height: 88vh;\r\n    transition: 0.5s;\r\n    color: black;\r\n\r\n    border: 2px dashed black;\r\n    background: transparent;\r\n\r\n    position: absolute;\r\n\r\n    margin: 10vh 2vw 2vh 2vw;\r\n\r\n\r\n    display: -webkit-box;\r\n\r\n\r\n    display: -ms-flexbox;\r\n\r\n\r\n    display: flex;\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n.view_404{\r\n    top: 200vh;\r\n    left: 0vw;\r\n}\r\n\r\n\r\n.view_index{\r\n    top: 100vh;\r\n    left: 0;\r\n\r\n\r\n\r\n    -webkit-box-orient: vertical;\r\n\r\n\r\n\r\n    -webkit-box-direction: normal;\r\n\r\n\r\n\r\n        -ms-flex-direction: column;\r\n\r\n\r\n\r\n            flex-direction: column;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n\r\n\r\n}\r\n\r\n\r\n.view__h1{\r\n    font-size: 24.5vh;\r\n}\r\n\r\n\r\n.view__rtcornerlink{\r\n    font-size: 6.125vh;\r\n    position: absolute;\r\n    display: block;\r\n    top: 2vh;\r\n    right: 2vw;\r\n}\r\n\r\n\r\n.view_menu,\r\n.view_contacts{\r\n    top: 100vh;\r\n    left: 100vw\r\n}\r\n\r\n\r\n.view_menu{\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n    font-size: 5.5vh;\r\n\r\n}\r\n\r\n.view_contacts{\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    font-size: 5.11111vw;\r\n\r\n    color: white;\r\n}\r\n\r\n.view_about{\r\n    top:0;\r\n    left: 100vw;\r\n}\r\n\r\n.view_portfolio{\r\n    top: 100vh;\r\n    left: 200vw;\r\n}\r\n\r\n.view_blog{\r\n    top: 200vh;\r\n    left: 100vw;\r\n}\r\n\r\n\r\n.link{\r\n    text-decoration: underline;\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n\r\n.control-buttons{\r\n    position: fixed;\r\n    height: 10vh;\r\n    width: 100vw;\r\n    \r\n    display: -webkit-box;\r\n    \r\n    display: -ms-flexbox;\r\n    \r\n    display: flex;\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n\r\n    z-index: 500;\r\n\r\n    transition: 0.5s;\r\n    \r\n}\r\n\r\n\r\n.button{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    font-size: 6.66667vh;\r\n\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n.button_control{\r\n    color: black;\r\n    font-style: bold;\r\n\r\n    font-size: 100\r\n\r\n}\r\n\r\n.button_on{\r\n}\r\n\r\n.button_off{\r\n    visibility: hidden;\r\n}", ""]);
 
 // exports
 
@@ -9818,11 +9888,15 @@ window.app = __webpack_require__(2).Main.fullscreen();//{path: document.location
 
 
 
-window.app.ports.changereallocation.subscribe(function(path) {
-   history.replaceState('', '', path);
+window.app.ports.changereallocation.subscribe(path => {
+   window.history.replaceState('', '', path);
    //history.pushState("", "", path);;
 });
 
+
+window.app.ports.back.subscribe(() => {  })//window.history.back(); });
+window.app.ports.forward.subscribe(() => { })// window.history.forward(); });
+window.app.ports.out.subscribe(path => { })//window.location = path;});
 
 /***/ })
 /******/ ]);

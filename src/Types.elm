@@ -35,7 +35,6 @@ type alias Post = {
      heading : String
     ,date : Date
     ,content : Html Msg
--- todo: replace string with Html Msg
 }
 
 type alias Example = {
@@ -50,5 +49,6 @@ type Msg =   NoOp --todo: remove NoOp message
            | Forward 
            | Back 
            | Go Location
+           | Out String
 
 

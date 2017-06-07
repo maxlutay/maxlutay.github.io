@@ -27,11 +27,12 @@ getpage md r =
     let 
         mainclass = "main main_" ++ 
             case r of
-                Index -> "index"
-                Menu  -> "menu" 
+                Index    -> "index"
+                Menu     -> "menu"
+                Contacts -> "contacts" 
                 _ -> "404" 
 
-        views = div [class "views"][ index "" , unknown "", menu "" ]
+        views = div [class "views"][ index "" , unknown "", menu "", contacts "" ]
         controlbuttons = div [class "control-buttons"] 
                              [ backbutton (if backat md /= Nothing
                                            then "button_on" 
@@ -87,3 +88,11 @@ menu cl =
 
 
 
+contacts: String -> Html Msg
+contacts cl = 
+    div [class <| "view view_contacts "++ cl]
+        [    div [] [text "email"]
+            ,div [] [text "github"]
+            ,div [] [text "twitter"]
+
+        ]

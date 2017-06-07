@@ -1,13 +1,15 @@
 --KEEP IT SIMPLE, DUDE!
-
 module Main exposing (..)
 
 import Html exposing (Html)
-import Types exposing (..)
-import Ports exposing (..)
-import View exposing (..)
 import Array
+
+import Types exposing (..)
 import HistoryUtils exposing (..)
+import Ports exposing (..)
+
+
+import View exposing (view)
 
 main : Program Never Model Msg
 main =
@@ -65,12 +67,12 @@ update msg model =
                 in 
                 ({model|
                     at = newat                
-                 },changereallocation tourl)
+                 },back ())
         Forward -> let
                         newat = Maybe.withDefault (Array.length model.history - 1) <|forwardat model
                         tourl = Tuple.second  <| getlocationathistory newat model.history
                    in
                     ({model|
                         at = newat
-                    }, changereallocation tourl)
+                    }, forward() )
         _ ->( model, Cmd.none )
