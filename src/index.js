@@ -9,7 +9,7 @@ window.app = require("./Main.elm").Main.fullscreen();//{path: document.location}
 
 
 
-
+/*
 
 window.app.ports.changereallocation.subscribe(path => {
    window.history.replaceState('', '', path);
@@ -19,4 +19,4 @@ window.app.ports.changereallocation.subscribe(path => {
 
 window.app.ports.back.subscribe(() => {  })//window.history.back(); });
 window.app.ports.forward.subscribe(() => { })// window.history.forward(); });
-window.app.ports.out.subscribe(path => { })//window.location = path;});
+window.app.ports.out.subscribe(path => { })//window.location = path;});*/

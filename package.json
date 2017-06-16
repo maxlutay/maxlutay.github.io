@@ -5,7 +5,8 @@
   "main": "index.html",
   "scripts": {
     "test": "elm-test",
-    "s": "node ./scripts/pyserver.js 5000 dist",
+    "s": "node ./scripts/nodeserver.js",
+    "spython": "node ./scripts/pyserver.js",
     "b": "webpack",
     "w": "webpack --watch || exit"
   },

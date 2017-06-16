@@ -1,54 +1,59 @@
 module Types exposing (..)
 
-import Date exposing (Date)
-import Html exposing (Html)
+
 import Array exposing (Array)
 
+type Route =  Index
+            | Unknown
+            | Menu
+            | Contacts
+            | About
+            | Portfolio
+            | Example String
+            | Blog
+            | Post String
+
+
+type Msg = NoOp
+         | Go Route
+         | Url Route
+         | Back Int
+         | Forward Int
+
+
+
+
 type alias Model = {
-     at       : Int    --Int is for history index
-    ,auth     : Maybe LoginInfo
-    ,posts    : List Post
-    ,examples : List Example
-    ,history  : Array Location
+    posts: List PostData
+    ,examples: List ExampleData
+    ,current: Route
+    ,index: Int
+    ,maxi: Int
+}
+
+type alias History = {
+     at: Int
+    ,arr: Array Route
 }
 
 
-type Route =   Index
-             | Menu
-             | Contacts
-             | About
-             | Portfolio
-             | Unknown
-             | Blog (Maybe Post)
--- todo: add admin panel
-type alias Location = (Route, String)
-
-
-type alias LoginInfo = {
-     token: Maybe String
-    ,login: String
-    ,password: String
+type alias PostData = {
+    heading: String
+    ,datetime: String
+    ,content: String
+    ,url: String
 }
 
 
-type alias Post = {
-     heading : String
-    ,date : Date
-    ,content : Html Msg
-}
-
-type alias Example = {
-     hash: String
-    ,url : String
-    ,date: Date
+type alias ExampleData = {
+    datetime: String
+    ,linkedto: String
+    ,url: String
 }
 
 
 
-type Msg =   NoOp --todo: remove NoOp message
-           | Forward 
-           | Back 
-           | Go Location
-           | Out String
+
+
 
 

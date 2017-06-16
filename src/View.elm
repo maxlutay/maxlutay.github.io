@@ -1,98 +1,140 @@
 module View exposing (..)
 
+import Types exposing (Model, Msg(..), Route (..))
 
-import Html exposing (Html, Attribute, div,  text, h1,h5,a)
+import Array
+
+import Html exposing (Html, div, text, h1, h2, a)
 import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
 
-import Types exposing(..)
-
-import HistoryUtils exposing (..)
-
 view : Model -> Html Msg
-view model =
-            getpage model <| (Tuple.first <| getlocationathistory model.at model.history)
-
-
-
-vref: Msg -> String -> String -> Html Msg
-vref m c t = -- m is onclickmessage, c is appendclassname, t is innertext 
-     a [   onClick m
-         ,class <| "btn " ++ c
-      ] [ text t ]
-
-
-getpage:Model -> Route -> Html Msg
-getpage md r = 
+view m = 
     let 
-        mainclass = "main main_" ++ 
-            case r of
-                Index    -> "index"
-                Menu     -> "menu"
-                Contacts -> "contacts" 
-                _ -> "404" 
-
-        views = div [class "views"][ index "" , unknown "", menu "", contacts "" ]
-        controlbuttons = div [class "control-buttons"] 
-                             [ backbutton (if backat md /= Nothing
-                                           then "button_on" 
-                                           else "button_off")
-                               , homebutton 
-                               , forwardbutton (if forwardat md /= Nothing 
-                                                then "button_on" 
-                                                else "button_off")
-                             ]
+        route = m.current
     in
-    div [class mainclass][controlbuttons, views]
+        getPage route m 
+
+
+
+
+getPage: Route -> Model -> Html Msg
+getPage r m = let
+                mainclass = 
+                    case r of
+                        Index   -> "index"
+                        Menu    -> "menu"
+                        Contacts-> "contacts"
+                        --About   -> "about"
+                        --Portfolio -> "portfolio"
+                        --Blog    -> "blog" 
+                        _       -> "404"
+                vs = div [class "views"] views
+                controlbuttons = div [class "control-buttons"][
+                     backbutton <| "button_" ++ onoff m backavailable
+                    ,homebutton <| "button_" ++ onoff m homeavailable
+                    ,forwardbutton <| "button_" ++ onoff m forwardavailable 
+                    
+                ]
+    in
+        div [class <| "main main_"++ mainclass]
+            [ controlbuttons, vs ]
             
 
 
 
 
+onoff: Model -> (Model -> Bool) -> String
+onoff m fn = if fn m then "on" else "off"
 
-homebutton: Html Msg
-homebutton =
-    vref (Go (getlocation Index)) "button button_home button_control " "HOME"
+backavailable: Model -> Bool
+backavailable m = m.index > 1 
+
+forwardavailable: Model -> Bool
+forwardavailable m = m.index < m.maxi
+
+
+homeavailable: Model -> Bool
+homeavailable m = m.current /= Index
+
+
+views: List (Html Msg)
+views =[            
+         index
+         ,menu
+         ,contacts
+         --,about
+         --,portfolio
+         --,blog
+         ,unknown
+        ]
+        
+
+
+vref: Msg -> String -> String -> Html Msg 
+vref m cl txt =
+    div [class <|"link "++ cl, onClick m] [text txt]
+
+
+
+
+
+index: Html Msg
+index = div [class "view view_index "][ 
+                h1  [class "view__h1"]
+                    [ text "Max Lutay",
+                      vref (Go Menu) "view__rtcornerlink" "/menu"                   
+                     ]
+               ]
+
+menu: Html Msg
+menu = 
+    div [class "view view_menu "]
+    [   vref  (Go Contacts) "" "/contacts"
+        ,vref (Go About) "" "/about"
+        ,vref (Go Portfolio)  "" "/portfolio"
+        ,vref (Go Blog) "" "/blog"    
+    ]
+
+contacts: Html Msg
+contacts = div [class <| "view view_contacts "] [
+                        a [href "mailto:maksym.lutai@gmail.com"][ text "email"]
+                        ,a [href "http://github.com/maxlutay"][ text "github"]
+                        --,a [href "http://vk.com/max_lutay"][ text "vk"]
+                        ,a [href "http://twitter.com/max_lutay"][ text "twitter"]
+                    ]
+
+
+
+
+
+
+
+homebutton:String -> Html Msg
+homebutton cl=
+    vref (Go Index) ("button button_home button_control "++ cl) "HOME"
 
 backbutton:String -> Html Msg
 backbutton cl = 
-    vref Back ("button button_back button_control " ++ cl) "BACK"
+    vref (Back 1) ("button button_back button_control " ++ cl) "BACK"
 
 forwardbutton:String -> Html Msg
 forwardbutton cl =
-    vref Forward ("button button_control " ++ cl) "FORWARD"
-
-index:String -> Html Msg
-index cl = 
-        div [class <| "view view_index " ++ cl][
-            h1 [class "view__h1"][text "Max Lutay"]
-            ,vref (Go (getlocation Menu)) "link view__rtcornerlink" "/menu" 
-        ]
+    vref (Forward 1) ("button button_forward button_control " ++ cl) "FORWARD"
 
 
 
-unknown:String -> Html Msg
-unknown cl = 
-    div [class <| "view view_404 " ++ cl][
+unknown: Html Msg
+unknown = 
+    div [class "view view_404 "]
+        [
                 h1 [] [text "404"]
-                --,vref (Go (getlocation Index)) "link" "MAIN" 
-            ]
+         ]
 
 
 
-menu: String -> Html Msg
-menu cl =
-    div [class <| "view view_menu "++ cl] 
-        <| List.map (\loc -> vref (Go loc) "link" <| Tuple.second loc) [getlocation Contacts, getlocation About, getlocation Portfolio, getlocation <| Blog Nothing] 
-    
 
 
 
-contacts: String -> Html Msg
-contacts cl = 
-    div [class <| "view view_contacts "++ cl]
-        [    div [] [text "email"]
-            ,div [] [text "github"]
-            ,div [] [text "twitter"]
 
-        ]
+
