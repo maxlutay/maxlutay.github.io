@@ -3182,39 +3182,6 @@ var _elm_lang$core$Char$isHexDigit = function ($char) {
 		$char));
 };
 
-//import Result //
-
-var _elm_lang$core$Native_Date = function() {
-
-function fromString(str)
-{
-	var date = new Date(str);
-	return isNaN(date.getTime())
-		? _elm_lang$core$Result$Err('Unable to parse \'' + str + '\' as a date. Dates must be in the ISO 8601 format.')
-		: _elm_lang$core$Result$Ok(date);
-}
-
-var dayTable = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-var monthTable =
-	['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-	 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-
-return {
-	fromString: fromString,
-	year: function(d) { return d.getFullYear(); },
-	month: function(d) { return { ctor: monthTable[d.getMonth()] }; },
-	day: function(d) { return d.getDate(); },
-	hour: function(d) { return d.getHours(); },
-	minute: function(d) { return d.getMinutes(); },
-	second: function(d) { return d.getSeconds(); },
-	millisecond: function(d) { return d.getMilliseconds(); },
-	toTime: function(d) { return d.getTime(); },
-	fromTime: function(t) { return new Date(t); },
-	dayOfWeek: function(d) { return { ctor: dayTable[d.getDay()] }; }
-};
-
-}();
 //import Native.Utils //
 
 var _elm_lang$core$Native_Scheduler = function() {
@@ -5972,39 +5939,6 @@ var _elm_lang$core$Time$subMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
 
-var _elm_lang$core$Date$millisecond = _elm_lang$core$Native_Date.millisecond;
-var _elm_lang$core$Date$second = _elm_lang$core$Native_Date.second;
-var _elm_lang$core$Date$minute = _elm_lang$core$Native_Date.minute;
-var _elm_lang$core$Date$hour = _elm_lang$core$Native_Date.hour;
-var _elm_lang$core$Date$dayOfWeek = _elm_lang$core$Native_Date.dayOfWeek;
-var _elm_lang$core$Date$day = _elm_lang$core$Native_Date.day;
-var _elm_lang$core$Date$month = _elm_lang$core$Native_Date.month;
-var _elm_lang$core$Date$year = _elm_lang$core$Native_Date.year;
-var _elm_lang$core$Date$fromTime = _elm_lang$core$Native_Date.fromTime;
-var _elm_lang$core$Date$toTime = _elm_lang$core$Native_Date.toTime;
-var _elm_lang$core$Date$fromString = _elm_lang$core$Native_Date.fromString;
-var _elm_lang$core$Date$now = A2(_elm_lang$core$Task$map, _elm_lang$core$Date$fromTime, _elm_lang$core$Time$now);
-var _elm_lang$core$Date$Date = {ctor: 'Date'};
-var _elm_lang$core$Date$Sun = {ctor: 'Sun'};
-var _elm_lang$core$Date$Sat = {ctor: 'Sat'};
-var _elm_lang$core$Date$Fri = {ctor: 'Fri'};
-var _elm_lang$core$Date$Thu = {ctor: 'Thu'};
-var _elm_lang$core$Date$Wed = {ctor: 'Wed'};
-var _elm_lang$core$Date$Tue = {ctor: 'Tue'};
-var _elm_lang$core$Date$Mon = {ctor: 'Mon'};
-var _elm_lang$core$Date$Dec = {ctor: 'Dec'};
-var _elm_lang$core$Date$Nov = {ctor: 'Nov'};
-var _elm_lang$core$Date$Oct = {ctor: 'Oct'};
-var _elm_lang$core$Date$Sep = {ctor: 'Sep'};
-var _elm_lang$core$Date$Aug = {ctor: 'Aug'};
-var _elm_lang$core$Date$Jul = {ctor: 'Jul'};
-var _elm_lang$core$Date$Jun = {ctor: 'Jun'};
-var _elm_lang$core$Date$May = {ctor: 'May'};
-var _elm_lang$core$Date$Apr = {ctor: 'Apr'};
-var _elm_lang$core$Date$Mar = {ctor: 'Mar'};
-var _elm_lang$core$Date$Feb = {ctor: 'Feb'};
-var _elm_lang$core$Date$Jan = {ctor: 'Jan'};
-
 var _elm_lang$core$Debug$crash = _elm_lang$core$Native_Debug.crash;
 var _elm_lang$core$Debug$log = _elm_lang$core$Native_Debug.log;
 
@@ -6658,6 +6592,10 @@ var _elm_lang$core$Json_Decode$bool = _elm_lang$core$Native_Json.decodePrimitive
 var _elm_lang$core$Json_Decode$string = _elm_lang$core$Native_Json.decodePrimitive('string');
 var _elm_lang$core$Json_Decode$Decoder = {ctor: 'Decoder'};
 
+var _elm_lang$core$Process$kill = _elm_lang$core$Native_Scheduler.kill;
+var _elm_lang$core$Process$sleep = _elm_lang$core$Native_Scheduler.sleep;
+var _elm_lang$core$Process$spawn = _elm_lang$core$Native_Scheduler.spawn;
+
 var _elm_lang$core$Tuple$mapSecond = F2(
 	function (func, _p0) {
 		var _p1 = _p0;
@@ -6684,6 +6622,192 @@ var _elm_lang$core$Tuple$first = function (_p6) {
 	var _p7 = _p6;
 	return _p7._0;
 };
+
+var _elm_lang$dom$Native_Dom = function() {
+
+var fakeNode = {
+	addEventListener: function() {},
+	removeEventListener: function() {}
+};
+
+var onDocument = on(typeof document !== 'undefined' ? document : fakeNode);
+var onWindow = on(typeof window !== 'undefined' ? window : fakeNode);
+
+function on(node)
+{
+	return function(eventName, decoder, toTask)
+	{
+		return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback) {
+
+			function performTask(event)
+			{
+				var result = A2(_elm_lang$core$Json_Decode$decodeValue, decoder, event);
+				if (result.ctor === 'Ok')
+				{
+					_elm_lang$core$Native_Scheduler.rawSpawn(toTask(result._0));
+				}
+			}
+
+			node.addEventListener(eventName, performTask);
+
+			return function()
+			{
+				node.removeEventListener(eventName, performTask);
+			};
+		});
+	};
+}
+
+var rAF = typeof requestAnimationFrame !== 'undefined'
+	? requestAnimationFrame
+	: function(callback) { callback(); };
+
+function withNode(id, doStuff)
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		rAF(function()
+		{
+			var node = document.getElementById(id);
+			if (node === null)
+			{
+				callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'NotFound', _0: id }));
+				return;
+			}
+			callback(_elm_lang$core$Native_Scheduler.succeed(doStuff(node)));
+		});
+	});
+}
+
+
+// FOCUS
+
+function focus(id)
+{
+	return withNode(id, function(node) {
+		node.focus();
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+function blur(id)
+{
+	return withNode(id, function(node) {
+		node.blur();
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+
+// SCROLLING
+
+function getScrollTop(id)
+{
+	return withNode(id, function(node) {
+		return node.scrollTop;
+	});
+}
+
+function setScrollTop(id, desiredScrollTop)
+{
+	return withNode(id, function(node) {
+		node.scrollTop = desiredScrollTop;
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+function toBottom(id)
+{
+	return withNode(id, function(node) {
+		node.scrollTop = node.scrollHeight;
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+function getScrollLeft(id)
+{
+	return withNode(id, function(node) {
+		return node.scrollLeft;
+	});
+}
+
+function setScrollLeft(id, desiredScrollLeft)
+{
+	return withNode(id, function(node) {
+		node.scrollLeft = desiredScrollLeft;
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+function toRight(id)
+{
+	return withNode(id, function(node) {
+		node.scrollLeft = node.scrollWidth;
+		return _elm_lang$core$Native_Utils.Tuple0;
+	});
+}
+
+
+// SIZE
+
+function width(options, id)
+{
+	return withNode(id, function(node) {
+		switch (options.ctor)
+		{
+			case 'Content':
+				return node.scrollWidth;
+			case 'VisibleContent':
+				return node.clientWidth;
+			case 'VisibleContentWithBorders':
+				return node.offsetWidth;
+			case 'VisibleContentWithBordersAndMargins':
+				var rect = node.getBoundingClientRect();
+				return rect.right - rect.left;
+		}
+	});
+}
+
+function height(options, id)
+{
+	return withNode(id, function(node) {
+		switch (options.ctor)
+		{
+			case 'Content':
+				return node.scrollHeight;
+			case 'VisibleContent':
+				return node.clientHeight;
+			case 'VisibleContentWithBorders':
+				return node.offsetHeight;
+			case 'VisibleContentWithBordersAndMargins':
+				var rect = node.getBoundingClientRect();
+				return rect.bottom - rect.top;
+		}
+	});
+}
+
+return {
+	onDocument: F3(onDocument),
+	onWindow: F3(onWindow),
+
+	focus: focus,
+	blur: blur,
+
+	getScrollTop: getScrollTop,
+	setScrollTop: F2(setScrollTop),
+	getScrollLeft: getScrollLeft,
+	setScrollLeft: F2(setScrollLeft),
+	toBottom: toBottom,
+	toRight: toRight,
+
+	height: F2(height),
+	width: F2(width)
+};
+
+}();
+
+var _elm_lang$dom$Dom_LowLevel$onWindow = _elm_lang$dom$Native_Dom.onWindow;
+var _elm_lang$dom$Dom_LowLevel$onDocument = _elm_lang$dom$Native_Dom.onDocument;
 
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrap;
 var _elm_lang$virtual_dom$VirtualDom_Debug$wrapWithFlags;
@@ -9188,297 +9312,1391 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
+var _elm_lang$http$Native_Http = function() {
+
+
+// ENCODING AND DECODING
+
+function encodeUri(string)
+{
+	return encodeURIComponent(string);
+}
+
+function decodeUri(string)
+{
+	try
+	{
+		return _elm_lang$core$Maybe$Just(decodeURIComponent(string));
+	}
+	catch(e)
+	{
+		return _elm_lang$core$Maybe$Nothing;
+	}
+}
+
+
+// SEND REQUEST
+
+function toTask(request, maybeProgress)
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		var xhr = new XMLHttpRequest();
+
+		configureProgress(xhr, maybeProgress);
+
+		xhr.addEventListener('error', function() {
+			callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'NetworkError' }));
+		});
+		xhr.addEventListener('timeout', function() {
+			callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'Timeout' }));
+		});
+		xhr.addEventListener('load', function() {
+			callback(handleResponse(xhr, request.expect.responseToResult));
+		});
+
+		try
+		{
+			xhr.open(request.method, request.url, true);
+		}
+		catch (e)
+		{
+			return callback(_elm_lang$core$Native_Scheduler.fail({ ctor: 'BadUrl', _0: request.url }));
+		}
+
+		configureRequest(xhr, request);
+		send(xhr, request.body);
+
+		return function() { xhr.abort(); };
+	});
+}
+
+function configureProgress(xhr, maybeProgress)
+{
+	if (maybeProgress.ctor === 'Nothing')
+	{
+		return;
+	}
+
+	xhr.addEventListener('progress', function(event) {
+		if (!event.lengthComputable)
+		{
+			return;
+		}
+		_elm_lang$core$Native_Scheduler.rawSpawn(maybeProgress._0({
+			bytes: event.loaded,
+			bytesExpected: event.total
+		}));
+	});
+}
+
+function configureRequest(xhr, request)
+{
+	function setHeader(pair)
+	{
+		xhr.setRequestHeader(pair._0, pair._1);
+	}
+
+	A2(_elm_lang$core$List$map, setHeader, request.headers);
+	xhr.responseType = request.expect.responseType;
+	xhr.withCredentials = request.withCredentials;
+
+	if (request.timeout.ctor === 'Just')
+	{
+		xhr.timeout = request.timeout._0;
+	}
+}
+
+function send(xhr, body)
+{
+	switch (body.ctor)
+	{
+		case 'EmptyBody':
+			xhr.send();
+			return;
+
+		case 'StringBody':
+			xhr.setRequestHeader('Content-Type', body._0);
+			xhr.send(body._1);
+			return;
+
+		case 'FormDataBody':
+			xhr.send(body._0);
+			return;
+	}
+}
+
+
+// RESPONSES
+
+function handleResponse(xhr, responseToResult)
+{
+	var response = toResponse(xhr);
+
+	if (xhr.status < 200 || 300 <= xhr.status)
+	{
+		response.body = xhr.responseText;
+		return _elm_lang$core$Native_Scheduler.fail({
+			ctor: 'BadStatus',
+			_0: response
+		});
+	}
+
+	var result = responseToResult(response);
+
+	if (result.ctor === 'Ok')
+	{
+		return _elm_lang$core$Native_Scheduler.succeed(result._0);
+	}
+	else
+	{
+		response.body = xhr.responseText;
+		return _elm_lang$core$Native_Scheduler.fail({
+			ctor: 'BadPayload',
+			_0: result._0,
+			_1: response
+		});
+	}
+}
+
+function toResponse(xhr)
+{
+	return {
+		status: { code: xhr.status, message: xhr.statusText },
+		headers: parseHeaders(xhr.getAllResponseHeaders()),
+		url: xhr.responseURL,
+		body: xhr.response
+	};
+}
+
+function parseHeaders(rawHeaders)
+{
+	var headers = _elm_lang$core$Dict$empty;
+
+	if (!rawHeaders)
+	{
+		return headers;
+	}
+
+	var headerPairs = rawHeaders.split('\u000d\u000a');
+	for (var i = headerPairs.length; i--; )
+	{
+		var headerPair = headerPairs[i];
+		var index = headerPair.indexOf('\u003a\u0020');
+		if (index > 0)
+		{
+			var key = headerPair.substring(0, index);
+			var value = headerPair.substring(index + 2);
+
+			headers = A3(_elm_lang$core$Dict$update, key, function(oldValue) {
+				if (oldValue.ctor === 'Just')
+				{
+					return _elm_lang$core$Maybe$Just(value + ', ' + oldValue._0);
+				}
+				return _elm_lang$core$Maybe$Just(value);
+			}, headers);
+		}
+	}
+
+	return headers;
+}
+
+
+// EXPECTORS
+
+function expectStringResponse(responseToResult)
+{
+	return {
+		responseType: 'text',
+		responseToResult: responseToResult
+	};
+}
+
+function mapExpect(func, expect)
+{
+	return {
+		responseType: expect.responseType,
+		responseToResult: function(response) {
+			var convertedResponse = expect.responseToResult(response);
+			return A2(_elm_lang$core$Result$map, func, convertedResponse);
+		}
+	};
+}
+
+
+// BODY
+
+function multipart(parts)
+{
+	var formData = new FormData();
+
+	while (parts.ctor !== '[]')
+	{
+		var part = parts._0;
+		formData.append(part._0, part._1);
+		parts = parts._1;
+	}
+
+	return { ctor: 'FormDataBody', _0: formData };
+}
+
+return {
+	toTask: F2(toTask),
+	expectStringResponse: expectStringResponse,
+	mapExpect: F2(mapExpect),
+	multipart: multipart,
+	encodeUri: encodeUri,
+	decodeUri: decodeUri
+};
+
+}();
+
+var _elm_lang$http$Http_Internal$map = F2(
+	function (func, request) {
+		return _elm_lang$core$Native_Utils.update(
+			request,
+			{
+				expect: A2(_elm_lang$http$Native_Http.mapExpect, func, request.expect)
+			});
+	});
+var _elm_lang$http$Http_Internal$RawRequest = F7(
+	function (a, b, c, d, e, f, g) {
+		return {method: a, headers: b, url: c, body: d, expect: e, timeout: f, withCredentials: g};
+	});
+var _elm_lang$http$Http_Internal$Request = function (a) {
+	return {ctor: 'Request', _0: a};
+};
+var _elm_lang$http$Http_Internal$Expect = {ctor: 'Expect'};
+var _elm_lang$http$Http_Internal$FormDataBody = {ctor: 'FormDataBody'};
+var _elm_lang$http$Http_Internal$StringBody = F2(
+	function (a, b) {
+		return {ctor: 'StringBody', _0: a, _1: b};
+	});
+var _elm_lang$http$Http_Internal$EmptyBody = {ctor: 'EmptyBody'};
+var _elm_lang$http$Http_Internal$Header = F2(
+	function (a, b) {
+		return {ctor: 'Header', _0: a, _1: b};
+	});
+
+var _elm_lang$http$Http$decodeUri = _elm_lang$http$Native_Http.decodeUri;
+var _elm_lang$http$Http$encodeUri = _elm_lang$http$Native_Http.encodeUri;
+var _elm_lang$http$Http$expectStringResponse = _elm_lang$http$Native_Http.expectStringResponse;
+var _elm_lang$http$Http$expectJson = function (decoder) {
+	return _elm_lang$http$Http$expectStringResponse(
+		function (response) {
+			return A2(_elm_lang$core$Json_Decode$decodeString, decoder, response.body);
+		});
+};
+var _elm_lang$http$Http$expectString = _elm_lang$http$Http$expectStringResponse(
+	function (response) {
+		return _elm_lang$core$Result$Ok(response.body);
+	});
+var _elm_lang$http$Http$multipartBody = _elm_lang$http$Native_Http.multipart;
+var _elm_lang$http$Http$stringBody = _elm_lang$http$Http_Internal$StringBody;
+var _elm_lang$http$Http$jsonBody = function (value) {
+	return A2(
+		_elm_lang$http$Http_Internal$StringBody,
+		'application/json',
+		A2(_elm_lang$core$Json_Encode$encode, 0, value));
+};
+var _elm_lang$http$Http$emptyBody = _elm_lang$http$Http_Internal$EmptyBody;
+var _elm_lang$http$Http$header = _elm_lang$http$Http_Internal$Header;
+var _elm_lang$http$Http$request = _elm_lang$http$Http_Internal$Request;
+var _elm_lang$http$Http$post = F3(
+	function (url, body, decoder) {
+		return _elm_lang$http$Http$request(
+			{
+				method: 'POST',
+				headers: {ctor: '[]'},
+				url: url,
+				body: body,
+				expect: _elm_lang$http$Http$expectJson(decoder),
+				timeout: _elm_lang$core$Maybe$Nothing,
+				withCredentials: false
+			});
+	});
+var _elm_lang$http$Http$get = F2(
+	function (url, decoder) {
+		return _elm_lang$http$Http$request(
+			{
+				method: 'GET',
+				headers: {ctor: '[]'},
+				url: url,
+				body: _elm_lang$http$Http$emptyBody,
+				expect: _elm_lang$http$Http$expectJson(decoder),
+				timeout: _elm_lang$core$Maybe$Nothing,
+				withCredentials: false
+			});
+	});
+var _elm_lang$http$Http$getString = function (url) {
+	return _elm_lang$http$Http$request(
+		{
+			method: 'GET',
+			headers: {ctor: '[]'},
+			url: url,
+			body: _elm_lang$http$Http$emptyBody,
+			expect: _elm_lang$http$Http$expectString,
+			timeout: _elm_lang$core$Maybe$Nothing,
+			withCredentials: false
+		});
+};
+var _elm_lang$http$Http$toTask = function (_p0) {
+	var _p1 = _p0;
+	return A2(_elm_lang$http$Native_Http.toTask, _p1._0, _elm_lang$core$Maybe$Nothing);
+};
+var _elm_lang$http$Http$send = F2(
+	function (resultToMessage, request) {
+		return A2(
+			_elm_lang$core$Task$attempt,
+			resultToMessage,
+			_elm_lang$http$Http$toTask(request));
+	});
+var _elm_lang$http$Http$Response = F4(
+	function (a, b, c, d) {
+		return {url: a, status: b, headers: c, body: d};
+	});
+var _elm_lang$http$Http$BadPayload = F2(
+	function (a, b) {
+		return {ctor: 'BadPayload', _0: a, _1: b};
+	});
+var _elm_lang$http$Http$BadStatus = function (a) {
+	return {ctor: 'BadStatus', _0: a};
+};
+var _elm_lang$http$Http$NetworkError = {ctor: 'NetworkError'};
+var _elm_lang$http$Http$Timeout = {ctor: 'Timeout'};
+var _elm_lang$http$Http$BadUrl = function (a) {
+	return {ctor: 'BadUrl', _0: a};
+};
+var _elm_lang$http$Http$StringPart = F2(
+	function (a, b) {
+		return {ctor: 'StringPart', _0: a, _1: b};
+	});
+var _elm_lang$http$Http$stringPart = _elm_lang$http$Http$StringPart;
+
+var _elm_lang$navigation$Native_Navigation = function() {
+
+
+// FAKE NAVIGATION
+
+function go(n)
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		if (n !== 0)
+		{
+			history.go(n);
+		}
+		callback(_elm_lang$core$Native_Scheduler.succeed(_elm_lang$core$Native_Utils.Tuple0));
+	});
+}
+
+function pushState(url)
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		history.pushState({}, '', url);
+		callback(_elm_lang$core$Native_Scheduler.succeed(getLocation()));
+	});
+}
+
+function replaceState(url)
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		history.replaceState({}, '', url);
+		callback(_elm_lang$core$Native_Scheduler.succeed(getLocation()));
+	});
+}
+
+
+// REAL NAVIGATION
+
+function reloadPage(skipCache)
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		document.location.reload(skipCache);
+		callback(_elm_lang$core$Native_Scheduler.succeed(_elm_lang$core$Native_Utils.Tuple0));
+	});
+}
+
+function setLocation(url)
+{
+	return _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)
+	{
+		try
+		{
+			window.location = url;
+		}
+		catch(err)
+		{
+			// Only Firefox can throw a NS_ERROR_MALFORMED_URI exception here.
+			// Other browsers reload the page, so let's be consistent about that.
+			document.location.reload(false);
+		}
+		callback(_elm_lang$core$Native_Scheduler.succeed(_elm_lang$core$Native_Utils.Tuple0));
+	});
+}
+
+
+// GET LOCATION
+
+function getLocation()
+{
+	var location = document.location;
+
+	return {
+		href: location.href,
+		host: location.host,
+		hostname: location.hostname,
+		protocol: location.protocol,
+		origin: location.origin,
+		port_: location.port,
+		pathname: location.pathname,
+		search: location.search,
+		hash: location.hash,
+		username: location.username,
+		password: location.password
+	};
+}
+
+
+// DETECT IE11 PROBLEMS
+
+function isInternetExplorer11()
+{
+	return window.navigator.userAgent.indexOf('Trident') !== -1;
+}
+
+
+return {
+	go: go,
+	setLocation: setLocation,
+	reloadPage: reloadPage,
+	pushState: pushState,
+	replaceState: replaceState,
+	getLocation: getLocation,
+	isInternetExplorer11: isInternetExplorer11
+};
+
+}();
+
+var _elm_lang$navigation$Navigation$replaceState = _elm_lang$navigation$Native_Navigation.replaceState;
+var _elm_lang$navigation$Navigation$pushState = _elm_lang$navigation$Native_Navigation.pushState;
+var _elm_lang$navigation$Navigation$go = _elm_lang$navigation$Native_Navigation.go;
+var _elm_lang$navigation$Navigation$reloadPage = _elm_lang$navigation$Native_Navigation.reloadPage;
+var _elm_lang$navigation$Navigation$setLocation = _elm_lang$navigation$Native_Navigation.setLocation;
+var _elm_lang$navigation$Navigation_ops = _elm_lang$navigation$Navigation_ops || {};
+_elm_lang$navigation$Navigation_ops['&>'] = F2(
+	function (task1, task2) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			function (_p0) {
+				return task2;
+			},
+			task1);
+	});
+var _elm_lang$navigation$Navigation$notify = F3(
+	function (router, subs, location) {
+		var send = function (_p1) {
+			var _p2 = _p1;
+			return A2(
+				_elm_lang$core$Platform$sendToApp,
+				router,
+				_p2._0(location));
+		};
+		return A2(
+			_elm_lang$navigation$Navigation_ops['&>'],
+			_elm_lang$core$Task$sequence(
+				A2(_elm_lang$core$List$map, send, subs)),
+			_elm_lang$core$Task$succeed(
+				{ctor: '_Tuple0'}));
+	});
+var _elm_lang$navigation$Navigation$cmdHelp = F3(
+	function (router, subs, cmd) {
+		var _p3 = cmd;
+		switch (_p3.ctor) {
+			case 'Jump':
+				return _elm_lang$navigation$Navigation$go(_p3._0);
+			case 'New':
+				return A2(
+					_elm_lang$core$Task$andThen,
+					A2(_elm_lang$navigation$Navigation$notify, router, subs),
+					_elm_lang$navigation$Navigation$pushState(_p3._0));
+			case 'Modify':
+				return A2(
+					_elm_lang$core$Task$andThen,
+					A2(_elm_lang$navigation$Navigation$notify, router, subs),
+					_elm_lang$navigation$Navigation$replaceState(_p3._0));
+			case 'Visit':
+				return _elm_lang$navigation$Navigation$setLocation(_p3._0);
+			default:
+				return _elm_lang$navigation$Navigation$reloadPage(_p3._0);
+		}
+	});
+var _elm_lang$navigation$Navigation$killPopWatcher = function (popWatcher) {
+	var _p4 = popWatcher;
+	if (_p4.ctor === 'Normal') {
+		return _elm_lang$core$Process$kill(_p4._0);
+	} else {
+		return A2(
+			_elm_lang$navigation$Navigation_ops['&>'],
+			_elm_lang$core$Process$kill(_p4._0),
+			_elm_lang$core$Process$kill(_p4._1));
+	}
+};
+var _elm_lang$navigation$Navigation$onSelfMsg = F3(
+	function (router, location, state) {
+		return A2(
+			_elm_lang$navigation$Navigation_ops['&>'],
+			A3(_elm_lang$navigation$Navigation$notify, router, state.subs, location),
+			_elm_lang$core$Task$succeed(state));
+	});
+var _elm_lang$navigation$Navigation$subscription = _elm_lang$core$Native_Platform.leaf('Navigation');
+var _elm_lang$navigation$Navigation$command = _elm_lang$core$Native_Platform.leaf('Navigation');
+var _elm_lang$navigation$Navigation$Location = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return {href: a, host: b, hostname: c, protocol: d, origin: e, port_: f, pathname: g, search: h, hash: i, username: j, password: k};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _elm_lang$navigation$Navigation$State = F2(
+	function (a, b) {
+		return {subs: a, popWatcher: b};
+	});
+var _elm_lang$navigation$Navigation$init = _elm_lang$core$Task$succeed(
+	A2(
+		_elm_lang$navigation$Navigation$State,
+		{ctor: '[]'},
+		_elm_lang$core$Maybe$Nothing));
+var _elm_lang$navigation$Navigation$Reload = function (a) {
+	return {ctor: 'Reload', _0: a};
+};
+var _elm_lang$navigation$Navigation$reload = _elm_lang$navigation$Navigation$command(
+	_elm_lang$navigation$Navigation$Reload(false));
+var _elm_lang$navigation$Navigation$reloadAndSkipCache = _elm_lang$navigation$Navigation$command(
+	_elm_lang$navigation$Navigation$Reload(true));
+var _elm_lang$navigation$Navigation$Visit = function (a) {
+	return {ctor: 'Visit', _0: a};
+};
+var _elm_lang$navigation$Navigation$load = function (url) {
+	return _elm_lang$navigation$Navigation$command(
+		_elm_lang$navigation$Navigation$Visit(url));
+};
+var _elm_lang$navigation$Navigation$Modify = function (a) {
+	return {ctor: 'Modify', _0: a};
+};
+var _elm_lang$navigation$Navigation$modifyUrl = function (url) {
+	return _elm_lang$navigation$Navigation$command(
+		_elm_lang$navigation$Navigation$Modify(url));
+};
+var _elm_lang$navigation$Navigation$New = function (a) {
+	return {ctor: 'New', _0: a};
+};
+var _elm_lang$navigation$Navigation$newUrl = function (url) {
+	return _elm_lang$navigation$Navigation$command(
+		_elm_lang$navigation$Navigation$New(url));
+};
+var _elm_lang$navigation$Navigation$Jump = function (a) {
+	return {ctor: 'Jump', _0: a};
+};
+var _elm_lang$navigation$Navigation$back = function (n) {
+	return _elm_lang$navigation$Navigation$command(
+		_elm_lang$navigation$Navigation$Jump(0 - n));
+};
+var _elm_lang$navigation$Navigation$forward = function (n) {
+	return _elm_lang$navigation$Navigation$command(
+		_elm_lang$navigation$Navigation$Jump(n));
+};
+var _elm_lang$navigation$Navigation$cmdMap = F2(
+	function (_p5, myCmd) {
+		var _p6 = myCmd;
+		switch (_p6.ctor) {
+			case 'Jump':
+				return _elm_lang$navigation$Navigation$Jump(_p6._0);
+			case 'New':
+				return _elm_lang$navigation$Navigation$New(_p6._0);
+			case 'Modify':
+				return _elm_lang$navigation$Navigation$Modify(_p6._0);
+			case 'Visit':
+				return _elm_lang$navigation$Navigation$Visit(_p6._0);
+			default:
+				return _elm_lang$navigation$Navigation$Reload(_p6._0);
+		}
+	});
+var _elm_lang$navigation$Navigation$Monitor = function (a) {
+	return {ctor: 'Monitor', _0: a};
+};
+var _elm_lang$navigation$Navigation$program = F2(
+	function (locationToMessage, stuff) {
+		var init = stuff.init(
+			_elm_lang$navigation$Native_Navigation.getLocation(
+				{ctor: '_Tuple0'}));
+		var subs = function (model) {
+			return _elm_lang$core$Platform_Sub$batch(
+				{
+					ctor: '::',
+					_0: _elm_lang$navigation$Navigation$subscription(
+						_elm_lang$navigation$Navigation$Monitor(locationToMessage)),
+					_1: {
+						ctor: '::',
+						_0: stuff.subscriptions(model),
+						_1: {ctor: '[]'}
+					}
+				});
+		};
+		return _elm_lang$html$Html$program(
+			{init: init, view: stuff.view, update: stuff.update, subscriptions: subs});
+	});
+var _elm_lang$navigation$Navigation$programWithFlags = F2(
+	function (locationToMessage, stuff) {
+		var init = function (flags) {
+			return A2(
+				stuff.init,
+				flags,
+				_elm_lang$navigation$Native_Navigation.getLocation(
+					{ctor: '_Tuple0'}));
+		};
+		var subs = function (model) {
+			return _elm_lang$core$Platform_Sub$batch(
+				{
+					ctor: '::',
+					_0: _elm_lang$navigation$Navigation$subscription(
+						_elm_lang$navigation$Navigation$Monitor(locationToMessage)),
+					_1: {
+						ctor: '::',
+						_0: stuff.subscriptions(model),
+						_1: {ctor: '[]'}
+					}
+				});
+		};
+		return _elm_lang$html$Html$programWithFlags(
+			{init: init, view: stuff.view, update: stuff.update, subscriptions: subs});
+	});
+var _elm_lang$navigation$Navigation$subMap = F2(
+	function (func, _p7) {
+		var _p8 = _p7;
+		return _elm_lang$navigation$Navigation$Monitor(
+			function (_p9) {
+				return func(
+					_p8._0(_p9));
+			});
+	});
+var _elm_lang$navigation$Navigation$InternetExplorer = F2(
+	function (a, b) {
+		return {ctor: 'InternetExplorer', _0: a, _1: b};
+	});
+var _elm_lang$navigation$Navigation$Normal = function (a) {
+	return {ctor: 'Normal', _0: a};
+};
+var _elm_lang$navigation$Navigation$spawnPopWatcher = function (router) {
+	var reportLocation = function (_p10) {
+		return A2(
+			_elm_lang$core$Platform$sendToSelf,
+			router,
+			_elm_lang$navigation$Native_Navigation.getLocation(
+				{ctor: '_Tuple0'}));
+	};
+	return _elm_lang$navigation$Native_Navigation.isInternetExplorer11(
+		{ctor: '_Tuple0'}) ? A3(
+		_elm_lang$core$Task$map2,
+		_elm_lang$navigation$Navigation$InternetExplorer,
+		_elm_lang$core$Process$spawn(
+			A3(_elm_lang$dom$Dom_LowLevel$onWindow, 'popstate', _elm_lang$core$Json_Decode$value, reportLocation)),
+		_elm_lang$core$Process$spawn(
+			A3(_elm_lang$dom$Dom_LowLevel$onWindow, 'hashchange', _elm_lang$core$Json_Decode$value, reportLocation))) : A2(
+		_elm_lang$core$Task$map,
+		_elm_lang$navigation$Navigation$Normal,
+		_elm_lang$core$Process$spawn(
+			A3(_elm_lang$dom$Dom_LowLevel$onWindow, 'popstate', _elm_lang$core$Json_Decode$value, reportLocation)));
+};
+var _elm_lang$navigation$Navigation$onEffects = F4(
+	function (router, cmds, subs, _p11) {
+		var _p12 = _p11;
+		var _p15 = _p12.popWatcher;
+		var stepState = function () {
+			var _p13 = {ctor: '_Tuple2', _0: subs, _1: _p15};
+			_v6_2:
+			do {
+				if (_p13._0.ctor === '[]') {
+					if (_p13._1.ctor === 'Just') {
+						return A2(
+							_elm_lang$navigation$Navigation_ops['&>'],
+							_elm_lang$navigation$Navigation$killPopWatcher(_p13._1._0),
+							_elm_lang$core$Task$succeed(
+								A2(_elm_lang$navigation$Navigation$State, subs, _elm_lang$core$Maybe$Nothing)));
+					} else {
+						break _v6_2;
+					}
+				} else {
+					if (_p13._1.ctor === 'Nothing') {
+						return A2(
+							_elm_lang$core$Task$map,
+							function (_p14) {
+								return A2(
+									_elm_lang$navigation$Navigation$State,
+									subs,
+									_elm_lang$core$Maybe$Just(_p14));
+							},
+							_elm_lang$navigation$Navigation$spawnPopWatcher(router));
+					} else {
+						break _v6_2;
+					}
+				}
+			} while(false);
+			return _elm_lang$core$Task$succeed(
+				A2(_elm_lang$navigation$Navigation$State, subs, _p15));
+		}();
+		return A2(
+			_elm_lang$navigation$Navigation_ops['&>'],
+			_elm_lang$core$Task$sequence(
+				A2(
+					_elm_lang$core$List$map,
+					A2(_elm_lang$navigation$Navigation$cmdHelp, router, subs),
+					cmds)),
+			stepState);
+	});
+_elm_lang$core$Native_Platform.effectManagers['Navigation'] = {pkg: 'elm-lang/navigation', init: _elm_lang$navigation$Navigation$init, onEffects: _elm_lang$navigation$Navigation$onEffects, onSelfMsg: _elm_lang$navigation$Navigation$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$navigation$Navigation$cmdMap, subMap: _elm_lang$navigation$Navigation$subMap};
+
+var _evancz$url_parser$UrlParser$toKeyValuePair = function (segment) {
+	var _p0 = A2(_elm_lang$core$String$split, '=', segment);
+	if (((_p0.ctor === '::') && (_p0._1.ctor === '::')) && (_p0._1._1.ctor === '[]')) {
+		return A3(
+			_elm_lang$core$Maybe$map2,
+			F2(
+				function (v0, v1) {
+					return {ctor: '_Tuple2', _0: v0, _1: v1};
+				}),
+			_elm_lang$http$Http$decodeUri(_p0._0),
+			_elm_lang$http$Http$decodeUri(_p0._1._0));
+	} else {
+		return _elm_lang$core$Maybe$Nothing;
+	}
+};
+var _evancz$url_parser$UrlParser$parseParams = function (queryString) {
+	return _elm_lang$core$Dict$fromList(
+		A2(
+			_elm_lang$core$List$filterMap,
+			_evancz$url_parser$UrlParser$toKeyValuePair,
+			A2(
+				_elm_lang$core$String$split,
+				'&',
+				A2(_elm_lang$core$String$dropLeft, 1, queryString))));
+};
+var _evancz$url_parser$UrlParser$splitUrl = function (url) {
+	var _p1 = A2(_elm_lang$core$String$split, '/', url);
+	if ((_p1.ctor === '::') && (_p1._0 === '')) {
+		return _p1._1;
+	} else {
+		return _p1;
+	}
+};
+var _evancz$url_parser$UrlParser$parseHelp = function (states) {
+	parseHelp:
+	while (true) {
+		var _p2 = states;
+		if (_p2.ctor === '[]') {
+			return _elm_lang$core$Maybe$Nothing;
+		} else {
+			var _p4 = _p2._0;
+			var _p3 = _p4.unvisited;
+			if (_p3.ctor === '[]') {
+				return _elm_lang$core$Maybe$Just(_p4.value);
+			} else {
+				if ((_p3._0 === '') && (_p3._1.ctor === '[]')) {
+					return _elm_lang$core$Maybe$Just(_p4.value);
+				} else {
+					var _v4 = _p2._1;
+					states = _v4;
+					continue parseHelp;
+				}
+			}
+		}
+	}
+};
+var _evancz$url_parser$UrlParser$parse = F3(
+	function (_p5, url, params) {
+		var _p6 = _p5;
+		return _evancz$url_parser$UrlParser$parseHelp(
+			_p6._0(
+				{
+					visited: {ctor: '[]'},
+					unvisited: _evancz$url_parser$UrlParser$splitUrl(url),
+					params: params,
+					value: _elm_lang$core$Basics$identity
+				}));
+	});
+var _evancz$url_parser$UrlParser$parseHash = F2(
+	function (parser, location) {
+		return A3(
+			_evancz$url_parser$UrlParser$parse,
+			parser,
+			A2(_elm_lang$core$String$dropLeft, 1, location.hash),
+			_evancz$url_parser$UrlParser$parseParams(location.search));
+	});
+var _evancz$url_parser$UrlParser$parsePath = F2(
+	function (parser, location) {
+		return A3(
+			_evancz$url_parser$UrlParser$parse,
+			parser,
+			location.pathname,
+			_evancz$url_parser$UrlParser$parseParams(location.search));
+	});
+var _evancz$url_parser$UrlParser$intParamHelp = function (maybeValue) {
+	var _p7 = maybeValue;
+	if (_p7.ctor === 'Nothing') {
+		return _elm_lang$core$Maybe$Nothing;
+	} else {
+		return _elm_lang$core$Result$toMaybe(
+			_elm_lang$core$String$toInt(_p7._0));
+	}
+};
+var _evancz$url_parser$UrlParser$mapHelp = F2(
+	function (func, _p8) {
+		var _p9 = _p8;
+		return {
+			visited: _p9.visited,
+			unvisited: _p9.unvisited,
+			params: _p9.params,
+			value: func(_p9.value)
+		};
+	});
+var _evancz$url_parser$UrlParser$State = F4(
+	function (a, b, c, d) {
+		return {visited: a, unvisited: b, params: c, value: d};
+	});
+var _evancz$url_parser$UrlParser$Parser = function (a) {
+	return {ctor: 'Parser', _0: a};
+};
+var _evancz$url_parser$UrlParser$s = function (str) {
+	return _evancz$url_parser$UrlParser$Parser(
+		function (_p10) {
+			var _p11 = _p10;
+			var _p12 = _p11.unvisited;
+			if (_p12.ctor === '[]') {
+				return {ctor: '[]'};
+			} else {
+				var _p13 = _p12._0;
+				return _elm_lang$core$Native_Utils.eq(_p13, str) ? {
+					ctor: '::',
+					_0: A4(
+						_evancz$url_parser$UrlParser$State,
+						{ctor: '::', _0: _p13, _1: _p11.visited},
+						_p12._1,
+						_p11.params,
+						_p11.value),
+					_1: {ctor: '[]'}
+				} : {ctor: '[]'};
+			}
+		});
+};
+var _evancz$url_parser$UrlParser$custom = F2(
+	function (tipe, stringToSomething) {
+		return _evancz$url_parser$UrlParser$Parser(
+			function (_p14) {
+				var _p15 = _p14;
+				var _p16 = _p15.unvisited;
+				if (_p16.ctor === '[]') {
+					return {ctor: '[]'};
+				} else {
+					var _p18 = _p16._0;
+					var _p17 = stringToSomething(_p18);
+					if (_p17.ctor === 'Ok') {
+						return {
+							ctor: '::',
+							_0: A4(
+								_evancz$url_parser$UrlParser$State,
+								{ctor: '::', _0: _p18, _1: _p15.visited},
+								_p16._1,
+								_p15.params,
+								_p15.value(_p17._0)),
+							_1: {ctor: '[]'}
+						};
+					} else {
+						return {ctor: '[]'};
+					}
+				}
+			});
+	});
+var _evancz$url_parser$UrlParser$string = A2(_evancz$url_parser$UrlParser$custom, 'STRING', _elm_lang$core$Result$Ok);
+var _evancz$url_parser$UrlParser$int = A2(_evancz$url_parser$UrlParser$custom, 'NUMBER', _elm_lang$core$String$toInt);
+var _evancz$url_parser$UrlParser_ops = _evancz$url_parser$UrlParser_ops || {};
+_evancz$url_parser$UrlParser_ops['</>'] = F2(
+	function (_p20, _p19) {
+		var _p21 = _p20;
+		var _p22 = _p19;
+		return _evancz$url_parser$UrlParser$Parser(
+			function (state) {
+				return A2(
+					_elm_lang$core$List$concatMap,
+					_p22._0,
+					_p21._0(state));
+			});
+	});
+var _evancz$url_parser$UrlParser$map = F2(
+	function (subValue, _p23) {
+		var _p24 = _p23;
+		return _evancz$url_parser$UrlParser$Parser(
+			function (_p25) {
+				var _p26 = _p25;
+				return A2(
+					_elm_lang$core$List$map,
+					_evancz$url_parser$UrlParser$mapHelp(_p26.value),
+					_p24._0(
+						{visited: _p26.visited, unvisited: _p26.unvisited, params: _p26.params, value: subValue}));
+			});
+	});
+var _evancz$url_parser$UrlParser$oneOf = function (parsers) {
+	return _evancz$url_parser$UrlParser$Parser(
+		function (state) {
+			return A2(
+				_elm_lang$core$List$concatMap,
+				function (_p27) {
+					var _p28 = _p27;
+					return _p28._0(state);
+				},
+				parsers);
+		});
+};
+var _evancz$url_parser$UrlParser$top = _evancz$url_parser$UrlParser$Parser(
+	function (state) {
+		return {
+			ctor: '::',
+			_0: state,
+			_1: {ctor: '[]'}
+		};
+	});
+var _evancz$url_parser$UrlParser_ops = _evancz$url_parser$UrlParser_ops || {};
+_evancz$url_parser$UrlParser_ops['<?>'] = F2(
+	function (_p30, _p29) {
+		var _p31 = _p30;
+		var _p32 = _p29;
+		return _evancz$url_parser$UrlParser$Parser(
+			function (state) {
+				return A2(
+					_elm_lang$core$List$concatMap,
+					_p32._0,
+					_p31._0(state));
+			});
+	});
+var _evancz$url_parser$UrlParser$QueryParser = function (a) {
+	return {ctor: 'QueryParser', _0: a};
+};
+var _evancz$url_parser$UrlParser$customParam = F2(
+	function (key, func) {
+		return _evancz$url_parser$UrlParser$QueryParser(
+			function (_p33) {
+				var _p34 = _p33;
+				var _p35 = _p34.params;
+				return {
+					ctor: '::',
+					_0: A4(
+						_evancz$url_parser$UrlParser$State,
+						_p34.visited,
+						_p34.unvisited,
+						_p35,
+						_p34.value(
+							func(
+								A2(_elm_lang$core$Dict$get, key, _p35)))),
+					_1: {ctor: '[]'}
+				};
+			});
+	});
+var _evancz$url_parser$UrlParser$stringParam = function (name) {
+	return A2(_evancz$url_parser$UrlParser$customParam, name, _elm_lang$core$Basics$identity);
+};
+var _evancz$url_parser$UrlParser$intParam = function (name) {
+	return A2(_evancz$url_parser$UrlParser$customParam, name, _evancz$url_parser$UrlParser$intParamHelp);
+};
+
 var _user$project$Types$Model = F5(
 	function (a, b, c, d, e) {
-		return {at: a, auth: b, posts: c, examples: d, history: e};
+		return {posts: a, examples: b, current: c, index: d, maxi: e};
 	});
-var _user$project$Types$LoginInfo = F3(
+var _user$project$Types$History = F2(
+	function (a, b) {
+		return {at: a, arr: b};
+	});
+var _user$project$Types$PostData = F4(
+	function (a, b, c, d) {
+		return {heading: a, datetime: b, content: c, url: d};
+	});
+var _user$project$Types$ExampleData = F3(
 	function (a, b, c) {
-		return {token: a, login: b, password: c};
+		return {datetime: a, linkedto: b, url: c};
 	});
-var _user$project$Types$Post = F3(
-	function (a, b, c) {
-		return {heading: a, date: b, content: c};
-	});
-var _user$project$Types$Example = F3(
-	function (a, b, c) {
-		return {hash: a, url: b, date: c};
-	});
-var _user$project$Types$Blog = function (a) {
-	return {ctor: 'Blog', _0: a};
+var _user$project$Types$Post = function (a) {
+	return {ctor: 'Post', _0: a};
 };
-var _user$project$Types$Unknown = {ctor: 'Unknown'};
+var _user$project$Types$Blog = {ctor: 'Blog'};
+var _user$project$Types$Example = function (a) {
+	return {ctor: 'Example', _0: a};
+};
 var _user$project$Types$Portfolio = {ctor: 'Portfolio'};
 var _user$project$Types$About = {ctor: 'About'};
 var _user$project$Types$Contacts = {ctor: 'Contacts'};
 var _user$project$Types$Menu = {ctor: 'Menu'};
+var _user$project$Types$Unknown = {ctor: 'Unknown'};
 var _user$project$Types$Index = {ctor: 'Index'};
-var _user$project$Types$Out = function (a) {
-	return {ctor: 'Out', _0: a};
+var _user$project$Types$Forward = function (a) {
+	return {ctor: 'Forward', _0: a};
+};
+var _user$project$Types$Back = function (a) {
+	return {ctor: 'Back', _0: a};
+};
+var _user$project$Types$Url = function (a) {
+	return {ctor: 'Url', _0: a};
 };
 var _user$project$Types$Go = function (a) {
 	return {ctor: 'Go', _0: a};
 };
-var _user$project$Types$Back = {ctor: 'Back'};
-var _user$project$Types$Forward = {ctor: 'Forward'};
 var _user$project$Types$NoOp = {ctor: 'NoOp'};
 
-var _user$project$HistoryUtils$forwardat = function (model) {
-	var len = _elm_lang$core$Array$length(model.history);
-	return (_elm_lang$core$Native_Utils.cmp(len - 1, model.at) > 0) ? _elm_lang$core$Maybe$Just(model.at + 1) : _elm_lang$core$Maybe$Nothing;
-};
-var _user$project$HistoryUtils$backat = function (model) {
-	return (_elm_lang$core$Native_Utils.cmp(model.at, 0) > 0) ? _elm_lang$core$Maybe$Just(model.at - 1) : _elm_lang$core$Maybe$Nothing;
-};
-var _user$project$HistoryUtils$geturl = function (r) {
-	var _p0 = r;
-	switch (_p0.ctor) {
-		case 'Index':
-			return '/';
-		case 'Menu':
-			return '/menu';
-		case 'Contacts':
-			return '/contacts';
-		case 'About':
-			return '/about';
-		case 'Portfolio':
-			return '/portfolio';
-		case 'Blog':
-			if (_p0._0.ctor === 'Nothing') {
-				return '/blog';
-			} else {
-				var _p1 = _p0._0._0;
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					'/blog/',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_p1.heading,
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							'/',
-							_elm_lang$core$Basics$toString(_p1.date))));
-			}
-		default:
-			return '/404';
-	}
-};
-var _user$project$HistoryUtils$getlocation = function (r) {
-	return {
-		ctor: '_Tuple2',
-		_0: r,
-		_1: _user$project$HistoryUtils$geturl(r)
-	};
-};
-var _user$project$HistoryUtils$getlocationathistory = F2(
-	function (i, h) {
-		return A2(
-			_elm_lang$core$Maybe$withDefault,
-			_user$project$HistoryUtils$getlocation(_user$project$Types$Unknown),
-			A2(_elm_lang$core$Array$get, i, h));
-	});
-
-var _user$project$Ports$changereallocation = _elm_lang$core$Native_Platform.outgoingPort(
-	'changereallocation',
-	function (v) {
-		return v;
-	});
-var _user$project$Ports$back = _elm_lang$core$Native_Platform.outgoingPort(
-	'back',
-	function (v) {
-		return null;
-	});
-var _user$project$Ports$forward = _elm_lang$core$Native_Platform.outgoingPort(
-	'forward',
-	function (v) {
-		return null;
-	});
-var _user$project$Ports$out = _elm_lang$core$Native_Platform.outgoingPort(
-	'out',
-	function (v) {
-		return v;
-	});
-
-var _user$project$View$contacts = function (cl) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class(
-				A2(_elm_lang$core$Basics_ops['++'], 'view view_contacts ', cl)),
-			_1: {ctor: '[]'}
-		},
-		{
+var _user$project$Routing$locationparser = _evancz$url_parser$UrlParser$oneOf(
+	{
+		ctor: '::',
+		_0: A2(_evancz$url_parser$UrlParser$map, _user$project$Types$Index, _evancz$url_parser$UrlParser$top),
+		_1: {
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$div,
-				{ctor: '[]'},
+				_evancz$url_parser$UrlParser$map,
+				_user$project$Types$Index,
+				_evancz$url_parser$UrlParser$s('index.html')),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_evancz$url_parser$UrlParser$map,
+					_user$project$Types$Index,
+					_evancz$url_parser$UrlParser$s('index')),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_evancz$url_parser$UrlParser$map,
+						_user$project$Types$Unknown,
+						_evancz$url_parser$UrlParser$s('404')),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_evancz$url_parser$UrlParser$map,
+							_user$project$Types$Unknown,
+							_evancz$url_parser$UrlParser$s('unknown')),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_evancz$url_parser$UrlParser$map,
+								_user$project$Types$Menu,
+								_evancz$url_parser$UrlParser$s('menu')),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_evancz$url_parser$UrlParser$map,
+									_user$project$Types$Contacts,
+									_evancz$url_parser$UrlParser$s('contacts')),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_evancz$url_parser$UrlParser$map,
+										_user$project$Types$About,
+										_evancz$url_parser$UrlParser$s('about')),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_evancz$url_parser$UrlParser$map,
+											_user$project$Types$Post,
+											A2(
+												_evancz$url_parser$UrlParser_ops['</>'],
+												_evancz$url_parser$UrlParser$s('blog'),
+												_evancz$url_parser$UrlParser$string)),
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_evancz$url_parser$UrlParser$map,
+												_user$project$Types$Blog,
+												_evancz$url_parser$UrlParser$s('blog')),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_evancz$url_parser$UrlParser$map,
+													_user$project$Types$Example,
+													A2(
+														_evancz$url_parser$UrlParser_ops['</>'],
+														_evancz$url_parser$UrlParser$s('portfolio'),
+														_evancz$url_parser$UrlParser$string)),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_evancz$url_parser$UrlParser$map,
+														_user$project$Types$Portfolio,
+														_evancz$url_parser$UrlParser$s('portfolio')),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
+var _user$project$Routing$getRouteFromLocation = function (l) {
+	var _p0 = A2(_evancz$url_parser$UrlParser$parsePath, _user$project$Routing$locationparser, l);
+	if (_p0.ctor === 'Just') {
+		return A2(_elm_lang$core$Debug$log, 'getrfl just', _p0._0);
+	} else {
+		return A2(_elm_lang$core$Debug$log, 'getrfl nothing', _user$project$Types$Unknown);
+	}
+};
+
+var _user$project$Init$init = function (l) {
+	return {
+		ctor: '_Tuple2',
+		_0: A5(
+			_user$project$Types$Model,
+			{ctor: '[]'},
+			{ctor: '[]'},
+			_user$project$Routing$getRouteFromLocation(l),
+			1,
+			1),
+		_1: _elm_lang$core$Platform_Cmd$none
+	};
+};
+
+var _user$project$View$unknown = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('view view_404 '),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$h1,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('404'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {ctor: '[]'}
+	});
+var _user$project$View$contacts = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('view view_contacts '),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$a,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$href('mailto:maksym.lutai@gmail.com'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('email'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$a,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('email'),
+					_0: _elm_lang$html$Html_Attributes$href('http://github.com/maxlutay'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('github'),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$div,
-					{ctor: '[]'},
+					_elm_lang$html$Html$a,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text('github'),
+						_0: _elm_lang$html$Html_Attributes$href('http://twitter.com/max_lutay'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('twitter'),
 						_1: {ctor: '[]'}
 					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('twitter'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
+				_1: {ctor: '[]'}
 			}
-		});
-};
-var _user$project$View$unknown = function (cl) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class(
-				A2(_elm_lang$core$Basics_ops['++'], 'view view_404 ', cl)),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$h1,
-				{ctor: '[]'},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('404'),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		});
-};
+		}
+	});
 var _user$project$View$vref = F3(
-	function (m, c, t) {
+	function (m, cl, txt) {
 		return A2(
-			_elm_lang$html$Html$a,
+			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Events$onClick(m),
+				_0: _elm_lang$html$Html_Attributes$class(
+					A2(_elm_lang$core$Basics_ops['++'], 'link ', cl)),
 				_1: {
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class(
-						A2(_elm_lang$core$Basics_ops['++'], 'btn ', c)),
+					_0: _elm_lang$html$Html_Events$onClick(m),
 					_1: {ctor: '[]'}
 				}
 			},
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html$text(t),
+				_0: _elm_lang$html$Html$text(txt),
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$View$homebutton = A3(
-	_user$project$View$vref,
-	_user$project$Types$Go(
-		_user$project$HistoryUtils$getlocation(_user$project$Types$Index)),
-	'button button_home button_control ',
-	'HOME');
+var _user$project$View$index = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('view view_index '),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$h1,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('view__h1'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('Max Lutay'),
+				_1: {
+					ctor: '::',
+					_0: A3(
+						_user$project$View$vref,
+						_user$project$Types$Go(_user$project$Types$Menu),
+						'view__rtcornerlink',
+						'/menu'),
+					_1: {ctor: '[]'}
+				}
+			}),
+		_1: {ctor: '[]'}
+	});
+var _user$project$View$menu = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('view view_menu '),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A3(
+			_user$project$View$vref,
+			_user$project$Types$Go(_user$project$Types$Contacts),
+			'',
+			'/contacts'),
+		_1: {
+			ctor: '::',
+			_0: A3(
+				_user$project$View$vref,
+				_user$project$Types$Go(_user$project$Types$About),
+				'',
+				'/about'),
+			_1: {
+				ctor: '::',
+				_0: A3(
+					_user$project$View$vref,
+					_user$project$Types$Go(_user$project$Types$Portfolio),
+					'',
+					'/portfolio'),
+				_1: {
+					ctor: '::',
+					_0: A3(
+						_user$project$View$vref,
+						_user$project$Types$Go(_user$project$Types$Blog),
+						'',
+						'/blog'),
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	});
+var _user$project$View$homebutton = function (cl) {
+	return A3(
+		_user$project$View$vref,
+		_user$project$Types$Go(_user$project$Types$Index),
+		A2(_elm_lang$core$Basics_ops['++'], 'button button_home button_control ', cl),
+		'HOME');
+};
 var _user$project$View$backbutton = function (cl) {
 	return A3(
 		_user$project$View$vref,
-		_user$project$Types$Back,
+		_user$project$Types$Back(1),
 		A2(_elm_lang$core$Basics_ops['++'], 'button button_back button_control ', cl),
 		'BACK');
 };
 var _user$project$View$forwardbutton = function (cl) {
 	return A3(
 		_user$project$View$vref,
-		_user$project$Types$Forward,
-		A2(_elm_lang$core$Basics_ops['++'], 'button button_control ', cl),
+		_user$project$Types$Forward(1),
+		A2(_elm_lang$core$Basics_ops['++'], 'button button_forward button_control ', cl),
 		'FORWARD');
 };
-var _user$project$View$index = function (cl) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
+var _user$project$View$views = {
+	ctor: '::',
+	_0: _user$project$View$index,
+	_1: {
+		ctor: '::',
+		_0: _user$project$View$menu,
+		_1: {
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class(
-				A2(_elm_lang$core$Basics_ops['++'], 'view view_index ', cl)),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$h1,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('view__h1'),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('Max Lutay'),
-					_1: {ctor: '[]'}
-				}),
+			_0: _user$project$View$contacts,
 			_1: {
 				ctor: '::',
-				_0: A3(
-					_user$project$View$vref,
-					_user$project$Types$Go(
-						_user$project$HistoryUtils$getlocation(_user$project$Types$Menu)),
-					'link view__rtcornerlink',
-					'/menu'),
+				_0: _user$project$View$unknown,
 				_1: {ctor: '[]'}
 			}
-		});
+		}
+	}
 };
-var _user$project$View$menu = function (cl) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class(
-				A2(_elm_lang$core$Basics_ops['++'], 'view view_menu ', cl)),
-			_1: {ctor: '[]'}
-		},
-		A2(
-			_elm_lang$core$List$map,
-			function (loc) {
-				return A3(
-					_user$project$View$vref,
-					_user$project$Types$Go(loc),
-					'link',
-					_elm_lang$core$Tuple$second(loc));
-			},
-			{
-				ctor: '::',
-				_0: _user$project$HistoryUtils$getlocation(_user$project$Types$Contacts),
-				_1: {
-					ctor: '::',
-					_0: _user$project$HistoryUtils$getlocation(_user$project$Types$About),
-					_1: {
-						ctor: '::',
-						_0: _user$project$HistoryUtils$getlocation(_user$project$Types$Portfolio),
-						_1: {
-							ctor: '::',
-							_0: _user$project$HistoryUtils$getlocation(
-								_user$project$Types$Blog(_elm_lang$core$Maybe$Nothing)),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			}));
+var _user$project$View$homeavailable = function (m) {
+	return !_elm_lang$core$Native_Utils.eq(m.current, _user$project$Types$Index);
 };
-var _user$project$View$getpage = F2(
-	function (md, r) {
+var _user$project$View$forwardavailable = function (m) {
+	return _elm_lang$core$Native_Utils.cmp(m.index, m.maxi) < 0;
+};
+var _user$project$View$backavailable = function (m) {
+	return _elm_lang$core$Native_Utils.cmp(m.index, 1) > 0;
+};
+var _user$project$View$onoff = F2(
+	function (m, fn) {
+		return fn(m) ? 'on' : 'off';
+	});
+var _user$project$View$getPage = F2(
+	function (r, m) {
 		var controlbuttons = A2(
 			_elm_lang$html$Html$div,
 			{
@@ -9489,67 +10707,55 @@ var _user$project$View$getpage = F2(
 			{
 				ctor: '::',
 				_0: _user$project$View$backbutton(
-					(!_elm_lang$core$Native_Utils.eq(
-						_user$project$HistoryUtils$backat(md),
-						_elm_lang$core$Maybe$Nothing)) ? 'button_on' : 'button_off'),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'button_',
+						A2(_user$project$View$onoff, m, _user$project$View$backavailable))),
 				_1: {
 					ctor: '::',
-					_0: _user$project$View$homebutton,
+					_0: _user$project$View$homebutton(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'button_',
+							A2(_user$project$View$onoff, m, _user$project$View$homeavailable))),
 					_1: {
 						ctor: '::',
 						_0: _user$project$View$forwardbutton(
-							(!_elm_lang$core$Native_Utils.eq(
-								_user$project$HistoryUtils$forwardat(md),
-								_elm_lang$core$Maybe$Nothing)) ? 'button_on' : 'button_off'),
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'button_',
+								A2(_user$project$View$onoff, m, _user$project$View$forwardavailable))),
 						_1: {ctor: '[]'}
 					}
 				}
 			});
-		var views = A2(
+		var vs = A2(
 			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
 				_0: _elm_lang$html$Html_Attributes$class('views'),
 				_1: {ctor: '[]'}
 			},
-			{
-				ctor: '::',
-				_0: _user$project$View$index(''),
-				_1: {
-					ctor: '::',
-					_0: _user$project$View$unknown(''),
-					_1: {
-						ctor: '::',
-						_0: _user$project$View$menu(''),
-						_1: {
-							ctor: '::',
-							_0: _user$project$View$contacts(''),
-							_1: {ctor: '[]'}
-						}
-					}
-				}
-			});
-		var mainclass = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'main main_',
-			function () {
-				var _p0 = r;
-				switch (_p0.ctor) {
-					case 'Index':
-						return 'index';
-					case 'Menu':
-						return 'menu';
-					case 'Contacts':
-						return 'contacts';
-					default:
-						return '404';
-				}
-			}());
+			_user$project$View$views);
+		var mainclass = function () {
+			var _p0 = r;
+			switch (_p0.ctor) {
+				case 'Index':
+					return 'index';
+				case 'Menu':
+					return 'menu';
+				case 'Contacts':
+					return 'contacts';
+				default:
+					return '404';
+			}
+		}();
 		return A2(
 			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class(mainclass),
+				_0: _elm_lang$html$Html_Attributes$class(
+					A2(_elm_lang$core$Basics_ops['++'], 'main main_', mainclass)),
 				_1: {ctor: '[]'}
 			},
 			{
@@ -9557,96 +10763,83 @@ var _user$project$View$getpage = F2(
 				_0: controlbuttons,
 				_1: {
 					ctor: '::',
-					_0: views,
+					_0: vs,
 					_1: {ctor: '[]'}
 				}
 			});
 	});
-var _user$project$View$view = function (model) {
-	return A2(
-		_user$project$View$getpage,
-		model,
-		_elm_lang$core$Tuple$first(
-			A2(_user$project$HistoryUtils$getlocationathistory, model.at, model.history)));
+var _user$project$View$view = function (m) {
+	var route = m.current;
+	return A2(_user$project$View$getPage, route, m);
 };
 
-var _user$project$Main$update = F2(
-	function (msg, model) {
-		var prevhistory = A2(_elm_lang$core$Debug$log, 'hist: ~', model.history);
-		var index = model.at;
-		var from = A2(_user$project$HistoryUtils$getlocationathistory, model.at, model.history);
+var _user$project$Update$update = F2(
+	function (msg, m) {
+		var log = A2(
+			_elm_lang$core$Debug$log,
+			'up',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(msg),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					' * ',
+					_elm_lang$core$Basics$toString(m))));
 		var _p0 = msg;
 		switch (_p0.ctor) {
-			case 'Go':
-				var _p1 = _p0._0;
-				return (!_elm_lang$core$Native_Utils.eq(from, _p1)) ? {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							history: A2(
-								_elm_lang$core$Array$push,
-								_p1,
-								A3(_elm_lang$core$Array$slice, 0, index + 1, model.history)),
-							at: model.at + 1
-						}),
-					_1: _user$project$Ports$changereallocation(
-						_elm_lang$core$Tuple$second(_p1))
-				} : {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'NoOp':
+				return {ctor: '_Tuple2', _0: m, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'Back':
-				var newat = A2(
-					_elm_lang$core$Maybe$withDefault,
-					0,
-					_user$project$HistoryUtils$backat(model));
-				var tourl = _elm_lang$core$Tuple$second(
-					A2(_user$project$HistoryUtils$getlocationathistory, newat, model.history));
+				var at = (_elm_lang$core$Native_Utils.cmp(m.index, 1) > 0) ? (m.index - 1) : 1;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{at: newat}),
-					_1: _user$project$Ports$back(
-						{ctor: '_Tuple0'})
+						m,
+						{index: at}),
+					_1: _elm_lang$navigation$Navigation$back(1)
 				};
 			case 'Forward':
-				var newat = A2(
-					_elm_lang$core$Maybe$withDefault,
-					_elm_lang$core$Array$length(model.history) - 1,
-					_user$project$HistoryUtils$forwardat(model));
-				var tourl = _elm_lang$core$Tuple$second(
-					A2(_user$project$HistoryUtils$getlocationathistory, newat, model.history));
+				var at = (_elm_lang$core$Native_Utils.cmp(m.index, m.maxi) < 0) ? (m.index + 1) : m.maxi;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{at: newat}),
-					_1: _user$project$Ports$forward(
-						{ctor: '_Tuple0'})
+						m,
+						{index: at}),
+					_1: _elm_lang$navigation$Navigation$forward(1)
+				};
+			case 'Go':
+				var _p1 = _p0._0;
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						m,
+						{current: _p1, index: m.index + 1, maxi: m.index + 1}),
+					_1: _elm_lang$navigation$Navigation$newUrl(
+						_elm_lang$core$String$toLower(
+							_elm_lang$core$Basics$toString(_p1)))
 				};
 			default:
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						m,
+						{current: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 		}
 	});
-var _user$project$Main$init = {
-	ctor: '_Tuple2',
-	_0: A5(
-		_user$project$Types$Model,
-		0,
-		_elm_lang$core$Maybe$Nothing,
-		{ctor: '[]'},
-		{ctor: '[]'},
-		A2(
-			_elm_lang$core$Array$push,
-			_user$project$HistoryUtils$getlocation(_user$project$Types$Index),
-			_elm_lang$core$Array$empty)),
-	_1: _elm_lang$core$Platform_Cmd$none
-};
-var _user$project$Main$main = _elm_lang$html$Html$program(
+
+var _user$project$Main$main = A2(
+	_elm_lang$navigation$Navigation$program,
+	function (_p0) {
+		return _user$project$Types$Url(
+			_user$project$Routing$getRouteFromLocation(_p0));
+	},
 	{
-		init: _user$project$Main$init,
+		init: _user$project$Init$init,
 		view: _user$project$View$view,
-		update: _user$project$Main$update,
-		subscriptions: function (_p2) {
+		update: _user$project$Update$update,
+		subscriptions: function (_p1) {
 			return _elm_lang$core$Platform_Sub$none;
 		}
 	})();
@@ -9771,7 +10964,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "\r\n.main{\r\n    max-width: 100%;\r\n    max-height: 100%;\r\n    height:100vh;\r\n    width: 100vw;\r\n    background: red; \r\n    color: white;\r\n    \r\n    transition: 0.25s;\r\n}\r\n\r\n\r\n\r\n.main_404{\r\n    background: lightcoral;\r\n    will-change: background;\r\n}\r\n\r\n.main_index{\r\n    background: lightgreen;\r\n    will-change: background;\r\n}\r\n\r\n\r\n.main_menu{\r\n    background: lightblue;\r\n    will-change: background;\r\n}\r\n\r\n\r\n.main_contacts{\r\n    background: lightslategray;\r\n}\r\n\r\n.main_index .button_home{\r\n    visibility: hidden;\r\n}\r\n\r\n\r\n.views{\r\n    height: 300vh;\r\n    width: 300vw;\r\n    position: absolute;\r\n    transition: 0.25s;\r\n    will-change: transform;\r\n}\r\n\r\n\r\n\r\n.main_index > .views{\r\n    -webkit-transform: translateY(-100vh);\r\n            transform: translateY(-100vh);\r\n}\r\n\r\n.main_404 > .views {\r\n    -webkit-transform: translateY(-200vh);\r\n            transform: translateY(-200vh);\r\n}\r\n\r\n.main_menu > .views,\r\n.main_contacts > .views {\r\n    -webkit-transform: translate(-100vw, -100vh);\r\n            transform: translate(-100vw, -100vh);\r\n}\r\n\r\n.main_menu .view_menu,\r\n.main_contacts .view_contacts{\r\n    opacity: 1;\r\n    z-index: 100;\r\n}\r\n\r\n.main_menu .view_contacts,\r\n.main_contacts .view_menu{\r\n    opacity: 0;\r\n    z-index: 99;\r\n}\r\n\r\n\r\n.main_about > .views{\r\n    -webkit-transform: translateX(-100vw);\r\n            transform: translateX(-100vw);\r\n}\r\n\r\n\r\n.main_portfolio > .views{\r\n    -webkit-transform: translate(-200vw, -100vh);\r\n            transform: translate(-200vw, -100vh);\r\n}\r\n\r\n.main_blog > .views{\r\n    -webkit-transform: translate(-100vw, -200vh);\r\n            transform: translate(-100vw, -200vh);\r\n}\r\n\r\n.main_post > .views{\r\n    -webkit-transform: translate(-200vw, -200vh);\r\n            transform: translate(-200vw, -200vh);\r\n}\r\n\r\n\r\n.view{\r\n    width: 96vw;\r\n    height: 88vh;\r\n    transition: 0.5s;\r\n    color: black;\r\n\r\n    border: 2px dashed black;\r\n    background: transparent;\r\n\r\n    position: absolute;\r\n\r\n    margin: 10vh 2vw 2vh 2vw;\r\n\r\n\r\n    display: -webkit-box;\r\n\r\n\r\n    display: -ms-flexbox;\r\n\r\n\r\n    display: flex;\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n.view_404{\r\n    top: 200vh;\r\n    left: 0vw;\r\n}\r\n\r\n\r\n.view_index{\r\n    top: 100vh;\r\n    left: 0;\r\n\r\n\r\n\r\n    -webkit-box-orient: vertical;\r\n\r\n\r\n\r\n    -webkit-box-direction: normal;\r\n\r\n\r\n\r\n        -ms-flex-direction: column;\r\n\r\n\r\n\r\n            flex-direction: column;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n\r\n\r\n}\r\n\r\n\r\n.view__h1{\r\n    font-size: 24.5vh;\r\n}\r\n\r\n\r\n.view__rtcornerlink{\r\n    font-size: 6.125vh;\r\n    position: absolute;\r\n    display: block;\r\n    top: 2vh;\r\n    right: 2vw;\r\n}\r\n\r\n\r\n.view_menu,\r\n.view_contacts{\r\n    top: 100vh;\r\n    left: 100vw\r\n}\r\n\r\n\r\n.view_menu{\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n    font-size: 5.5vh;\r\n\r\n}\r\n\r\n.view_contacts{\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    font-size: 5.11111vw;\r\n\r\n    color: white;\r\n}\r\n\r\n.view_about{\r\n    top:0;\r\n    left: 100vw;\r\n}\r\n\r\n.view_portfolio{\r\n    top: 100vh;\r\n    left: 200vw;\r\n}\r\n\r\n.view_blog{\r\n    top: 200vh;\r\n    left: 100vw;\r\n}\r\n\r\n\r\n.link{\r\n    text-decoration: underline;\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n\r\n.control-buttons{\r\n    position: fixed;\r\n    height: 10vh;\r\n    width: 100vw;\r\n    \r\n    display: -webkit-box;\r\n    \r\n    display: -ms-flexbox;\r\n    \r\n    display: flex;\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n\r\n    z-index: 500;\r\n\r\n    transition: 0.5s;\r\n    \r\n}\r\n\r\n\r\n.button{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    font-size: 6.66667vh;\r\n\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n.button_control{\r\n    color: black;\r\n    font-style: bold;\r\n\r\n    font-size: 100\r\n\r\n}\r\n\r\n.button_on{\r\n}\r\n\r\n.button_off{\r\n    visibility: hidden;\r\n}", ""]);
+exports.push([module.i, "\r\n.main{\r\n    max-width: 100%;\r\n    max-height: 100%;\r\n    height:100vh;\r\n    width: 100vw;\r\n    background: red; \r\n    color: white;\r\n    \r\n    transition: 0.25s;\r\n}\r\n\r\n\r\n\r\n.main_404{\r\n    background: lightcoral;\r\n    will-change: background;\r\n}\r\n\r\n.main_index{\r\n    background: lightgreen;\r\n    will-change: background;\r\n}\r\n\r\n\r\n.main_menu{\r\n    background: lightblue;\r\n    will-change: background;\r\n}\r\n\r\n\r\n.main_contacts{\r\n    background: lightslategray;\r\n}\r\n\r\n.main_index .button_home{\r\n    visibility: hidden;\r\n}\r\n\r\n\r\n.views{\r\n    height: 300vh;\r\n    width: 300vw;\r\n    position: absolute;\r\n    transition: 0.25s;\r\n    will-change: transform;\r\n}\r\n\r\n\r\n\r\n.main_index > .views{\r\n    -webkit-transform: translateY(-100vh);\r\n            transform: translateY(-100vh);\r\n}\r\n\r\n.main_404 > .views {\r\n    -webkit-transform: translateY(-200vh);\r\n            transform: translateY(-200vh);\r\n}\r\n\r\n.main_menu > .views,\r\n.main_contacts > .views {\r\n    -webkit-transform: translate(-100vw, -100vh);\r\n            transform: translate(-100vw, -100vh);\r\n}\r\n\r\n.main_menu .view_menu,\r\n.main_contacts .view_contacts{\r\n    opacity: 1;\r\n    z-index: 100;\r\n}\r\n\r\n.main_menu .view_contacts,\r\n.main_contacts .view_menu{\r\n    opacity: 0;\r\n    z-index: 99;\r\n}\r\n\r\n\r\n.main_about > .views{\r\n    -webkit-transform: translateX(-100vw);\r\n            transform: translateX(-100vw);\r\n}\r\n\r\n\r\n.main_portfolio > .views{\r\n    -webkit-transform: translate(-200vw, -100vh);\r\n            transform: translate(-200vw, -100vh);\r\n}\r\n\r\n.main_blog > .views{\r\n    -webkit-transform: translate(-100vw, -200vh);\r\n            transform: translate(-100vw, -200vh);\r\n}\r\n\r\n.main_post > .views{\r\n    -webkit-transform: translate(-200vw, -200vh);\r\n            transform: translate(-200vw, -200vh);\r\n}\r\n\r\n\r\n.view{\r\n    width: 96vw;\r\n    height: 88vh;\r\n    transition: 0.5s;\r\n    color: black;\r\n\r\n    border: 2px dashed black;\r\n    background: transparent;\r\n\r\n    position: absolute;\r\n\r\n    margin: 10vh 2vw 2vh 2vw;\r\n\r\n\r\n    display: -webkit-box;\r\n\r\n\r\n    display: -ms-flexbox;\r\n\r\n\r\n    display: flex;\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n.view_404{\r\n    top: 200vh;\r\n    left: 0vw;\r\n}\r\n\r\n\r\n.view_index{\r\n    top: 100vh;\r\n    left: 0;\r\n\r\n\r\n\r\n    -webkit-box-orient: vertical;\r\n\r\n\r\n\r\n    -webkit-box-direction: normal;\r\n\r\n\r\n\r\n        -ms-flex-direction: column;\r\n\r\n\r\n\r\n            flex-direction: column;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n\r\n\r\n}\r\n\r\n\r\n.view__h1{\r\n    font-size: 24.5vh;\r\n}\r\n\r\n\r\n.view__rtcornerlink{\r\n    font-size: 6.125vh;\r\n    position: absolute;\r\n    display: block;\r\n    top: 2vh;\r\n    right: 2vw;\r\n}\r\n\r\n\r\n.view_menu,\r\n.view_contacts{\r\n    top: 100vh;\r\n    left: 100vw\r\n}\r\n\r\n\r\n.view_menu{\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n    font-size: 5.5vh;\r\n\r\n}\r\n\r\n.view_contacts{\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    font-size: 5.11111vw;\r\n\r\n    color: white;\r\n}\r\n\r\n.view_about{\r\n    top:0;\r\n    left: 100vw;\r\n}\r\n\r\n.view_portfolio{\r\n    top: 100vh;\r\n    left: 200vw;\r\n}\r\n\r\n.view_blog{\r\n    top: 200vh;\r\n    left: 100vw;\r\n}\r\n\r\n\r\n.link{\r\n    text-decoration: underline;\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n\r\n.control-buttons{\r\n    position: fixed;\r\n    height: 10vh;\r\n    width: 100vw;\r\n    \r\n    display: -webkit-box;\r\n    \r\n    display: -ms-flexbox;\r\n    \r\n    display: flex;\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n\r\n    z-index: 500;\r\n\r\n    transition: 0.5s;\r\n    \r\n}\r\n\r\n\r\n.button{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    font-size: 6.66667vh;\r\n\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n.button_control{\r\n    color: black;\r\n    font-style: bold;\r\n\r\n    font-size: 100;\r\n\r\n}\r\n\r\n.button_on{\r\n}\r\n\r\n.button_off{\r\n    visibility: hidden;\r\n}", ""]);
 
 // exports
 
@@ -9886,7 +11079,7 @@ window.app = __webpack_require__(2).Main.fullscreen();//{path: document.location
 
 
 
-
+/*
 
 window.app.ports.changereallocation.subscribe(path => {
    window.history.replaceState('', '', path);
@@ -9896,7 +11089,7 @@ window.app.ports.changereallocation.subscribe(path => {
 
 window.app.ports.back.subscribe(() => {  })//window.history.back(); });
 window.app.ports.forward.subscribe(() => { })// window.history.forward(); });
-window.app.ports.out.subscribe(path => { })//window.location = path;});
+window.app.ports.out.subscribe(path => { })//window.location = path;});*/
 
 /***/ })
 /******/ ]);
