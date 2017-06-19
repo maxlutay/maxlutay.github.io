@@ -10369,6 +10369,18 @@ var _user$project$Types$Go = function (a) {
 };
 var _user$project$Types$NoOp = {ctor: 'NoOp'};
 
+var _user$project$Routing$getPathFromRoute = function (r) {
+	var _p0 = r;
+	switch (_p0.ctor) {
+		case 'Post':
+			return A2(_elm_lang$core$Basics_ops['++'], 'blog/post/', _p0._0);
+		case 'Example':
+			return 'portfolio/example/';
+		default:
+			return _elm_lang$core$String$toLower(
+				_elm_lang$core$Basics$toString(r));
+	}
+};
 var _user$project$Routing$locationparser = _evancz$url_parser$UrlParser$oneOf(
 	{
 		ctor: '::',
@@ -10422,7 +10434,7 @@ var _user$project$Routing$locationparser = _evancz$url_parser$UrlParser$oneOf(
 											_user$project$Types$Post,
 											A2(
 												_evancz$url_parser$UrlParser_ops['</>'],
-												_evancz$url_parser$UrlParser$s('blog'),
+												_evancz$url_parser$UrlParser$s('blog/post'),
 												_evancz$url_parser$UrlParser$string)),
 										_1: {
 											ctor: '::',
@@ -10459,11 +10471,15 @@ var _user$project$Routing$locationparser = _evancz$url_parser$UrlParser$oneOf(
 		}
 	});
 var _user$project$Routing$getRouteFromLocation = function (l) {
-	var _p0 = A2(_evancz$url_parser$UrlParser$parsePath, _user$project$Routing$locationparser, l);
-	if (_p0.ctor === 'Just') {
-		return A2(_elm_lang$core$Debug$log, 'getrfl just', _p0._0);
+	var log = A2(
+		_elm_lang$core$Debug$log,
+		'gRfL',
+		_elm_lang$core$Basics$toString(l));
+	var _p1 = A2(_evancz$url_parser$UrlParser$parsePath, _user$project$Routing$locationparser, l);
+	if (_p1.ctor === 'Just') {
+		return _p1._0;
 	} else {
-		return A2(_elm_lang$core$Debug$log, 'getrfl nothing', _user$project$Types$Unknown);
+		return _user$project$Types$Unknown;
 	}
 };
 
@@ -10481,6 +10497,83 @@ var _user$project$Init$init = function (l) {
 	};
 };
 
+var _user$project$View$getPosts = {
+	ctor: '::',
+	_0: A4(_user$project$Types$PostData, '1st h', 'a long time ago', '1st post content qwertyuiopasdfgghjklzxcvbnmadsfdazfrzvzcZdadzfzcx z', 'firstpost'),
+	_1: {
+		ctor: '::',
+		_0: A4(_user$project$Types$PostData, '2nd h', 'not so long time ago', 'post 2 content', 'secondpost'),
+		_1: {
+			ctor: '::',
+			_0: A4(_user$project$Types$PostData, 'ns header', 'today', 'some content too', 'lastpost'),
+			_1: {ctor: '[]'}
+		}
+	}
+};
+var _user$project$View$fromPostDataToPost = function (pd) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('post'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Events$onClick(
+					_user$project$Types$Go(
+						_user$project$Types$Post(pd.url))),
+				_1: {ctor: '[]'}
+			}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h1,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('post__heading'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(pd.heading),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$p,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(pd.datetime),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$p,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(pd.content),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _user$project$View$blog = function () {
+	var posts = _user$project$View$getPosts;
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('view view_blog'),
+			_1: {ctor: '[]'}
+		},
+		A2(_elm_lang$core$List$map, _user$project$View$fromPostDataToPost, posts));
+}();
 var _user$project$View$unknown = A2(
 	_elm_lang$html$Html$div,
 	{
@@ -10495,10 +10588,52 @@ var _user$project$View$unknown = A2(
 			{ctor: '[]'},
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html$text('404'),
+				_0: _elm_lang$html$Html$text('Error 404 - Page Not Found'),
 				_1: {ctor: '[]'}
 			}),
 		_1: {ctor: '[]'}
+	});
+var _user$project$View$about = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$class('view view_about '),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html$text('hello everyone !! my name is'),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$h1,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Max Lutay'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('i am(not only)'),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$h1,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('front-end developer'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(', some text e.g. my tech stack includes js html css angularjs c++ mysql nodejs npm webpack vuejsv2 elm babel git'),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		}
 	});
 var _user$project$View$contacts = A2(
 	_elm_lang$html$Html$div,
@@ -10676,8 +10811,16 @@ var _user$project$View$views = {
 			_0: _user$project$View$contacts,
 			_1: {
 				ctor: '::',
-				_0: _user$project$View$unknown,
-				_1: {ctor: '[]'}
+				_0: _user$project$View$about,
+				_1: {
+					ctor: '::',
+					_0: _user$project$View$blog,
+					_1: {
+						ctor: '::',
+						_0: _user$project$View$unknown,
+						_1: {ctor: '[]'}
+					}
+				}
 			}
 		}
 	}
@@ -10695,6 +10838,23 @@ var _user$project$View$onoff = F2(
 	function (m, fn) {
 		return fn(m) ? 'on' : 'off';
 	});
+var _user$project$View$toLowerString = function (x) {
+	return _elm_lang$core$String$toLower(
+		_elm_lang$core$Basics$toString(x));
+};
+var _user$project$View$getClassFromRoute = function (r) {
+	var _p0 = r;
+	switch (_p0.ctor) {
+		case 'Post':
+			return A2(_elm_lang$core$Basics_ops['++'], 'blog/post/', _p0._0);
+		case 'Example':
+			return A2(_elm_lang$core$Basics_ops['++'], 'portfolio/example/', _p0._0);
+		case 'Unknown':
+			return '404';
+		default:
+			return _user$project$View$toLowerString(r);
+	}
+};
 var _user$project$View$getPage = F2(
 	function (r, m) {
 		var controlbuttons = A2(
@@ -10737,19 +10897,7 @@ var _user$project$View$getPage = F2(
 				_1: {ctor: '[]'}
 			},
 			_user$project$View$views);
-		var mainclass = function () {
-			var _p0 = r;
-			switch (_p0.ctor) {
-				case 'Index':
-					return 'index';
-				case 'Menu':
-					return 'menu';
-				case 'Contacts':
-					return 'contacts';
-				default:
-					return '404';
-			}
-		}();
+		var mainclass = _user$project$View$getClassFromRoute(r);
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -10781,10 +10929,7 @@ var _user$project$Update$update = F2(
 			A2(
 				_elm_lang$core$Basics_ops['++'],
 				_elm_lang$core$Basics$toString(msg),
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					' * ',
-					_elm_lang$core$Basics$toString(m))));
+				_elm_lang$core$Basics$toString(m)));
 		var _p0 = msg;
 		switch (_p0.ctor) {
 			case 'NoOp':
@@ -10815,8 +10960,7 @@ var _user$project$Update$update = F2(
 						m,
 						{current: _p1, index: m.index + 1, maxi: m.index + 1}),
 					_1: _elm_lang$navigation$Navigation$newUrl(
-						_elm_lang$core$String$toLower(
-							_elm_lang$core$Basics$toString(_p1)))
+						_user$project$Routing$getPathFromRoute(_p1))
 				};
 			default:
 				return {
@@ -10964,7 +11108,7 @@ exports = module.exports = __webpack_require__(0)(undefined);
 
 
 // module
-exports.push([module.i, "\r\n.main{\r\n    max-width: 100%;\r\n    max-height: 100%;\r\n    height:100vh;\r\n    width: 100vw;\r\n    background: red; \r\n    color: white;\r\n    \r\n    transition: 0.25s;\r\n}\r\n\r\n\r\n\r\n.main_404{\r\n    background: lightcoral;\r\n    will-change: background;\r\n}\r\n\r\n.main_index{\r\n    background: lightgreen;\r\n    will-change: background;\r\n}\r\n\r\n\r\n.main_menu{\r\n    background: lightblue;\r\n    will-change: background;\r\n}\r\n\r\n\r\n.main_contacts{\r\n    background: lightslategray;\r\n}\r\n\r\n.main_index .button_home{\r\n    visibility: hidden;\r\n}\r\n\r\n\r\n.views{\r\n    height: 300vh;\r\n    width: 300vw;\r\n    position: absolute;\r\n    transition: 0.25s;\r\n    will-change: transform;\r\n}\r\n\r\n\r\n\r\n.main_index > .views{\r\n    -webkit-transform: translateY(-100vh);\r\n            transform: translateY(-100vh);\r\n}\r\n\r\n.main_404 > .views {\r\n    -webkit-transform: translateY(-200vh);\r\n            transform: translateY(-200vh);\r\n}\r\n\r\n.main_menu > .views,\r\n.main_contacts > .views {\r\n    -webkit-transform: translate(-100vw, -100vh);\r\n            transform: translate(-100vw, -100vh);\r\n}\r\n\r\n.main_menu .view_menu,\r\n.main_contacts .view_contacts{\r\n    opacity: 1;\r\n    z-index: 100;\r\n}\r\n\r\n.main_menu .view_contacts,\r\n.main_contacts .view_menu{\r\n    opacity: 0;\r\n    z-index: 99;\r\n}\r\n\r\n\r\n.main_about > .views{\r\n    -webkit-transform: translateX(-100vw);\r\n            transform: translateX(-100vw);\r\n}\r\n\r\n\r\n.main_portfolio > .views{\r\n    -webkit-transform: translate(-200vw, -100vh);\r\n            transform: translate(-200vw, -100vh);\r\n}\r\n\r\n.main_blog > .views{\r\n    -webkit-transform: translate(-100vw, -200vh);\r\n            transform: translate(-100vw, -200vh);\r\n}\r\n\r\n.main_post > .views{\r\n    -webkit-transform: translate(-200vw, -200vh);\r\n            transform: translate(-200vw, -200vh);\r\n}\r\n\r\n\r\n.view{\r\n    width: 96vw;\r\n    height: 88vh;\r\n    transition: 0.5s;\r\n    color: black;\r\n\r\n    border: 2px dashed black;\r\n    background: transparent;\r\n\r\n    position: absolute;\r\n\r\n    margin: 10vh 2vw 2vh 2vw;\r\n\r\n\r\n    display: -webkit-box;\r\n\r\n\r\n    display: -ms-flexbox;\r\n\r\n\r\n    display: flex;\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n.view_404{\r\n    top: 200vh;\r\n    left: 0vw;\r\n}\r\n\r\n\r\n.view_index{\r\n    top: 100vh;\r\n    left: 0;\r\n\r\n\r\n\r\n    -webkit-box-orient: vertical;\r\n\r\n\r\n\r\n    -webkit-box-direction: normal;\r\n\r\n\r\n\r\n        -ms-flex-direction: column;\r\n\r\n\r\n\r\n            flex-direction: column;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n\r\n\r\n}\r\n\r\n\r\n.view__h1{\r\n    font-size: 24.5vh;\r\n}\r\n\r\n\r\n.view__rtcornerlink{\r\n    font-size: 6.125vh;\r\n    position: absolute;\r\n    display: block;\r\n    top: 2vh;\r\n    right: 2vw;\r\n}\r\n\r\n\r\n.view_menu,\r\n.view_contacts{\r\n    top: 100vh;\r\n    left: 100vw\r\n}\r\n\r\n\r\n.view_menu{\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n    font-size: 5.5vh;\r\n\r\n}\r\n\r\n.view_contacts{\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    font-size: 5.11111vw;\r\n\r\n    color: white;\r\n}\r\n\r\n.view_about{\r\n    top:0;\r\n    left: 100vw;\r\n}\r\n\r\n.view_portfolio{\r\n    top: 100vh;\r\n    left: 200vw;\r\n}\r\n\r\n.view_blog{\r\n    top: 200vh;\r\n    left: 100vw;\r\n}\r\n\r\n\r\n.link{\r\n    text-decoration: underline;\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n\r\n.control-buttons{\r\n    position: fixed;\r\n    height: 10vh;\r\n    width: 100vw;\r\n    \r\n    display: -webkit-box;\r\n    \r\n    display: -ms-flexbox;\r\n    \r\n    display: flex;\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n\r\n    z-index: 500;\r\n\r\n    transition: 0.5s;\r\n    \r\n}\r\n\r\n\r\n.button{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    font-size: 6.66667vh;\r\n\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n.button_control{\r\n    color: black;\r\n    font-style: bold;\r\n\r\n    font-size: 100;\r\n\r\n}\r\n\r\n.button_on{\r\n}\r\n\r\n.button_off{\r\n    visibility: hidden;\r\n}", ""]);
+exports.push([module.i, "\r\n.main{\r\n    max-width: 100%;\r\n    max-height: 100%;\r\n    height:100vh;\r\n    width: 100vw;\r\n    background: slateblue; \r\n    color: white;\r\n    \r\n    transition: 0.25s;\r\n}\r\n\r\n\r\n\r\n.main_404{\r\n    background: lightcoral;\r\n    will-change: background;\r\n}\r\n\r\n.main_index{\r\n    background: lightgreen;\r\n    will-change: background;\r\n}\r\n\r\n\r\n.main_menu{\r\n    background: lightskyblue;\r\n    will-change: background;\r\n}\r\n\r\n\r\n.main_contacts{\r\n    background: cornsilk;\r\n}\r\n\r\n.main_index .button_home{\r\n    visibility: hidden;\r\n}\r\n\r\n\r\n.views{\r\n    height: 300vh;\r\n    width: 300vw;\r\n    position: absolute;\r\n    transition: 0.25s;\r\n    will-change: transform;\r\n}\r\n\r\n\r\n\r\n.main_index > .views{\r\n    -webkit-transform: translateY(-100vh);\r\n            transform: translateY(-100vh);\r\n}\r\n\r\n.main_404 > .views {\r\n    -webkit-transform: translateY(-200vh);\r\n            transform: translateY(-200vh);\r\n}\r\n\r\n.main_menu > .views,\r\n.main_contacts > .views {\r\n    -webkit-transform: translate(-100vw, -100vh);\r\n            transform: translate(-100vw, -100vh);\r\n}\r\n\r\n.main_menu .view_menu,\r\n.main_contacts .view_contacts{\r\n    opacity: 1;\r\n    z-index: 100;\r\n}\r\n\r\n.main_menu .view_contacts,\r\n.main_contacts .view_menu{\r\n    opacity: 0;\r\n    z-index: 99;\r\n    transition: none;\r\n}\r\n\r\n\r\n.main_about > .views{\r\n    -webkit-transform: translateX(-100vw);\r\n            transform: translateX(-100vw);\r\n}\r\n\r\n\r\n.main_portfolio > .views{\r\n    -webkit-transform: translate(-200vw, -100vh);\r\n            transform: translate(-200vw, -100vh);\r\n}\r\n\r\n.main_blog > .views{\r\n    -webkit-transform: translate(-100vw, -200vh);\r\n            transform: translate(-100vw, -200vh);\r\n}\r\n\r\n.main_post > .views{\r\n    -webkit-transform: translate(-200vw, -200vh);\r\n            transform: translate(-200vw, -200vh);\r\n}\r\n\r\n\r\n.view{\r\n    width: 96vw;\r\n    height: 88vh;\r\n    transition: 0.5s;\r\n    color: black;\r\n\r\n    border: 2px dashed black;\r\n    background: transparent;\r\n\r\n    position: absolute;\r\n\r\n    margin: 10vh 2vw 2vh 2vw;\r\n\r\n\r\n    display: -webkit-box;\r\n\r\n\r\n    display: -ms-flexbox;\r\n\r\n\r\n    display: flex;\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n.view_404{\r\n    top: 200vh;\r\n    left: 0vw;\r\n\r\n    font-size: 3.5vh;\r\n\r\n}\r\n\r\n\r\n.view_index{\r\n    top: 100vh;\r\n    left: 0;\r\n\r\n\r\n\r\n    -webkit-box-orient: vertical;\r\n\r\n\r\n\r\n    -webkit-box-direction: normal;\r\n\r\n\r\n\r\n        -ms-flex-direction: column;\r\n\r\n\r\n\r\n            flex-direction: column;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -ms-flex-line-pack: center;\r\n        align-content: center;\r\n\r\n\r\n}\r\n\r\n\r\n.view__h1{\r\n    font-size: 24.5vh;\r\n}\r\n\r\n\r\n.view__rtcornerlink{\r\n    font-size: 6.125vh;\r\n    position: absolute;\r\n    display: block;\r\n    top: 2vh;\r\n    right: 2vw;\r\n}\r\n\r\n\r\n.view_menu,\r\n.view_contacts{\r\n    top: 100vh;\r\n    left: 100vw\r\n}\r\n\r\n\r\n.view_menu{\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n    font-size: 5.5vh;\r\n\r\n}\r\n\r\n.view_contacts{\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    font-size: 5.11111vw;\r\n\r\n    color: white;\r\n}\r\n\r\n.view_about{\r\n    top:0;\r\n    left: 100vw;\r\n}\r\n\r\n.view_portfolio{\r\n    top: 100vh;\r\n    left: 200vw;\r\n}\r\n\r\n.view_blog{\r\n    top: 200vh;\r\n    left: 100vw;\r\n}\r\n\r\n\r\n.link{\r\n    text-decoration: underline;\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n\r\n.control-buttons{\r\n    position: fixed;\r\n    height: 10vh;\r\n    width: 100vw;\r\n    \r\n    display: -webkit-box;\r\n    \r\n    display: -ms-flexbox;\r\n    \r\n    display: flex;\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: row;\r\n            flex-direction: row;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n\r\n\r\n    z-index: 500;\r\n\r\n    transition: 0.5s;\r\n    \r\n}\r\n\r\n\r\n.button{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    font-size: 6.66667vh;\r\n\r\n    cursor: pointer;\r\n}\r\n\r\n\r\n.button_control{\r\n    color: black;\r\n    font-style: bold;\r\n\r\n    font-size: 100;\r\n\r\n}\r\n\r\n.button_on{\r\n}\r\n\r\n.button_off{\r\n    visibility: hidden;\r\n}", ""]);
 
 // exports
 
