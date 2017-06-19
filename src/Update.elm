@@ -14,7 +14,7 @@ import Routing as R
 
 
 update: Msg -> Model -> (Model, Cmd Msg)
-update msg m  = let log = Debug.log "up" <| (toString msg) ++ " * " ++  toString m in
+update msg m  = let log = Debug.log "up" <| toString msg ++ toString m in
     case msg of
         NoOp        -> (m,Cmd.none)
         Back i      -> let
@@ -32,7 +32,6 @@ update msg m  = let log = Debug.log "up" <| (toString msg) ++ " * " ++  toString
                             , index = m.index + 1
                             , maxi = m.index + 1
                         }
-                        , N.newUrl <| String.toLower 
-                                   <| toString route
+                        , N.newUrl <| R.getPathFromRoute route
                         )
         Url route   -> ({m | current = route}, Cmd.none)

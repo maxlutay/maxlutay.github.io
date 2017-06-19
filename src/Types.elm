@@ -31,6 +31,7 @@ type alias Model = {
     ,maxi: Int
 }
 
+
 type alias History = {
      at: Int
     ,arr: Array Route

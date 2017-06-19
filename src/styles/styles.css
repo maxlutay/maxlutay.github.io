@@ -14,7 +14,7 @@
     max-height: 100%;
     height:100vh;
     width: 100vw;
-    background: red; 
+    background: slateblue; 
     color: white;
     
     transition: 0.25s;
@@ -34,13 +34,13 @@
 
 
 .main_menu{
-    background: lightblue;
+    background: lightskyblue;
     will-change: background;
 }
 
 
 .main_contacts{
-    background: lightslategray;
+    background: cornsilk;
 }
 
 .main_index .button_home{
@@ -81,6 +81,7 @@
 .main_contacts .view_menu{
     opacity: 0;
     z-index: 99;
+    transition: none;
 }
 
 
@@ -127,6 +128,9 @@
 .view_404{
     top: 200vh;
     left: 0vw;
+
+    font-size: calc( (100vh - var(--main__border_b)) / 28 );
+
 }
 
 

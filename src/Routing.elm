@@ -27,7 +27,7 @@ locationparser =
             ,U.map Menu (U.s "menu")
             ,U.map Contacts (U.s "contacts")
             ,U.map About (U.s "about")
-            ,U.map Post (U.s "blog" </> U.string)
+            ,U.map Post (U.s "blog/post" </> U.string)
             ,U.map Blog (U.s "blog")
             ,U.map Example (U.s "portfolio" </> U.string)
             ,U.map Portfolio (U.s "portfolio")
@@ -38,7 +38,24 @@ locationparser =
 
 
 getRouteFromLocation: Location -> Route
-getRouteFromLocation l =
+getRouteFromLocation l =let log = Debug.log "gRfL" <| toString l in
     case (U.parsePath locationparser l) of
-        Just r  -> Debug.log "getrfl just" r
-        _ -> Debug.log "getrfl nothing" Unknown  
+        Just r  -> r
+        _ -> Unknown  
+
+
+
+
+
+
+getPathFromRoute: Route -> String
+getPathFromRoute r = 
+    case r of
+        Post p  -> "blog/post/" ++ p
+        Example _ -> "portfolio/example/" 
+        a -> String.toLower <| toString r
+
+
+
+
+

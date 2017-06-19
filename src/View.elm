@@ -1,12 +1,15 @@
 module View exposing (..)
 
-import Types exposing (Model, Msg(..), Route (..))
+import Types exposing (Model, Msg(..), Route (..),PostData)
 
 import Array
 
-import Html exposing (Html, div, text, h1, h2, a)
+import Html exposing (Html, div, text, h1, h2,h3, a, p)
 import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
+
+
+--import Routing as R 
 
 view : Model -> Html Msg
 view m = 
@@ -15,20 +18,20 @@ view m =
     in
         getPage route m 
 
+getClassFromRoute: Route -> String
+getClassFromRoute r =
+    case r of
+        Post s -> "blog/post/"++ s
+        Example s -> "portfolio/example/" ++ s
+        Unknown -> "404"
+        _  -> toLowerString r
 
-
+toLowerString: a -> String
+toLowerString x = String.toLower <| toString x
 
 getPage: Route -> Model -> Html Msg
 getPage r m = let
-                mainclass = 
-                    case r of
-                        Index   -> "index"
-                        Menu    -> "menu"
-                        Contacts-> "contacts"
-                        --About   -> "about"
-                        --Portfolio -> "portfolio"
-                        --Blog    -> "blog" 
-                        _       -> "404"
+                mainclass = getClassFromRoute r
                 vs = div [class "views"] views
                 controlbuttons = div [class "control-buttons"][
                      backbutton <| "button_" ++ onoff m backavailable
@@ -63,9 +66,9 @@ views =[
          index
          ,menu
          ,contacts
-         --,about
+         ,about
          --,portfolio
-         --,blog
+         ,blog
          ,unknown
         ]
         
@@ -97,12 +100,23 @@ menu =
     ]
 
 contacts: Html Msg
-contacts = div [class <| "view view_contacts "] [
+contacts = div [class "view view_contacts "] [
                         a [href "mailto:maksym.lutai@gmail.com"][ text "email"]
                         ,a [href "http://github.com/maxlutay"][ text "github"]
                         --,a [href "http://vk.com/max_lutay"][ text "vk"]
                         ,a [href "http://twitter.com/max_lutay"][ text "twitter"]
                     ]
+
+
+
+about: Html Msg
+about = div [class "view view_about "][
+        text "hello everyone !! my name is"
+        ,h1 [][text "Max Lutay"]
+        ,text "i am(not only)"
+        ,h1[][text "front-end developer"]
+        ,text ", some text e.g. my tech stack includes js html css angularjs c++ mysql nodejs npm webpack vuejsv2 elm babel git" 
+    ]
 
 
 
@@ -127,14 +141,32 @@ forwardbutton cl =
 unknown: Html Msg
 unknown = 
     div [class "view view_404 "]
-        [
-                h1 [] [text "404"]
-         ]
+        [ h1 [] [text "Error 404 - Page Not Found"] ]
 
 
 
 
+blog: Html Msg
+blog = let 
+            posts = getPosts
+        in
+            div [class "view view_blog"]
+                <| List.map fromPostDataToPost posts
+
+
+fromPostDataToPost: PostData -> Html Msg
+fromPostDataToPost pd = div[ class "post", onClick <| Go (Post pd.url) ][
+    h1 [class "post__heading"][ text pd.heading]
+    ,p [] [text pd.datetime]
+    ,p [] [text pd.content]    
+    ]
 
 
 
 
+getPosts: List PostData
+getPosts = 
+    [PostData "1st h" "a long time ago" "1st post content qwertyuiopasdfgghjklzxcvbnmadsfdazfrzvzcZdadzfzcx z" "firstpost"
+    , PostData  "2nd h" "not so long time ago" "post 2 content" "secondpost"
+    ,PostData  "ns header" "today" "some content too" "lastpost"
+    ]
