@@ -138,7 +138,7 @@
         </div>
     </div>
     
-    <script defer>
+    <script >
         let views = document.querySelector(".views");
         let view_menu = document.querySelector(".view_menu");
         
@@ -146,7 +146,8 @@
         
         main_gomenubutton.addEventListener("click", e => {
             e.preventDefault();
-            view_menu.style.zIndex = 10;
+            console.log("gomenu");
+            view_menu.style.zIndex = 11;
             view_menu.style.visibility = "visible";
         });
         
@@ -163,8 +164,6 @@
         
         menu_goinfobutton.addEventListener("click", e => {
             e.preventDefault();
-            view_menu.style.zIndex = -1;
-            view_menu.style.visibility = "hidden";
             views.style.top="-100vh";
             views.style.left="-100vw";
         });
@@ -173,8 +172,6 @@
         
         menu_goblogbutton.addEventListener("click", e => {
             e.preventDefault();
-            view_menu.style.zIndex = -1;
-            view_menu.style.visibility = "hidden";
             views.style.left="0vw";
             views.style.top="0vh";
         });
@@ -183,8 +180,6 @@
         
         menu_goportfoliobutton.addEventListener("click", e => {
             e.preventDefault();
-            view_menu.style.zIndex = -1;
-            view_menu.style.visibility = "hidden";
             views.style.left="-200vw";
             views.style.top="0vh";
         });
@@ -194,8 +189,6 @@
             e.preventDefault();
             views.style.top = "0vh";
             views.style.left="-100vw";
-            view_menu.style.zIndex = 10;
-            view_menu.style.visibility = "visible";
         });
         
         let blog_gomenubutton = document.querySelector(".view_blog--go_menu");
@@ -203,8 +196,6 @@
             e.preventDefault();
             views.style.left = "-100vw";
             views.style.top="0vh";
-            view_menu.style.zIndex = 10;
-            view_menu.style.visibility = "visible";
         });
         
         let portfolio_gomenubutton = document.querySelector(".view_portfolio--go_menu");
@@ -212,8 +203,6 @@
             e.preventDefault();
             views.style.left = "-100vw";
             views.style.top="0vh";
-            view_menu.style.zIndex = 10;
-            view_menu.style.visibility = "visible";
         });
         
     </script>
