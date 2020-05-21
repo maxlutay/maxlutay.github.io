@@ -135,7 +135,7 @@
         
         let main_gomenubutton = document.querySelector(".view_main--go_menu");
         
-        main_gomenubutton.addEventlistener("click", e => {
+        main_gomenubutton.addEventListener("click", e => {
             e.preventDefault();
             view_menu.style.zIndex = 400;
             view_menu.style.visibility = "visible";
@@ -143,7 +143,7 @@
         
         let menu_gomainbutton = document.querySelector(".view_menu--go_main");
         
-        menu_gomainbutton.addEventlistener("click", e => {
+        menu_gomainbutton.addEventListener("click", e => {
             e.preventDefault();
             view_menu.style.zIndex = 0;
             view_menu.style.visibility = "hidden";
@@ -152,7 +152,7 @@
         
         let menu_goinfobutton = document.querySelector(".view_menu--go_info");
         
-        menu_goinfobutton.addEventlistener("click", e => {
+        menu_goinfobutton.addEventListener("click", e => {
             e.preventDefault();
             view_menu.style.zIndex = 0;
             view_menu.style.visibility = "hidden";
@@ -162,7 +162,7 @@
         
         let menu_goblogbutton = document.querySelector(".view_menu--go_blog");
         
-        menu_goblogbutton.addEventlistener("click", e => {
+        menu_goblogbutton.addEventListener("click", e => {
             e.preventDefault();
             view_menu.style.zIndex = 0;
             view_menu.style.visibility = "hidden";
@@ -172,7 +172,7 @@
         
         let menu_goportfoliobutton = document.querySelector(".view_menu--go_portfolio");
         
-        menu_goportfoliobutton.addEventlistener("click", e => {
+        menu_goportfoliobutton.addEventListener("click", e => {
             e.preventDefault();
             view_menu.style.zIndex = 0;
             view_menu.style.visibility = "hidden";
@@ -181,7 +181,7 @@
         });
         
         let info_gomenubutton = document.querySelector(".view_info--go_menu");
-        info_gomenubutton.addEventlistener("click", e => {
+        info_gomenubutton.addEventListener("click", e => {
             e.preventDefault();
             views.style.top = "0vh";
             views.style.left="-100vw";
@@ -190,7 +190,7 @@
         });
         
         let blog_gomenubutton = document.querySelector(".view_blog--go_menu");
-        blog_gomenubutton.addEventlistener("click", e => {
+        blog_gomenubutton.addEventListener("click", e => {
             e.preventDefault();
             views.style.left = "-100vw";
             views.style.top="0vh";
@@ -199,7 +199,7 @@
         });
         
         let portfolio_gomenubutton = document.querySelector(".view_portfolio--go_menu");
-        portfolio_gomenubutton.addEventlistener("click", e => {
+        portfolio_gomenubutton.addEventListener("click", e => {
             e.preventDefault();
             views.style.left = "-100vw";
             views.style.top="0vh";
