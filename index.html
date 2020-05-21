@@ -35,14 +35,20 @@
         }
         
         .view_main{
-            background: lightgreen;
+            color: white;
+        }
+        
+        .view_menu{
+            background: white;
+            color: black;
+            z-index: -1;
         }
         
         .view_contacts{
-            z-index: -1;
             background: beige;
+            color: black;
             opacity: 0.5;
-            top:0vh;
+            top:100vh;
             left:0vw;
         }
         
@@ -50,19 +56,29 @@
             top: 100vh;
             left: 0vw;
             background: lightcyan;
+            color: black;
         }
         
         .view_blog{
             left:-100vw;
             top:0vh;
             background: deepviolet; 
+            color: black;
         }
         
         .view_portfolio{
             left: 100vw;
             top: 0vh;
             background: salmon;
+            color: black;
          }
+        
+        .view_active{
+            top: 0;
+            left: 0;
+            z-index: 100;
+            border: 2px dotted black;
+        }
         
     </style>
     
@@ -73,7 +89,12 @@
 </head>
 <body>
     <div class="view view_main"> Max &nbsp; Lutay</div>
+    <div class="view view_menu" > </div>
     <div class="view view_contacts" > </div>
+    <div class="view view_about" > </div>
+    <div class="view view_blog" > </div>
+    <div class="view view_portfolio" ></div>
+    
 </body>
 </html>
 
