@@ -28,7 +28,41 @@
         }
         
         
+        .view {
+            position: absolute;
+            height: 100vh;
+            width: 100vw;
+        }
         
+        .view_main{
+            background: lightgreen;
+        }
+        
+        .view_contacts{
+            z-index: -1;
+            background: beige;
+            opacity: 0.5;
+            top:0vh;
+            left:0vw;
+        }
+        
+        .view_about{
+            top: 100vh;
+            left: 0vw;
+            background: lightcyan;
+        }
+        
+        .view_blog{
+            left:-100vw;
+            top:0vh;
+            background: deepviolet; 
+        }
+        
+        .view_portfolio{
+            left: 100vw;
+            top: 0vh;
+            background: salmon;
+         }
         
     </style>
     
@@ -38,8 +72,8 @@
     
 </head>
 <body>
-    <div class="view_main"> Max &nbsp; Lutay</div>
-    
+    <div class="view view_main"> Max &nbsp; Lutay</div>
+    <div class="view view_contacts" > </div>
 </body>
 </html>
 
