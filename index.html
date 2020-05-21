@@ -29,7 +29,7 @@
             left:0;
             background:#222;
             color: #eee;
-            overflow: scroll;
+            overflow: hidden;
         }
         
         .views{
@@ -96,12 +96,118 @@
 </head>
 <body>
     <div class="views">
-        <div class="view view_main"> Max <br> Lutay</div>
-        <div class="view view_menu" >menu </div>
-        <div class="view view_info" > about&contacts</div>
-        <div class="view view_blog" >blog </div>
-        <div class="view view_portfolio">portfolio</div>
+        <div class="view view_main"> 
+            Max <br> Lutay
+            <a class="view_main--go_menu">/menu</a>
+        </div>
+        <div class="view view_menu" >
+            menu 
+            <a class="view_menu--go_main">/main</a>
+            <a class="view_menu--go_info">/about</a>
+            <a class="view_menu--go_blog">/blog</a>
+            <a class="view_menu--go_portfolio">/portfolio</a>
+        </div>
+        
+        <div class="view view_info" > 
+            about&contacts
+            <a class="view_info--go_menu">/menu</a>
+        </div>
+        <div class="view view_blog" >
+            blog
+            <a class="view_blog--go_menu">/menu</a>
+            
+            <div class="view_blog--post">post1</div>
+            <div class="view_blog--post">post2</div>
+        </div>
+        <div class="view view_portfolio">
+            portfolio
+            <a class="view_portfolio--go_menu">/menu</a>
+            
+            <div class="view_portfolio--example">example1</div>
+            <div class="view_portfolio--example">example2</div>
+            
+        </div>
     </div>
+    
+    <script defer>
+        let views = document.querySelector(".views");
+        let view_menu = document.querySelector(".view_menu");
+        
+        let main_gomenubutton = document.querySelector(".view_main--go_menu");
+        
+        main_gomenubutton.addEventlistener("click", e => {
+            e.preventDefault();
+            view_menu.style.zIndex = 400;
+            view_menu.style.visibility = "visible";
+        });
+        
+        let menu_gomainbutton = document.querySelector(".view_menu--go_main");
+        
+        menu_gomainbutton.addEventlistener("click", e => {
+            e.preventDefault();
+            view_menu.style.zIndex = 0;
+            view_menu.style.visibility = "hidden";
+        });
+        
+        
+        let menu_goinfobutton = document.querySelector(".view_menu--go_info");
+        
+        menu_goinfobutton.addEventlistener("click", e => {
+            e.preventDefault();
+            view_menu.style.zIndex = 0;
+            view_menu.style.visibility = "hidden";
+            views.style.top="100vh";
+            views.style.left="-100vw";
+        });
+        
+        let menu_goblogbutton = document.querySelector(".view_menu--go_blog");
+        
+        menu_goblogbutton.addEventlistener("click", e => {
+            e.preventDefault();
+            view_menu.style.zIndex = 0;
+            view_menu.style.visibility = "hidden";
+            views.style.left="0vw";
+            views.style.top="0vh";
+        });
+        
+        let menu_goportfoliobutton = document.querySelector(".view_menu--go_portfolio");
+        
+        menu_goportfoliobutton.addEventlistener("click", e => {
+            e.preventDefault();
+            view_menu.style.zIndex = 0;
+            view_menu.style.visibility = "hidden";
+            views.style.left="100vw";
+            views.style.top="0vh";
+        });
+        
+        let info_gomenubutton = document.querySelector(".view_info--go_menu");
+        info_gomenubutton.addEventlistener("click", e => {
+            e.preventDefault();
+            views.style.top = "0vh";
+            views.style.left="-100vw";
+            view_menu.style.zIndex = 400;
+            view_menu.style.visibility = "visible";
+        });
+        
+        let blog_gomenubutton = document.querySelector(".view_blog--go_menu");
+        blog_gomenubutton.addEventlistener("click", e => {
+            e.preventDefault();
+            views.style.left = "-100vw";
+            views.style.top="0vh";
+            view_menu.style.zIndex = 400;
+            view_menu.style.visibility = "visible";
+        });
+        
+        let portfolio_gomenubutton = document.querySelector(".view_portfolio--go_menu");
+        portfolio_gomenubutton.addEventlistener("click", e => {
+            e.preventDefault();
+            views.style.left = "-100vw";
+            views.style.top="0vh";
+            view_menu.style.zIndex = 400;
+            view_menu.style.visibility = "visible";
+        });
+        
+    </script>
     
 </body>
 </html>
