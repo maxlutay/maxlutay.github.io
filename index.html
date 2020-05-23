@@ -141,7 +141,7 @@
     
     <script >
         console.log("scriptstart");
-        let qs = document.querySelector;
+        let qs = document.querySelector.bind(this);
         console.log("assignok");
         let views = qs(".views");
         let view_menu = qs(".view_menu");
