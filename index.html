@@ -41,6 +41,7 @@
             background: rgba(0,0,0,0);
             top:0vh;
             left: 0vw;
+            z-index: 100;
         }
         
         .views{
@@ -70,12 +71,19 @@
         .view_menu{
             background: cadetblue;
             color: black;
-            z-index: -1;
             top:0vh;
             left:100vw;
-            visibility:hidden;
         }
         
+        .view_menu-hidden{
+            z-index:-1;
+            visibility: hidden;
+        }
+        
+        .view_menu-visible{
+            z-index:11;
+            visibility: visible;
+        }
         
         .view_info{
             top: 100vh;
@@ -150,26 +158,24 @@
     <script >
         console.log("scriptstart");
         let qs = document.querySelector.bind(document);
-        console.log("assignok");
+        
         let views = qs(".views");
         let view_menu = qs(".view_menu");
         
         let main_gomenubutton = qs(".view_main--go_menu");
         
-        console.log("qsok");
-        
         main_gomenubutton.addEventListener("click", e => {
             e.preventDefault();
-            view_menu.style.zIndex = 11;
-            view_menu.style.visibility = "visible";
+            view_menu.classList.remove("view_menu-hidden");
+            view_menu.classList.add("view_menu-visible");
         });
-        console.log("adevlok");
+       
         let menu_gomainbutton = qs(".view_menu--go_main");
         
         menu_gomainbutton.addEventListener("click", e => {
             e.preventDefault();
-            view_menu.style.zIndex = -1;
-            view_menu.style.visibility = "hidden";
+            view_menu.classList.add("view_menu-hidden");
+            view_menu.classList.remove("view_menu-visible");
         });
         
         
