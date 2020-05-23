@@ -147,12 +147,14 @@
         
         let main_gomenubutton = qs(".view_main--go_menu");
         
+        console.log("qsok");
+        
         main_gomenubutton.addEventListener("click", e => {
             e.preventDefault();
             view_menu.style.zIndex = 11;
             view_menu.style.visibility = "visible";
         });
-        
+        console.log("adevlok");
         let menu_gomainbutton = qs(".view_menu--go_main");
         
         menu_gomainbutton.addEventListener("click", e => {
