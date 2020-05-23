@@ -48,7 +48,7 @@
             width:300vw;
             height: 200vh;
             position: absolute;
-            transition: 0.25s ease-out;
+            transition: 0.1s ease-out;
         }
         
         .views-active_main{
@@ -91,7 +91,7 @@
             top:0vh;
             left:100vw;
             z-index:0;
-            transition:0.25s;
+            transition:0.1s;
         }
         
         .view_menu{
@@ -104,11 +104,13 @@
         .view_menu-hidden{
             z-index:-1;
             visibility: hidden;
+            opacity: 1;
         }
         
         .view_menu-visible{
             z-index:11;
             visibility: visible;
+            opacity:0;
         }
         
         .view_info{
