@@ -51,29 +51,35 @@
             transition: 0.1s ease-out;
         }
         
+        :root{
+            --active_main_top: 0vh;
+            --active_main_left: -100vw;
+        }
+        
         .views-active_main{
-            top: 0vh;
-            left: -100vw;
+            top: var(--active_main_top);
+            left: var(--active_main_left);
         }
         
         .views-active_menu{
-            top: 0vh;
-            left: -100vw;
+            top: var(--active_main_top);
+            left: var(--active_main_left);
         }
         
         .views-active_info{
-            top: -100vh;
-            left: -100vw;
+            top: calc(var(--active_main_top) - 100vh);
+            left: var(--active_main_left);
         }
         
         .views-active_blog{
-            top: 0vh;
-            left: 0vw;
+  
+            top: var(--active_main_top) ;
+            left: calc(var(--active_main_left) + 100vw);
         }
         
         .views-active_portfolio{
-            top: 0vh;
-            left: -200vw;
+            top: var(--active_main_top);
+            left: calc(var(--active_main_left) - 100vw);
         }
         
         
