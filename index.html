@@ -30,7 +30,7 @@
             background:#222;
             color: #eee;
             overflow: hidden;
-            font-size: 2vh;
+            font-size: 4vh;
         }
         
         .dashed_border{
@@ -121,8 +121,14 @@
             top: var( --view_main_top );
             left: var( --view_main_left );
             transition: 0.25s;
+            display: flex;
+            flex-direction: column;
         }
         
+        .view_menu{
+            width:100vw;
+        }
+
         .view_menu-hidden{
             z-index:-1;
             visibility: hidden;
