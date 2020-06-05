@@ -101,19 +101,24 @@
             padding: calc(6vh + 5px) calc( 6vw + 5px);
         }
         
+        :root{
+            --view_main_top: 0vh;
+            --view_main_left: 200vw;
+        }
+
         .view_main{
             background: sandybrown;
             color: black;
-            top:0vh;
-            left:100vw;
+            top: var( --view_main_top );
+            left: var( --view_main_left );
             z-index:0;
         }
         
         .view_menu{
             background: cornflowerblue;
             color: black;
-            top:0vh;
-            left:100vw;
+            top: var( --view_main_top );
+            left: var( --view_main_left );
             transition: 0.25s;
         }
         
@@ -130,8 +135,8 @@
         }
         
         .view_info{
-            top: 100vh;
-            left: 100vw;
+            top: calc(var( --view_main_top ) + 100vh);
+            left: var( --view_main_left );
             background: lightcoral;
             color: black;
         }
@@ -139,13 +144,17 @@
         .view_blog{
             left:0vw;
             top:0vh;
+            top: var( --view_main_top );
+            left: calc( var( --view_main_left ) - 100vw);
             background: yellowgreen; 
             color: black;
         }
+
+       
         
         .view_portfolio{
-            left: 200vw;
-            top: 0vh;
+            top: var( --view_main_top );
+            left: calc( var( --view_main_left ) + 100vw );
             background: #fac373 ;
             color: black;
          }
