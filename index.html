@@ -149,7 +149,7 @@
         }
 
         .view_post{
-
+            background: yellowgreen;
             top: var( --view_main_top );
             left: calc( var( --view_main_left ) - 200vw);
          }
@@ -162,6 +162,7 @@
          }
         
          .view_example{
+            background: #fac373;
             top: var( --view_main_top );
             left: calc( var( --view_main_left ) + 200vw);
          }
@@ -202,29 +203,46 @@
             blog
             <a class="view_blog--go_menu">/menu</a>
             
-            <div class="view_blog--post">post1</div>
-            <div class="view_blog--post">post2</div>
+            <a class="view_blog--go_post">post1</a>
+            <a class="view_blog--go_post">post2</a>
         </div>
+
+        <div class="view view_post">
+            <a class="vies_post--goblog"></a>
+        </div>
+
+
         <div class="view view_portfolio">
             portfolio
             <a class="view_portfolio--go_menu">/menu</a>
             
-            <div class="view_portfolio--example">example1</div>
-            <div class="view_portfolio--example">example2</div>
+            <a class="view_portfolio--go_example">example1</a>
+            <a class="view_portfolio--go_example">example2</a>
             
         </div>
+
+        <div class="view view_example">
+            <a class="view_example--go_portfolio"></a>
+        </div>
+
     </div>
     
     <script >
         console.log("scriptstart");
         let qs = document.querySelector.bind(document);
-        
+        let qsa = document.querySelectorAll.bind(document);
+
         let views = qs(".views");
         let view_menu = qs(".view_menu");
         
-        let main_gomenubutton = qs(".view_main--go_menu");
+
+
+
+
+
+        let main_gomenu = qs(".view_main--go_menu");
         
-        main_gomenubutton.addEventListener("click", e => {
+        main_gomenu.addEventListener("click", e => {
             e.preventDefault();
             views.classList.remove("views-active_main");
             views.classList.add("views-active_menu");
@@ -232,9 +250,9 @@
             view_menu.classList.add("view_menu-visible");
         });
        
-        let menu_gomainbutton = qs(".view_menu--go_main");
+        let menu_gomain = qs(".view_menu--go_main");
         
-        menu_gomainbutton.addEventListener("click", e => {
+        menu_gomain.addEventListener("click", e => {
             e.preventDefault();
             views.classList.remove("views-active_menu");
             views.classList.add("views-active_main");
@@ -243,49 +261,80 @@
         });
         
         
-        let menu_goinfobutton = qs(".view_menu--go_info");
+        let menu_goinfo = qs(".view_menu--go_info");
         
-        menu_goinfobutton.addEventListener("click", e => {
+        menu_goinfo.addEventListener("click", e => {
             e.preventDefault();
             views.classList.remove("views-active_menu");
             views.classList.add("views-active_info");
         });
         
-        let menu_goblogbutton = qs(".view_menu--go_blog");
+        let menu_goblog = qs(".view_menu--go_blog");
         
-        menu_goblogbutton.addEventListener("click", e => {
+        menu_goblog.addEventListener("click", e => {
             e.preventDefault();
             views.classList.remove("views-active_menu");
             views.classList.add("views-active_blog");
         });
         
-        let menu_goportfoliobutton = qs(".view_menu--go_portfolio");
+        let menu_goportfolio = qs(".view_menu--go_portfolio");
         
-        menu_goportfoliobutton.addEventListener("click", e => {
+        menu_goportfolio.addEventListener("click", e => {
             e.preventDefault();
             views.classList.remove("views-active_menu");
             views.classList.add("views-active_portfolio");
         });
         
-        let info_gomenubutton = qs(".view_info--go_menu");
-        info_gomenubutton.addEventListener("click", e => {
+        let info_gomenu = qs(".view_info--go_menu");
+        info_gomenu.addEventListener("click", e => {
             e.preventDefault();
             views.classList.add("views-active_menu");
             views.classList.remove("views-active_info");
         });
         
-        let blog_gomenubutton = qs(".view_blog--go_menu");
-        blog_gomenubutton.addEventListener("click", e => {
+        let blog_gomenu = qs(".view_blog--go_menu");
+        blog_gomenu.addEventListener("click", e => {
             e.preventDefault();
             views.classList.remove("views-active_blog");
             views.classList.add("views-active_menu");
         });
+
+
+        let blog_gopost = qsa(".view_blog--go_post");
+        blog_gopost.forEach(button => button.addEventListener("click", e => {
+           e.preventDefault();
+           views.classList.remove("views-active_blog");
+           views.classList.add("views-active_post");
+        }));
+
+        let post_goblog = qs(".view_post--go_blog");
+        post_goblog.addEventListener(e => {
+            e.preventDefault();
+            views.classList.remove("views-active_post");
+            views.classList.add("views-active_blog");
+        });
         
-        let portfolio_gomenubutton = qs(".view_portfolio--go_menu");
-        portfolio_gomenubutton.addEventListener("click", e => {
+
+        let portfolio_gomenu = qs(".view_portfolio--go_menu");
+        portfolio_gomenu.addEventListener("click", e => {
             e.preventDefault();
             views.classList.remove("views-active_portfolio");
             views.classList.add("views-active_menu");
+        });
+
+        let portfolio_goexample = qsa(".view_blog--go_post");
+        portfolio_goexample.forEach(button => button.addEventListener("click", e => {
+           e.preventDefault();
+           views.classList.remove("views-active_portfolio");
+           views.classList.add("views-active_example");
+        }));
+
+
+        let example_goportfolio = qs(".view_post--go_blog");
+        post_goblog.addEventListener(e => {
+            e.preventDefault();
+            views.classList.remove("views-active_example");
+            views.classList.add("views-active_portfolio");
         });
         
     </script>
