@@ -307,12 +307,12 @@
         });
 
 
-        let blog_gopost = qs(".view_blog--go_post");
-        blog_gopost.addEventListener("click", e => {
+        let blog_gopost = qsa(".view_blog--go_post");
+        blog_gopost.forEach(p => p.addEventListener("click", e => {
            e.preventDefault();
            views.classList.remove("views-active_blog");
            views.classList.add("views-active_post");
-        });
+        }) );
 
         let post_goblog = qs(".view_post--go_blog");
         post_goblog.addEventListener("click",e => {
@@ -329,12 +329,12 @@
             views.classList.add("views-active_menu");
         });
 
-        let portfolio_goexample = qs(".view_portfolio--go_example");
-        portfolio_goexample.addEventListener("click", e => {
+        let portfolio_goexample = qsa(".view_portfolio--go_example");
+        portfolio_goexample.forEach(e => e.addEventListener("click", e => {
            e.preventDefault();
            views.classList.remove("views-active_portfolio");
            views.classList.add("views-active_example");
-        });
+        }) );
 
 
         let example_goportfolio = qs(".view_example--go_portfolio");
