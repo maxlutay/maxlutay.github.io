@@ -150,7 +150,7 @@
 
         .view_post{
             background: yellowgreen;
-            top: calc(var( --view_main_top ) - 100vh);
+            top: calc( var( --view_main_top ) + 100vh);
             left: calc( var( --view_main_left ) - 100vw);
          }
         
@@ -163,7 +163,7 @@
         
          .view_example{
             background: #fac373;
-            top: calc( var( --view_main_top ) - 100vh);
+            top: calc( var( --view_main_top ) + 100vh);
             left: calc( var( --view_main_left ) + 100vw);
          }
 
@@ -184,7 +184,7 @@
     <div class="views views-active_main">
         
         <div class="view view_main"> 
-            Max <br> Lutay  <br> v22
+            Max <br> Lutay  <br> v23
             <a class="view_main--go_menu">/menu</a>
         </div>
         <div class="view view_menu view_menu-hidden" >
@@ -306,6 +306,7 @@
            views.classList.remove("views-active_blog");
            views.classList.add("views-active_post");
         });
+console.log("l");
 
         let post_goblog = qs(".view_post--go_blog");
         post_goblog.addEventListener(e => {
