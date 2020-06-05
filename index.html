@@ -101,6 +101,12 @@
             
             padding: calc(6vh + 5px) calc( 6vw + 5px);
         }
+
+        .view--back{
+           position: absolute;
+           left: 0vw;
+           top: 0vh;
+        }
         
         :root{
             --view_main_top: 0vh;
@@ -115,7 +121,7 @@
             z-index:0;
         }
         
-        .view_menu{
+        .view-menu{
             background: cornflowerblue;
             color: black;
             top: var( --view_main_top );
@@ -125,50 +131,47 @@
             flex-direction: column;
         }
         
-        .view_menu{
-            width:100vw;
-        }
 
-        .view_menu-hidden{
+        .view-menu-hidden{
             z-index:-1;
             visibility: hidden;
             opacity: 0;
         }
         
-        .view_menu-visible{
+        .view-menu-visible{
             z-index:11;
             visibility: visible;
             opacity:1;
         }
         
-        .view_info{
+        .view-info{
             top: calc(var( --view_main_top ) + 100vh);
             left: var( --view_main_left );
             background: lightcoral;
             color: black;
         }
         
-        .view_blog{
+        .view-blog{
             top: var( --view_main_top );
             left: calc( var( --view_main_left ) - 100vw);
             background: yellowgreen; 
             color: black;
         }
 
-        .view_post{
+        .view-post{
             background: yellowgreen;
             top: calc( var( --view_main_top ) + 100vh);
             left: calc( var( --view_main_left ) - 100vw);
          }
         
-        .view_portfolio{
+        .view-portfolio{
             top: var( --view_main_top );
             left: calc( var( --view_main_left ) + 100vw );
             background: #fac373 ;
             color: black;
          }
         
-         .view_example{
+         .view-example{
             background: #fac373;
             top: calc( var( --view_main_top ) + 100vh);
             left: calc( var( --view_main_left ) + 100vw);
@@ -190,48 +193,47 @@
     <div class="dashed_border" ></div>
     <div class="views views-active_main">
         
-        <div class="view view_main"> 
+        <div class="view view-main"> 
             Max <br> Lutay  <br> v27
-            <a class="view_main--go_menu">/menu</a>
+            <a class="view-main--go_menu">/menu</a>
         </div>
         <div class="view view_menu view_menu-hidden" >
             menu 
-            <a class="view_menu--go_main">/main</a>
-            <a class="view_menu--go_info">/about</a>
-            <a class="view_menu--go_blog">/blog</a>
-            <a class="view_menu--go_portfolio">/portfolio</a>
+            <a class="view-menu--go_main view--back">/main</a>
+            <a class="view-menu--go_info">/about</a>
+            <a class="view-menu--go_blog">/blog</a>
+            <a class="view-menu--go_portfolio">/portfolio</a>
         </div>
         
-        <div class="view view_info" > 
+        <div class="view view-info" > 
             about&contacts
-            <a class="view_info--go_menu">/menu</a>
+            <a class="view-info--go_menu view--back">/menu</a>
         </div>
-        <div class="view view_blog" >
+
+        <div class="view view-blog" >
             blog
-            <a class="view_blog--go_menu">/menu</a>
+            <a class="view-blog--go_menu view--back">/menu</a>
             
-            <a class="view_blog--go_post">/post1</a>
-            <a class="view_blog--go_post">/post2</a>
+            <a class="view-blog--go_post">/post1</a>
+            <a class="view-blog--go_post">/post2</a>
         </div>
 
-        <div class="view view_post">
-            <a class="view_post--go_blog">/blog</a>
+        <div class="view view-post">
+            <a class="view-post--go_blog view--back">/blog</a>
         </div>
 
-
-        <div class="view view_portfolio">
+        <div class="view view-portfolio">
             portfolio
-            <a class="view_portfolio--go_menu">/menu</a>
+            <a class="view-portfolio--go_menu view--back">/menu</a>
             
-            <a class="view_portfolio--go_example">/example1</a>
-            <a class="view_portfolio--go_example">/example2</a>
+            <a class="view-portfolio--go_example">/example1</a>
+            <a class="view-portfolio--go_example">/example2</a>
             
         </div>
 
-        <div class="view view_example">
-            <a class="view_example--go_portfolio">/portfolio</a>
+        <div class="view view-example">
+            <a class="view-example--go_portfolio view--back">/portfolio</a>
         </div>
-
     </div>
     
     <script >
@@ -240,35 +242,35 @@
         let qsa = document.querySelectorAll.bind(document);
 
         let views = qs(".views");
-        let view_menu = qs(".view_menu");
+        let view_menu = qs(".view-menu");
         
 
 
 
 
 
-        let main_gomenu = qs(".view_main--go_menu");
+        let main_gomenu = qs(".view-main--go_menu");
         
         main_gomenu.addEventListener("click", e => {
             e.preventDefault();
             views.classList.remove("views-active_main");
             views.classList.add("views-active_menu");
-            view_menu.classList.remove("view_menu-hidden");
-            view_menu.classList.add("view_menu-visible");
+            view_menu.classList.remove("view-menu-hidden");
+            view_menu.classList.add("view-menu-visible");
         });
        
-        let menu_gomain = qs(".view_menu--go_main");
+        let menu_gomain = qs(".view-menu--go_main");
         
         menu_gomain.addEventListener("click", e => {
             e.preventDefault();
             views.classList.remove("views-active_menu");
             views.classList.add("views-active_main");
-            view_menu.classList.add("view_menu-hidden");
-            view_menu.classList.remove("view_menu-visible");
+            view_menu.classList.add("view-menu-hidden");
+            view_menu.classList.remove("view-menu-visible");
         });
         
         
-        let menu_goinfo = qs(".view_menu--go_info");
+        let menu_goinfo = qs(".view-menu--go_info");
         
         menu_goinfo.addEventListener("click", e => {
             e.preventDefault();
@@ -276,7 +278,7 @@
             views.classList.add("views-active_info");
         });
         
-        let menu_goblog = qs(".view_menu--go_blog");
+        let menu_goblog = qs(".view-menu--go_blog");
         
         menu_goblog.addEventListener("click", e => {
             e.preventDefault();
@@ -284,7 +286,7 @@
             views.classList.add("views-active_blog");
         });
         
-        let menu_goportfolio = qs(".view_menu--go_portfolio");
+        let menu_goportfolio = qs(".view-menu--go_portfolio");
         
         menu_goportfolio.addEventListener("click", e => {
             e.preventDefault();
@@ -292,14 +294,14 @@
             views.classList.add("views-active_portfolio");
         });
         
-        let info_gomenu = qs(".view_info--go_menu");
+        let info_gomenu = qs(".view-info--go_menu");
         info_gomenu.addEventListener("click", e => {
             e.preventDefault();
             views.classList.add("views-active_menu");
             views.classList.remove("views-active_info");
         });
         
-        let blog_gomenu = qs(".view_blog--go_menu");
+        let blog_gomenu = qs(".view-blog--go_menu");
         blog_gomenu.addEventListener("click", e => {
             e.preventDefault();
             views.classList.remove("views-active_blog");
@@ -307,14 +309,14 @@
         });
 
 
-        let blog_gopost = qsa(".view_blog--go_post");
+        let blog_gopost = qsa(".view-blog--go_post");
         blog_gopost.forEach(p => p.addEventListener("click", e => {
            e.preventDefault();
            views.classList.remove("views-active_blog");
            views.classList.add("views-active_post");
         }) );
 
-        let post_goblog = qs(".view_post--go_blog");
+        let post_goblog = qs(".view-post--go_blog");
         post_goblog.addEventListener("click",e => {
             e.preventDefault();
             views.classList.remove("views-active_post");
@@ -322,14 +324,14 @@
         });
        console.log("m");
 
-        let portfolio_gomenu = qs(".view_portfolio--go_menu");
+        let portfolio_gomenu = qs(".view-portfolio--go_menu");
         portfolio_gomenu.addEventListener("click", e => {
             e.preventDefault();
             views.classList.remove("views-active_portfolio");
             views.classList.add("views-active_menu");
         });
 
-        let portfolio_goexample = qsa(".view_portfolio--go_example");
+        let portfolio_goexample = qsa(".view-portfolio--go_example");
         portfolio_goexample.forEach(e => e.addEventListener("click", e => {
            e.preventDefault();
            views.classList.remove("views-active_portfolio");
@@ -337,7 +339,7 @@
         }) );
 
 
-        let example_goportfolio = qs(".view_example--go_portfolio");
+        let example_goportfolio = qs(".view-example--go_portfolio");
         example_goportfolio.addEventListener("click",e => {
             e.preventDefault();
             views.classList.remove("views-active_example");
