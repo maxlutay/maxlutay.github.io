@@ -79,8 +79,8 @@
 
         
         .views-active_post{
-            top: var(--active_main_top);
-            left: calc(var(--active_main_left) + 200vw);
+            top: calc(var(--active_main_top) - 100vh);
+            left: calc(var(--active_main_left) + 100vw);
         }
         
         .views-active_portfolio{
@@ -89,8 +89,8 @@
         }
         
         .views-active_example{
-            top: var(--active_main_top);
-            left: calc(var(--active_main_left) - 200vw);
+            top: calc( var(--active_main_top) - 100vh);
+            left: calc(var(--active_main_left) - 100vw);
         }
 
         .view {
@@ -150,8 +150,8 @@
 
         .view_post{
             background: yellowgreen;
-            top: var( --view_main_top );
-            left: calc( var( --view_main_left ) - 200vw);
+            top: calc(var( --view_main_top ) - 100vh);
+            left: calc( var( --view_main_left ) - 100vw);
          }
         
         .view_portfolio{
@@ -163,8 +163,8 @@
         
          .view_example{
             background: #fac373;
-            top: var( --view_main_top );
-            left: calc( var( --view_main_left ) + 200vw);
+            top: calc( var( --view_main_top ) - 100vh);
+            left: calc( var( --view_main_left ) + 100vw);
          }
 
          a {
@@ -184,7 +184,7 @@
     <div class="views views-active_main">
         
         <div class="view view_main"> 
-            Max <br> Lutay  <br> v21
+            Max <br> Lutay  <br> v22
             <a class="view_main--go_menu">/menu</a>
         </div>
         <div class="view view_menu view_menu-hidden" >
@@ -203,8 +203,8 @@
             blog
             <a class="view_blog--go_menu">/menu</a>
             
-            <a class="view_blog--go_post">post1</a>
-            <a class="view_blog--go_post">post2</a>
+            <a class="view_blog--go_post">/post1</a>
+            <a class="view_blog--go_post">/post2</a>
         </div>
 
         <div class="view view_post">
@@ -216,8 +216,8 @@
             portfolio
             <a class="view_portfolio--go_menu">/menu</a>
             
-            <a class="view_portfolio--go_example">example1</a>
-            <a class="view_portfolio--go_example">example2</a>
+            <a class="view_portfolio--go_example">/example1</a>
+            <a class="view_portfolio--go_example">/example2</a>
             
         </div>
 
