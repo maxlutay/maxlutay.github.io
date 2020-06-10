@@ -257,20 +257,16 @@
         
         main_gomenu.addEventListener("click", e => {
             e.preventDefault();
-            views.classList.remove("views-active_main");
-            views.classList.add("views-active_menu");
-            view_menu.classList.remove("view-menu-hidden");
-            view_menu.classList.add("view-menu-visible");
+            views.classList.remove("views-active_main").add("views-active_menu");
+            view_menu.classList.remove("view-menu-hidden").add("view-menu-visible");
         });
        
         let menu_gomain = qs(".view-menu--go_main");
         
         menu_gomain.addEventListener("click", e => {
             e.preventDefault();
-            views.classList.remove("views-active_menu");
-            views.classList.add("views-active_main");
-            view_menu.classList.add("view-menu-hidden");
-            view_menu.classList.remove("view-menu-visible");
+            views.classList.remove("views-active_menu").add("views-active_main");
+            view_menu.classList.add("view-menu-hidden").remove("view-menu-visible");
         });
         
         
@@ -278,38 +274,33 @@
         
         menu_goinfo.addEventListener("click", e => {
             e.preventDefault();
-            views.classList.remove("views-active_menu");
-            views.classList.add("views-active_info");
+            views.classList.remove("views-active_menu").add("views-active_info");
         });
         
         let menu_goblog = qs(".view-menu--go_blog");
         
         menu_goblog.addEventListener("click", e => {
             e.preventDefault();
-            views.classList.remove("views-active_menu");
-            views.classList.add("views-active_blog");
+            views.classList.remove("views-active_menu").add("views-active_blog");
         });
         
         let menu_goportfolio = qs(".view-menu--go_portfolio");
         
         menu_goportfolio.addEventListener("click", e => {
             e.preventDefault();
-            views.classList.remove("views-active_menu");
-            views.classList.add("views-active_portfolio");
+            views.classList.remove("views-active_menu").add("views-active_portfolio");
         });
         
         let info_gomenu = qs(".view-info--go_menu");
         info_gomenu.addEventListener("click", e => {
             e.preventDefault();
-            views.classList.add("views-active_menu");
-            views.classList.remove("views-active_info");
+            views.classList.add("views-active_menu").remove("views-active_info");
         });
         
         let blog_gomenu = qs(".view-blog--go_menu");
         blog_gomenu.addEventListener("click", e => {
             e.preventDefault();
-            views.classList.remove("views-active_blog");
-            views.classList.add("views-active_menu");
+            views.classList.remove("views-active_blog").add("views-active_menu");
         });
 
         
@@ -354,43 +345,33 @@ in first day of first month and year`,
         let blog_gopost = qsa(".view-blog--go_post");
         blog_gopost.forEach(p => p.addEventListener("click", e => {
            e.preventDefault();
-           views.classList
-           .remove("views-active_blog")
-           .add("views-active_post");
+           views.classList.remove("views-active_blog").add("views-active_post");
         }) );
         
 
         let post_goblog = qs(".view-post--go_blog");
         post_goblog.addEventListener("click",e => {
             e.preventDefault();
-            views.classList
-            .remove("views-active_post")
-            .add("views-active_blog");
+            views.classList.remove("views-active_post").add("views-active_blog");
         });
 
         let portfolio_gomenu = qs(".view-portfolio--go_menu");
         portfolio_gomenu.addEventListener("click", e => {
             e.preventDefault();
-            views.classList
-            .remove("views-active_portfolio")
-            .add("views-active_menu");
+            views.classList.remove("views-active_portfolio").add("views-active_menu");
         });
 
         let portfolio_goexample = qsa(".view-portfolio--go_example");
         portfolio_goexample.forEach(e => e.addEventListener("click", e => {
            e.preventDefault();
-           views.classList
-           .remove("views-active_portfolio");
-           .add("views-active_example");
+           views.classList.remove("views-active_portfolio").add("views-active_example");
         }) );
 
 
         let example_goportfolio = qs(".view-example--go_portfolio");
         example_goportfolio.addEventListener("click",e => {
             e.preventDefault();
-            views.classList
-            .remove("views-active_example");
-            .add("views-active_portfolio");
+            views.classList.remove("views-active_example").add("views-active_portfolio");
         });
         console.log("scriptend");
     </script>
