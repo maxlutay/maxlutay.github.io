@@ -333,7 +333,7 @@ in first day of first month and year`,
         let postsfragment = document.createDocumentFragment();
         let postpreview = (post) => {
             let preview = document.createElement("a");
-            preview.appendAtribute("class","view-blog--go_post");
+            preview.setAtribute("class","view-blog--go_post");
             preview.innerText = "/" + post.title;
             return preview;
         };
